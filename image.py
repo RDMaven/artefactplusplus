@@ -4,7 +4,7 @@ import sys
 cv.destroyAllWindows()
 
 def open_camera(id: int):
-    cap = cv.VideoCapture(id, cv.CAP_ANY)              #Valeur propre à mon pc : id = 2
+    cap = cv.VideoCapture(id, cv.CAP_V4L2)              #Valeur propre à mon pc : id = 2
     cap.set(cv.CAP_PROP_FPS, 10)
     cap.set(cv.CAP_PROP_BUFFERSIZE, 1)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, 640)
