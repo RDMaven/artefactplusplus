@@ -1,0 +1,21 @@
+.content{
+    flex : 1 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+html, body{
+    height: 100%;
+    margin : 0;
+
+}
+ body{
+    display: flex;
+    flex-direction: column;
+ }
+
+ .video{
+    width: 640;
+    height: 480;
+    z-index: -1;
+ }
