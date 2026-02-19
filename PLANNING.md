@@ -1,5 +1,7 @@
 ## Planning de l'équipe Artefact +++
 
+Nous avons établi notre planning pour les deux périodes suivantes. Vous trouvez d'abord un tableau résumant les différentes actions groupées ou non, puis le complément en mermaid du planning global fourni.
+
 <table>
     <thead>
         <tr>
