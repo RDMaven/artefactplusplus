@@ -9,13 +9,13 @@ Co-encadré par Philippe Martins
 
 ## Objectif
 En se servant de l’expérience acquise lors du projet Artefact, les étudiants devront modifier l’architecture de leur robot pour l’adapter aux robots tout terrain qui seront fournis. Plus précisément, ils devront :
-    1. Adapter l’application logicielle pour prendre en compte le nouveau matériel (caméra, moteurs, etc.).
-    2. Modifier le composant de localisation du robot pour utiliser une position géographique au lieu des repères prédéfinis.
-    3. Modifier le calcul de trajectoire pour contourner d’éventuels obstacles lors de la poursuite d’un robot cible.
-    4. Développer un algorithme qui sera utilisé pour décider du moment opportun de communiquer avec le serveur central de la traque.
-    5. Modifier le composant de communication pour employer la 4G du réseau de Télécom Paris.
-    6. Remonter la télémétrie à un serveur distant en 4G/5G.
-    7. (Optionnel) PoC IA à l’Edge.
+    + Adapter l’application logicielle pour prendre en compte le nouveau matériel (caméra, moteurs, etc.).
+    + Modifier le composant de localisation du robot pour utiliser une position géographique au lieu des repères prédéfinis.
+    + Modifier le calcul de trajectoire pour contourner d’éventuels obstacles lors de la poursuite d’un robot cible.
+    + Développer un algorithme qui sera utilisé pour décider du moment opportun de communiquer avec le serveur central de la traque.
+    + Modifier le composant de communication pour employer la 4G du réseau de Télécom Paris.
+    + Remonter la télémétrie à un serveur distant en 4G/5G.
+    + (Optionnel) PoC IA à l’Edge.
 
 ## Encadrants
 * Jean-Sébastien Gomez
