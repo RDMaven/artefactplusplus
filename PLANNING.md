@@ -66,9 +66,22 @@
     </tbody>
 </table>
 
+
 ```mermaid
-%%{init: { 'theme': 'default', 'gantt': { 'leftPadding': 150 } } }%%
+
+
+%%{init: { 'theme': 'default',
+  'themeVariables': {
+    'textColor': '#000000',
+    'taskTextLightColor': '#000000',
+    'primaryTextColor': '#000000',
+    'lineColor': '#000000'
+    },
+    'gantt': { 'leftPadding': 150,} } }%%
+
 gantt
+
+todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
 title Point d'évaluations
 dateFormat DD/MM/YYYY
 excludes weekends
@@ -96,8 +109,26 @@ section Professeurs
 Présentation Hall: milestone, 26/06/2026, 1d
 
 section Colin 
+Rasberry + Connexion : a1, 23/02/2026, 15d
+Composant Communication : a4, after a3, 15d
 
 section Eden
+Capteur Proximités : a1, 23/02/2026, 15d
+Éviter obstacle : a4, after a3, 15d
+
 section Max
+Moteur + Interface Web : a1, 23/02/2026, 15d
+Composant Localisation : a4, after a3, 15d
+
 section Thibaut
+Caméra : a1, 23/02/2026, 15d
+Test en commun : a2, after a1, 5d
+Débug : a3, after a2, 5d
+Serveur central + communication : a4, after a3, 15d
+Test 1 Robot : a5, after a4, 10d
+Rapport enjeux et réparation robots : a6, after a5, 5d
+Première Traque : a7, after a6, 10d
+Algo cartographie + test : a8, after a7, 10d
+Cartographie collective : a9, after a8, 5d
+PoC AI de l'Edge : a10, after a9, 5d
 ```
