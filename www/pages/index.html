@@ -1,13 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artefact+++</title>
-    <link rel="stylesheet" type="text/css" href="/styles/style.css" />
+    <meta charset="UTF-8" />
+    <title>Dashboard caméra</title>
+    <link rel="stylesheet" href="/styles/app.css" type="text/css">
+    <link rel="stylesheet" href="/styles/dashboard.css" type="text/css">
+    <link rel="stylesheet" href="/styles/animations.css" type="text/css">
 </head>
+
 <body>
-    TODO
-    <a href="./camera">Page camera !</a>
+
+    <div class="header-wrapper">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="map-placeholder">
+            <img src="/images/carte_telecom.png" alt="Carte de Télécom">
+        </div>  
+        <div class="logo-placeholder">
+                <img src="/images/pizza_secrete_entiere.png" class="ani-spinning" alt="Logo Artefact+++">
+        </div>
+    </div>
+
+    <!-- Three columns -->
+    <div class="columns">
+
+        <div class="column">
+            <div class="name">Robot 1</div>
+            <div class="camera-placeholder">Camera 1</div>
+            <div class="status-box">Status: OK</div>
+            <a class="big-button" href="/camera">Contrôle Robot 1</a>
+        </div>
+
+        <div class="column">
+            <div class="name">Robot 2</div>
+            <div class="camera-placeholder">Camera 2</div>
+            <div class="status-box">Status: Offline</div>
+            <a class="big-button" href="2">Contrôle Robot 2</a>
+        </div>
+
+        <div class="column">
+            <div class="name">Robot 3</div>
+            <div class="camera-placeholder">Camera 3</div>
+            <div class="status-box">Status: Error</div>
+            <a class="big-button" href="3">Contrôle Robot 3</a>
+        </div>
+
+    </div>
+
 </body>
+
 </html>
