@@ -28,8 +28,11 @@ def robot_page(robot_id=1):
 
 @app.route('/video')
 def video():
-    print(type(Config.ID_CAMERA))
-    return Response(im.capture_video(Config.ID_CAMERA), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(im.capture_video(Config.ID_CAMERA, Config.OS_IS_WIN), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# @app.route('/video/<int:robot_id>')
+# def video():
+#     return TODO : get frames from each robot !!!
 
 @app.route('/camera')
 def camera_page():
