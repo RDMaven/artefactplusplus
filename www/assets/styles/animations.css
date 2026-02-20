@@ -23,3 +23,15 @@ Source - https://stackoverflow.com/a/16771693
         transform:rotate(360deg); 
     } 
 }
+
+/* ----------------------------- */
+
+.back-button {
+    transition:
+        opacity 400ms;
+    opacity: 0.6;
+}
+
+.back-button:hover {
+    opacity: 1;
+}
