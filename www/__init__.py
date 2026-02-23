@@ -49,36 +49,45 @@ def camera_page():
 
 @sock.route("/ws")
 def ws(ws):
+    print("Client connected")
+
     while True:
         data = ws.receive()
-        try:
-            data = json.loads(data)
-        except Exception as e:
-            print(f"Socket error: Invalid JSON: {e}\nMessage: {data}")
-            continue
-        event = data.get("event")
-        if event is None:
-            print(f"Socket error: No event field: {data}")
-            return
-        if not isinstance(event, str):
-            print(f"Socket error: event should be a str, received {event}\nMessage: {data}")
-            continue
+        if data is None:
+            break
+    
+        print("Received:", data)
+
+        ws.send(f"Server got: {data}")
+
+        # try:
+        #     data = json.loads(data)
+        # except Exception as e:
+        #     print(f"Socket error: Invalid JSON: {e}\nMessage: {data}")
+        #     continue
+        # event = data.get("event")
+        # if event is None:
+        #     print(f"Socket error: No event field: {data}")
+        #     return
+        # if not isinstance(event, str):
+        #     print(f"Socket error: event should be a str, received {event}\nMessage: {data}")
+        #     continue
         
-        # Move event
-        if event == "move":
-            x = data.get("x")
-            y = data.get("y")
+        # # Move event
+        # if event == "move":
+        #     x = data.get("x")
+        #     y = data.get("y")
 
-            if x == None or not isinstance(x, (float, int)):
-                print(f"Socket error: Invalid x field\nMessage: {data}")
-                continue
-            if y == None or not isinstance(y, (float, int)):
-                print(f"Socket error: Invalid y field\nMessage: {data}")
-                continue
-            robot.moveManual(float(x), float(y))
+        #     if x == None or not isinstance(x, (float, int)):
+        #         print(f"Socket error: Invalid x field\nMessage: {data}")
+        #         continue
+        #     if y == None or not isinstance(y, (float, int)):
+        #         print(f"Socket error: Invalid y field\nMessage: {data}")
+        #         continue
+        #     robot.moveManual(float(x), float(y))
 
-        else:
-            log(f"Socket error: Unknown event {event}\nMessage: {data}")
+        # else:
+        #     log(f"Socket error: Unknown event {event}\nMessage: {data}")
 
 
 
