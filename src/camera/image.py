@@ -3,8 +3,8 @@ import sys
 
 cv.destroyAllWindows()
 
-def open_camera(id: int, OS_IS_WIN: bool):
-    if OS_IS_WIN: # selon si on est sous windows, il faut cv.CAP_V4L2.
+def open_camera(id: int, OS_IS_LINUX: bool):
+    if OS_IS_LINUX: # selon si on est sous linux, il faut cv.CAP_V4L2.
         cap = cv.VideoCapture(id, cv.CAP_V4L2)              #Valeur propre à mon pc : id = 2
     else:
         cap = cv.VideoCapture(id)

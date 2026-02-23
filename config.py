@@ -24,8 +24,8 @@ class Config:
 
     # TODO Ranger ces env.
     ID_CAMERA = int(environ["ID_CAMERA"])
-    OS_IS_WIN=not any([e in platform for e in ['linux', 'darwin']])
-    print(f"Detected OS : {platform} (OS_IS_WIN={OS_IS_WIN})")
+    OS_IS_LINUX=any([e in platform for e in ['linux']])
+    print(f"Detected OS : {platform}.")
     
     class Web:
         PORT=int(environ["WEB_PORT"])
