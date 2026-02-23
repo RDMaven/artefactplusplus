@@ -12,3 +12,6 @@
 - Réunion commune pour mettre en place le planning.
 - Dès la prochaine séance, les travaux individuels pourront commencer.
 
+### Vendredi 20/02
+
+- Colin : Récupération de la Raspberry auprès de Tarik Graba et remplacement de l'adaptateur USB-Serie
