@@ -19,6 +19,9 @@ app = Flask(
     template_folder=Config.Path.TEMPLATES_DIRECTORY
 )
 
+sock = Sock(app)
+
+
 @app.route('/')
 def index():
     return send_from_directory('pages/','index.html')
