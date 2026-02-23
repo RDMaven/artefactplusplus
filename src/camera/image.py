@@ -19,6 +19,16 @@ def open_camera(id: int, OS_IS_LINUX: bool):
         exit()
     return cap
 
+def resolution(width: int, height: int, cap):
+    if not (0 < width < 960 and 0 < height < 720) :
+        print("Valeurs incorrectes")
+    else:
+        cap.set(cv.CAP_PROP_FRAME_WIDTH, width)
+        cap.set(cv.CAP_PROP_FRAME_HEIGHT, height)
+
+
+
+
 def capture_video(id: int, OS_IS_WIN = False):             #cap est un objet    openCV
     cap = open_camera(id, OS_IS_WIN)
     while True:

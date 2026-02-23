@@ -28,7 +28,7 @@ def robot_page(robot_id=1):
 
 @app.route('/video')
 def video():
-    return Response(im.capture_video(Config.ID_CAMERA, Config.OS_IS_WIN), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(im.capture_video(Config.ID_CAMERA, Config.OS_IS_LINUX), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # @app.route('/video/<int:robot_id>')
 # def video():
