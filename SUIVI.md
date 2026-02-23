@@ -15,3 +15,11 @@
 ### Vendredi 20/02
 
 - Colin : Récupération de la Raspberry auprès de Tarik Graba et remplacement de l'adaptateur USB-Serie
+
+### Lundi 23/02
+
+- Eden : création d'une clé ssh et test de connexion à la raspberry
+clonage du git + lecture du code wifibot pour prise en main préliminaire des capteurs IR 
+- Colin : config PC pour se connecter à la rasp, documentation hardware robot 
+- Thibaut : prise en main du mouvement de la caméra
+- Max : prise en main du déplacement du robot et moteur, test de différentes vitesses, déplacement linéaire + rotation. 
