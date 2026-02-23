@@ -43,6 +43,7 @@ document.getElementById("arrow-right").addEventListener("click", () => {
 
 const log_square = document.getElementById("log_square");
 
+
 function log(message){
     let p_log = document.createElement("p");
     p_log.innerText = '>>> '+message;

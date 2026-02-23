@@ -21,5 +21,7 @@
 - Eden : création d'une clé ssh et test de connexion à la raspberry
 clonage du git + lecture du code wifibot pour prise en main préliminaire des capteurs IR 
 - Colin : config PC pour se connecter à la rasp, documentation hardware robot 
-- Thibaut : prise en main du mouvement de la caméra
+- Thibaut : prise en main du mouvement de la caméra et écriture d'un code python pour la commander. 
 - Max : prise en main du déplacement du robot et moteur, test de différentes vitesses, déplacement linéaire + rotation. 
+
+- Thibaut et Max : ajout de logs sur l'interface web et mise en place d'une connexion Web Sockets
