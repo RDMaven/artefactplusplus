@@ -1,10 +1,15 @@
 from flask import Flask, Response, send_from_directory, render_template
+from flask_sock import Sock
 
 # Ajouter (salement) le dossier parent au path
 import sys
 sys.path.append('../src')
 import src.camera.image as im
 from config import Config
+
+from src.robots.base_robot import robot_instance
+
+# sockets=[]
 
 
 app = Flask(
@@ -37,4 +42,40 @@ def video():
 @app.route('/camera')
 def camera_page():
     return send_from_directory('pages/','camera.html')
+
+
+@sock.route("/ws")
+def ws(ws):
+    while True:
+        data = ws.receive()
+        try:
+            data = json.loads(data)
+        except Exception as e:
+            print(f"Socket error: Invalid JSON: {e}\nMessage: {data}")
+            continue
+        event = data.get("event")
+        if event is None:
+            print(f"Socket error: No event field: {data}")
+            return
+        if not isinstance(event, str):
+            print(f"Socket error: event should be a str, received {event}\nMessage: {data}")
+            continue
+        
+        # Move event
+        if event == "move":
+            x = data.get("x")
+            y = data.get("y")
+
+            if x == None or not isinstance(x, (float, int)):
+                print(f"Socket error: Invalid x field\nMessage: {data}")
+                continue
+            if y == None or not isinstance(y, (float, int)):
+                print(f"Socket error: Invalid y field\nMessage: {data}")
+                continue
+            robot.moveManual(float(x), float(y))
+
+        else:
+            log(f"Socket error: Unknown event {event}\nMessage: {data}")
+
+
 
