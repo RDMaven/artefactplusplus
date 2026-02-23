@@ -7,7 +7,7 @@ sys.path.append('../src')
 import src.camera.image as im
 from config import Config
 
-from src.robots.base_robot import robot_instance
+#from src.robots.base_robot import robot_instance
 
 # sockets=[]
 
