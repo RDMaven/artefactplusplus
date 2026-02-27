@@ -1,53 +1,56 @@
-const socket = new WebSocket("/ws");     //INSERER LIEN SERVEUR
+
+import { onScreenLog, consoleClear } from './log.js';
+import { ws } from './ws.js';
+
+// WS : bouton de test
+$('#ws-test-button').on("click", () => {
+    ws.send("Hello from JS");
+})
 
 
-socket.onopen = () => {
-    console.log("Connected to server");
-    log("Connected to server")
+// WS : controle manuel des robots
+const directions = {
+    up:    [ 0,  1],
+    down:  [ 0, -1],
+    left:  [-1,  0],
+    right: [ 1,  0]
 };
 
-socket.onmessage = (event) => {
-    console.log("Server:", event.data);
-    log(event.data)
-};
-
-socket.onclose = () => {
-    console.log("Disconnected");
-    log("Disconected")
-};
-
-function sendMessage() {
-    socket.send("Hello from JS");
-}
-
-
-document.getElementById("arrow-up").addEventListener("click", () => {
-    let obj = JSON.stringify({ event: "move", x: 0, y: 1 });
-    socket.send(obj);
+$.each(directions, function(direction, [x, y]) {
+    $(`#arrow-${direction}`).on('click', function() {
+        ws.send(JSON.stringify({ event: 'move', x, y }));
+    });
 });
 
-document.getElementById("arrow-down").addEventListener("click", () => {
-    let obj = JSON.stringify({ event: "move", x: 0, y: -1 });
-    socket.send(obj);
+
+// Toggle button
+
+$(document).ready(function () {
+
+  $("#btnMode").on("change", function () {
+    var current_mode = 'Manual';
+    if ($(this).is(":checked")) {
+
+      if (!confirm("Are you sure you want to switch to Auto mode? (*FLASHBANG INCOMING*")) {
+        $(this).prop("checked", false); // revert toggle
+        return;
+      }
+      current_mode = 'Auto';
+
+    } else {
+    }
+    onScreenLog(`Switched to ${current_mode} Mode`, "error");
+
+  });
+
 });
 
-document.getElementById("arrow-left").addEventListener("click", () => {
-    let obj = JSON.stringify({ event: "move", x: -1, y: 0 });
-    socket.send(obj);
+
+$('#btnMode').on('change', function() {
+  $('body').toggleClass('light-mode');
 });
 
-document.getElementById("arrow-right").addEventListener("click", () => {
-    let obj = JSON.stringify({ event: "move", x: 1, y: 0 });
-    socket.send(obj);
-});
-
-const log_square = document.getElementById("log_square");
-
-
-function log(message){
-    let p_log = document.createElement("p");
-    p_log.innerText = '>>> '+message;
-    p_log.style.color = "white";
-    log_square.prepend(p_log);
-    log_square.scrollTop = log_square.scrollHeight;
-}
+// Console Clear event listener (requires ws state):
+$(".console-btn").on("click", function () {
+    consoleClear(ws.readyState);
+})
