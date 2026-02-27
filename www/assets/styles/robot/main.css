@@ -1,0 +1,9 @@
+/* Main page layout */
+@import url('./colors.css'); /* Website color skins (light/dark) */
+@import url('./layout.css'); /* General style and page layout */
+
+/* Specific elements */
+@import url('../modules/log-console.css'); /* Log console element */
+@import url('../modules/toggle-button.css'); /* Toggle button element */
+@import url('../modules/joystick.css'); /* Joystick element */
+@import url('../modules/return-btn.css'); /* PIZZA */

@@ -6,7 +6,7 @@
 Source - https://stackoverflow.com/a/16771693
 */
 
-.ani-spinning {
+.return-btn-img {
     -webkit-animation:spin 6s linear infinite;
     -moz-animation:spin 6s linear infinite;
     animation:spin 6s linear infinite;
@@ -26,12 +26,13 @@ Source - https://stackoverflow.com/a/16771693
 
 /* ----------------------------- */
 
-.back-button {
+.return-btn-img {
+    height: 100%;
     transition:
         opacity 400ms;
     opacity: 0.6;
 }
 
-.back-button:hover {
+.return-btn-img:hover {
     opacity: 1;
 }

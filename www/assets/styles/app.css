@@ -93,12 +93,3 @@ body {
     align-items:center;
     height: 18rem;
 }
-
-#log_square{
-    display: flex;
-    width: 30rem;
-    height: 15rem;
-    background-color: black;
-    overflow: hidden;
-    flex-direction: column-reverse;
-}

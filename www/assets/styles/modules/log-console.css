@@ -1,0 +1,102 @@
+/* ============================== */
+/* Console sur écran ============ */
+/* ============================== */
+.console-container {
+    background: var(--color-console-bg);
+    color: var(--color-text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    z-index: 99;
+}
+
+.console-header {
+    padding: 10px 14px;
+    background: var(--color-secondary-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: .5px;
+}
+
+.console-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.console-btn {
+    background: var(--color-btn-bg);
+    border: none;
+    color: var(--color-text);
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: 0.2s;
+}
+
+.console-btn:hover {
+    background: var(--color-btn-hover-bg);
+}
+
+.console-body {
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.log-entry {
+    margin-bottom: 6px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    animation: fadeIn 0.2s ease;
+    word-break: break-word;
+    text-align: left;
+}
+
+.log-time {
+    opacity: 0.4;
+    margin-right: 6px;
+}
+
+.log-log {
+    background: var(--color-log-bg);
+}
+
+.log-success {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.log-server {
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+}
+
+.log-error {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.collapsed #console-body {
+    display: none;
+}

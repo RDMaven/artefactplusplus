@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Robot {{ robot_id }}</title>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/styles/robot/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="top-bar">
+                <!-- <div class="return-btn"> -->
+                <a href="#" class="return-btn">
+                    <img src="/static/images/pizza_secrete_entiere.png" class="return-btn-img" alt="Logo Artefact+++">
+                </a>
+                <!-- </div> -->
+                <div class="title"><strong> Dashboard Robot {{ robot_id }} </strong></div>
+                <div class="btn-mode">
+                    <!-- Source - https://stackoverflow.com/a/79274945 -->
+                    <label class="btn-mode-toggle">
+                        <input type="checkbox" id="btnMode" name="btnToggle" />
+                        <span class="btn-mode-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="camera-area">
+                <div class="map">
+                    <img src="/static/images/carte_telecom.png" alt="Carte de Télécom">
+                </div>
+                <div class="camera">
+                    <img src="/video" class="camera-feed">
+                </div>
+            </div>
+
+        </div>
+        <div class="right-panel">
+
+            <div class="console-container">
+                <div class="console-header">
+                    Log Konsole
+                    <div class="console-controls">
+                        <button class="console-btn">Clear</button>
+                    </div>
+                </div>
+                <div class="console-body"></div>
+            </div>
+
+            <div class="joystick-container">
+                Joystick
+                <div class="joystick">
+                    <div class="name">Contrôles</div>
+                    <button class="big-button" id="ws-test-button">Test WebSocket</button>
+                    <button class="big-button" id="arrow-up" href="#">Haut</button>
+                    <button class="big-button" id="arrow-down" href="#">Bas</button>
+                    <button class="big-button" id="arrow-left" href="#">Gauche</button>
+                    <button class="big-button" id="arrow-right" href="#">Droite</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/static/scripts/app.js" defer></script>
+</body>
+
+</html>

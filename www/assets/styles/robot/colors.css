@@ -1,0 +1,51 @@
+
+:root {
+    /* =========== MAIN ============ */
+    --color-app-bg: #283c41;
+    --color-primary-bg: #0a1325;
+    --color-secondary-bg: rgba(255, 255, 255, 0.03);
+    --color-text: #e5e7eb;
+
+    /* ========== BUTTONS ========== */
+    --color-btn-bg: rgba(255, 255, 255, 0.1);
+    --color-btn-hover-bg: rgba(255, 255, 255, 0.2);
+
+    /* ========== CONSOLE ========== */
+    --color-console-bg: #0a1325;
+    --color-log-bg: rgba(148, 163, 184, 0.08);
+    
+    /* ========== EVENTS =========== */
+    --color-success: #3ebf6d;
+    --color-accent : #facc15;
+    --color-danger : #f87171;
+    --color-success-bg: rgba(34, 197, 94, 0.1); 
+    --color-accent-bg : rgba(234, 179, 8, 0.1); 
+    --color-danger-bg : rgba(239, 68, 68, 0.1); 
+}
+
+body.light-mode {
+    /* =========== MAIN ============ */
+    --color-app-bg: #e9eef2;
+    --color-primary-bg: #ffffff;
+    --color-secondary-bg: #f3f6f9;
+    --color-text: #1f2937;
+
+    /* ========== BUTTONS ========== */
+    --color-btn-bg: #e2e8f0;
+    --color-btn-hover-bg: #cbd5e1;
+
+    /* ========== CONSOLE ========== */
+    --color-console-bg: #f8fafc;
+    --color-log-bg: #eef2f7;
+
+    /* ========== EVENTS =========== */
+    --color-success: #16a34a;
+    --color-accent: #ca8a04;
+    --color-danger: #dc2626;
+
+    --color-success-bg: rgba(22, 163, 74, 0.12);
+    --color-accent-bg: rgba(202, 138, 4, 0.12);
+    --color-danger-bg: rgba(220, 38, 38, 0.12);
+}
+
+
