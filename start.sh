@@ -1,3 +1,16 @@
-#! /bin/sh
+#!/bin/sh
+
 . .venv/bin/activate
-flask -A run.py run -p 8080 --host 0.0.0.0
+
+if command -v python3 >/dev/null 2>&1; then
+    PYTHON=python3
+elif command -v python >/dev/null 2>&1; then
+    PYTHON=python
+elif command -v py >/dev/null 2>&1; then
+    PYTHON=py
+else
+    echo "Python not found"
+    exit 1
+fi
+
+"$PYTHON" run.py

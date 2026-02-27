@@ -1,5 +1,4 @@
 opencv-python
-flask
 dotenv
-flask_sock
 pyserial
+fastapi[standard-no-fastapi-cloud-cli]
