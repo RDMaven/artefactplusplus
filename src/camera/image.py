@@ -29,8 +29,8 @@ def resolution(width: int, height: int, cap):
 
 
 
-def capture_video(id: int, OS_IS_WIN = False):             #cap est un objet    openCV
-    cap = open_camera(id, OS_IS_WIN)
+def capture_video(id: int, OS_IS_LINUX = False):             #cap est un objet    openCV
+    cap = open_camera(id, OS_IS_LINUX)
     while True:
         ret , frame = cap.read()
         frame = cv.flip(frame, 1) # flip image
