@@ -29,8 +29,7 @@ class Config:
     
     class Web:
         PORT=int(environ["WEB_PORT"])
-
-
+        HOST=(environ["WEB_HOST"])
 
     class Robot:
         WHEELS_DIAMETER = 0
@@ -47,7 +46,6 @@ class Config:
     #     TICKS_PER_CM = int(environ["MOTOR_TICKS_PER_CM"])
     #     TICKS_PER_DEGREE = int(environ["MOTOR_TICKS_PER_DEGREE"])
 
-        
 
 def compare_env_with_example():
     # Import env files
