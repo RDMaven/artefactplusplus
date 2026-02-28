@@ -11,11 +11,12 @@
 </head>
 
 <body>
+    <script>const currentRobot = {{ robot_id }};</script> <!-- TKT: loading with fastAPI replaces this with the actual id. -->
     <div class="container">
         <div class="left-panel">
             <div class="top-bar">
                 <!-- <div class="return-btn"> -->
-                <a href="#" class="return-btn">
+                <a href="/" class="return-btn">
                     <img src="/static/images/pizza_secrete_entiere.png" class="return-btn-img" alt="Logo Artefact+++">
                 </a>
                 <!-- </div> -->
@@ -52,17 +53,15 @@
             </div>
 
             <div class="joystick-container">
-                Joystick
                 <div class="joystick">
-                    <div class="name">Contrôles</div>
-                    <button class="big-button" id="ws-test-button">Test WebSocket</button>
-                    <button class="big-button" id="arrow-up" href="#">Haut</button>
-                    <button class="big-button" id="arrow-down" href="#">Bas</button>
-                    <button class="big-button" id="arrow-left" href="#">Gauche</button>
-                    <button class="big-button" id="arrow-right" href="#">Droite</button>
-                </div>
 
+                </div>
+                <div class="joystick-deltas">
+                    <p>X=<span id="stat-x"></span></p>
+                    <p>Y=<span id="stat-y"></span></p>
+                </div>
             </div>
+            <button class="big-button" id="ws-test-button">Test WebSocket</button>
         </div>
     </div>
     <script type="module" src="/static/scripts/app.js" defer></script>

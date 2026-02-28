@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-div, a {
+.container div,.container a {
     border-radius: 7px;
     align-content: center;
     text-align: center;
@@ -135,11 +135,29 @@ body {
 }
 .console-container {
     /* background-color: green; */
-    height: 50%;
+    flex: 1;
     margin-bottom: 5%;
 }
 
 .joystick-container {
     background-color: var(--color-primary-bg);
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5%;
+}
+
+.joystick {
+    height: 80%;
+    margin: 0 20% 10% 20%;
+}
+
+.joystick-deltas {
     flex: 1;
+    display: flex;
+    margin: 0 25%;
+}
+
+.joystick-deltas > * {
+    width: 50%;
 }
