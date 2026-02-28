@@ -3,12 +3,10 @@ const $consoleElement = $(".console-container");
 const $consoleBody = $(".console-body");
 const $consoleHeader = $(".console-header");
 
-
 // Collapse toggle
 $consoleHeader.on("click", function () {
     $consoleElement.toggleClass("collapsed");
 });
-
 
 // Clear console
 export function consoleClear(readyState) {
@@ -22,21 +20,45 @@ export function consoleClear(readyState) {
 
 
 // Main on-screen logger
+/* Features:
+- Same consecutive messages are kept into one, with a counter. (ex : [6:24:11 PM] Server: MOVE message recieved from THE INTERFACE. (x110))
+- Info, server, and important/error messages are automatically colored.
+- JSON messages are formatted.
+*/
+let lastMessageText = null;
+let lastEntry = null;
+let lastCount = 1;
+
 export function onScreenLog(message, type = "log") {
     const time = new Date().toLocaleTimeString();
+    const formattedMessage = formatMessage(message);
+
+    // If same message AND same type as previous one
+    if (message === lastMessageText && lastEntry && lastEntry.data("type") === type) {
+        lastCount++;
+
+        // Update existing entry
+        lastEntry.find(".log-message").html(`${formattedMessage} (x${lastCount})`);
+        return;
+    }
+
+    // Reset counter for new message
+    lastMessageText = message;
+    lastCount = 1;
 
     const $entry = $("<div>", {
         class: `log-entry log-${type}`
-    });
-
-    const formattedMessage = formatMessage(message);
+    }).data("type", type);
 
     $entry.html(`
         <span class="log-time">[${time}]</span>
-        ${formattedMessage}
+        <span class="log-message">${formattedMessage}</span>
     `);
 
     $consoleBody.append($entry);
+
+    // Store reference to this entry
+    lastEntry = $entry;
 
     // Auto scroll
     $consoleBody.scrollTop($consoleBody[0].scrollHeight);
