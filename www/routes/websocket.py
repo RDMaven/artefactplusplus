@@ -75,7 +75,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket, client_id)
 
     try:
-        once = False
+        # once = False
         while True:
             data = await websocket.receive_text()
             client = manager.get_client(client_id)
@@ -87,12 +87,12 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             )
             
             # TODO enlever ce test
-            if not once and not client.is_robot:
-                await manager.send_personal_message(
-                    str(message_builder("status", "interface", 42, {"x": 0, "y": 1, "theta": 90})),
-                    websocket
-                )
-                once = True
+            # if not once and not client.is_robot:
+            #     await manager.send_personal_message(
+            #         str(message_builder("status", "interface", 42, {"x": 0, "y": 1, "theta": 90})),
+            #         websocket
+            #     )
+            #     once = True
                 
 
             # await manager.broadcast(
