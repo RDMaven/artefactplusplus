@@ -25,18 +25,19 @@
 
 body.light-mode {
     /* =========== MAIN ============ */
-    --color-app-bg: #e9eef2;
+    --color-app-bg: rgb(76, 113, 143);
+    /* --color-app-bg: #e9eef2;
     --color-primary-bg: #ffffff;
     --color-secondary-bg: #f3f6f9;
-    --color-text: #1f2937;
+    --color-text: #1f2937; */
 
     /* ========== BUTTONS ========== */
-    --color-btn-bg: #e2e8f0;
-    --color-btn-hover-bg: #cbd5e1;
+    /* --color-btn-bg: #e2e8f0;
+    --color-btn-hover-bg: #cbd5e1; */
 
     /* ========== CONSOLE ========== */
-    --color-console-bg: #f8fafc;
-    --color-log-bg: #eef2f7;
+    /* --color-console-bg: #f8fafc;
+    --color-log-bg: #eef2f7; */
 
     /* ========== EVENTS =========== */
     --color-success: #16a34a;
