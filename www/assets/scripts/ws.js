@@ -1,13 +1,12 @@
-
 import { onScreenLog } from './log.js';
 
 // Configure WebSocket connection.
-const clientID = Date.now()
+const clientID = 0 // TODO (WARNING) : SPECIAL ID FOR THE INTERFACE
 const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 const wsAdress = `${wsProtocol}//${window.location.host}/ws/${clientID}`;
 
 onScreenLog(
-`WebSocket configuration :
+    `WebSocket configuration :
 <pre> - Host        : ${window.location.host}
  - Client ID   : ${clientID}
  - WS Protocol : ${wsProtocol}</pre>`);
@@ -18,6 +17,65 @@ export const ws = new WebSocket(wsAdress);
 // Basic WS functions
 ws.onopen  = () => onScreenLog("✅ Connected to server", "success");
 ws.onclose = () => onScreenLog(" 👋 Disconected");
-ws.onmessage = (event) => onScreenLog(`Server sent : ${event.data}`, "server");
+ws.onmessage = (event) => onScreenLog(`Server: ${event.data}`, "server");
 ws.onerror   = (err)   => onScreenLog("❌ WebSocket error:", err, "error");
 ws.readyState
+
+
+/* THIS COMMUNICATION IS WEB INTERFACE -> PYTHON SERVER. 
+SENDING MESSAGES FROM THE INTERFACE IS ONLY TO :
+- Joystick control
+- Change the mode
+- Emergency stop
+So, three types : 'mode', 'move', 'stop'
+*/
+
+function getTimestamp() {
+    return Date.now() / 1000; // seconds with decimals
+}
+
+// Turn arguments into dict type.
+const buildMoveMsg = (x, y) => {return {x,y}};
+const buildModeMsg = (mode) => {return {mode}};
+const buildStopMsg = (stop) => {return {stop}};
+
+// Classify the builder function for the different types
+const messageBuilders = {
+    "move": buildMoveMsg,
+    "mode": buildModeMsg,
+    "stop": buildStopMsg
+}
+
+// Main message builder function
+function buildWSMessage(type, ...args) {
+    const builder = messageBuilders[type];
+    if (!builder) {
+        throw new Error(`Unknown WS message type: ${type}`);
+    }
+
+    return {
+        type,
+        id: clientID,
+        for: currentRobot,
+        timestamp: getTimestamp(),
+        data: builder(...args)
+    };
+}
+
+// WS message sender function
+export function sendWSMessage(type, ...args) {
+    if (ws.readyState === WebSocket.OPEN) {
+        const jsonMessage = buildWSMessage(type, ...args);
+        ws.send(JSON.stringify(jsonMessage));
+    } else if (ws.readyState !== WebSocket.CONNECTING) {
+        onScreenLog(`Issue with WS Connection : wsState=${ws.readyState}`);
+    }
+}
+
+
+
+// TODO : receive data, like the position to place the robot on the map (big flemme)
+// export function receiveWSMessage(message) {
+//     const data = JSON.parse(message);
+//     onScreenLog(data)
+// }
