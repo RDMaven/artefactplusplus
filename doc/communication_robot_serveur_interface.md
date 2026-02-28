@@ -1,5 +1,6 @@
-# Communication Robot-Serveur
-La communication entre les robots et le serveur se fait par **WebSocket**.
+# Communication Robot-Serveur-Interface
+La communication entre les robots et le serveur et l'interface se fait par **WebSocket**.
+Le serveur est central : les informations ne passent **JAMAIS** directement entre interface et robots, mais toujours par le serveur.
 
 Les informations qui doivent circuler sont les suivantes :
 * Robot -> Serveur:
@@ -14,6 +15,14 @@ Les informations qui doivent circuler sont les suivantes :
     * `forward(DISTANCE=d)` : déplacement de test, en ligne droite 
     * `rotate(ANGLE=theta)` : déplcement de test, rotation d'un angle
 
+* Serveur -> Interface:
+    * `status` : L'état du robot, le **niveau de batterie**, et la **position**. Pour affichage sur la carte.
+  
+* Interface -> Serveur:
+    * `move` : Pour le mode manuel, déplacer un robot avec un control diff
+    * `mode` : Changer le mode manuel/auto
+    * `stop` : Arrêter un robot.
+
 
 ## Format des requêtes
 En règle générale, les messages doivent **TOUS** avoir cette structure :
@@ -22,6 +31,7 @@ En règle générale, les messages doivent **TOUS** avoir cette structure :
 {
   "type": "...",
   "timestamp": ...,
+  "for": ...,
   "data": {...}
 }
 ```
@@ -33,6 +43,7 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 {
   "type": "status|cam|event",
   "robot_id": 99|"Flash Mcqueen",
+  "for": "server",
   "timestamp": 1700000000.123,
   "data": {
     // Pour 'status'
@@ -59,6 +70,7 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 {
   "type": "status",
   "timestamp": 1700000000.123,
+  "for": "server",
   "data": {
     "position": {"x": 42, "y": 42, "theta": 42},
     "battery": 42,
@@ -71,6 +83,7 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 {
   "type": "event",
   "timestamp": 1700000000.456,
+  "for": "server",
   "data": {
     "event_name": "obstacle_detected",
     "distance": 42
@@ -88,6 +101,7 @@ Pour les messages du serveur vers un robot, voici les possibilités :
 {
   "type": "set_parameter|goto|move|forward|rotate",
   "timestamp": 1700000000.123,
+  "for": 1,
   "data": {
     // Pour 'set_parameter'
     "parameter_name":"mode", // ou 'speed'...
@@ -116,6 +130,7 @@ Pour les messages du serveur vers un robot, voici les possibilités :
 {
   "type": "goto",
   "timestamp": 1700000001.000,
+  "for": 2,
   "data": {
     "x": 5.0,
     "y": 2.0,
@@ -128,6 +143,7 @@ Pour les messages du serveur vers un robot, voici les possibilités :
 {
   "type": "set_mode",
   "timestamp": 1700000001.200,
+  "for": 1,
   "data": {
     "mode": "manual"
   }
