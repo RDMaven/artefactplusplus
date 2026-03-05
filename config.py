@@ -31,13 +31,6 @@ class Config:
         PORT=int(environ["WEB_PORT"])
         HOST=(environ["WEB_HOST"])
 
-    class Robot:
-        WHEELS_DIAMETER = 0
-        WHEELS_DISTANCE = 0
-        SPEED_MANUAL = int(environ["ROBOT_SPEED_MANUAL"])
-        SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
-        TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
-
     # class Motor:
     #     TIMEOUT = int(environ["MOTOR_TIMEOUT"])
     #     SPEED = int(environ["MOTOR_SPEED"])
