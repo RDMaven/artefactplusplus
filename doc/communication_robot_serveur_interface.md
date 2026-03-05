@@ -42,6 +42,7 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 ```json
 {
   "type": "status|cam|event",
+  "robot_id": 99|"Flash Mcqueen",
   "for": "server",
   "timestamp": 1700000000.123,
   "data": {
@@ -148,9 +149,6 @@ Pour les messages du serveur vers un robot, voici les possibilités :
   }
 }
 ```
-
-## Note
-La vérification des types et des arguments se fait à l'envoie, et non à la réception des messages ws.
 
 ---
 ---

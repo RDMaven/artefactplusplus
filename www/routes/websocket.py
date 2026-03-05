@@ -8,37 +8,22 @@ router = APIRouter()
 
 class WSClient:
     Ci = 0 # C(lient)i(ndex)
-    def __init__(self, websocket, client_id, name=''):
-        WSClient.Ci += 1
+    def __init__(self, websocket, client_id):
         self.ws = websocket
         self.id = client_id
         self.is_robot = self.id != 0
-        self.name = self.__init_name__(name)
+        self.name = f"ROBOT {client_id}" if self.is_robot else "THE INTERFACE"
 
         # MÉTHODES DE COMMUNICATIONS --------------------
         # -> Recevoir depuis robot/interface ------------
         # Assigner la bonne fonction de parsing pour recevoir des messages
         if self.is_robot:
-            self.receive = lambda d: robot_message_parser(d, self.id_string())
+            self.receive = lambda d: robot_message_parser(d, self.name)
         else:
-            self.receive = lambda d: interface_message_parser(d, self.id_string())
+            self.receive = lambda d: interface_message_parser(d, self.name)
 
         # -> Envoyer vers robot/interface ---------------
         # TODO
-
-    def __init_name__(self, name):
-        if name:
-            return name
-        if self.is_robot:
-            return chr(64+WSClient.Ci)
-        else:
-            return "Interface"
-
-    def id_string(self):
-        if self.is_robot:
-            return f"ROBOT {self.name}"
-        else:
-            return f"THE INTERFACE"
 
 
 class ConnectionManager:
@@ -50,12 +35,12 @@ class ConnectionManager:
         assert len(selected_client) == 1, "Plusieurs clients ont le même id !"
         return selected_client[0]
 
-    async def connect(self, websocket: WebSocket, client_id, name=''):
+    async def connect(self, websocket: WebSocket, client_id):
         await websocket.accept()
         assert all([c.id != client_id for c in self.active_connections]), "The client ID for this new connection is already in use."
-        client = WSClient(websocket, client_id, name)
+        client = WSClient(websocket, client_id)
         self.active_connections.append(client)
-        await self.send_personal_message(f"Hi, you are {client.id_string()}", websocket)
+        await self.send_personal_message(f"Hi, you are {client.name}", websocket)
 
     def disconnect(self, client_id):
         self.active_connections.remove(self.get_client(client_id))
@@ -83,7 +68,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             # print(f"Recieved from {client_id} : {data}")
 
             await manager.send_personal_message(
-                f"{data_type.upper()} message recieved from {client.id_string()}.", websocket
+                f"{data_type.upper()} message recieved from {client.name}.", websocket
             )
             
             # TODO enlever ce test

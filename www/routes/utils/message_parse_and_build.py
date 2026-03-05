@@ -34,7 +34,7 @@ def interface_message_parser(data: str, client_name: str):
 def robot_message_parser(data: str, client_name: str): 
     # TODO
     data = json.loads(data)
-    rt, _, rtime, _, rdata = data.values() # TODO, pour l'instant, on ignore le for, comme c'est toujours le serveur. A changer peut-être
+    rt, rtime, _, rdata = data.values() # TODO, pour l'instant, on ignore le for, comme c'est toujours le serveur. A changer peut-être
     print(f"{rt.upper()} - {client_name} ", end="")
     match data["type"]:
         case "status":
