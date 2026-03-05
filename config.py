@@ -70,6 +70,6 @@ def compare_env_with_example():
     print("Loaded .env")
 
 
-compare_env_with_example()
+# compare_env_with_example()
 
 print("+--+ Config SETUP (END) +--+")
