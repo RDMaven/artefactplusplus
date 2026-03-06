@@ -1,4 +1,4 @@
-import json, time
+import json, time, base64
 # ------------------------------------------------------- #
 # Message parsers (receivers) --------------------------- #
 # ------------------------------------------------------- #
@@ -31,7 +31,7 @@ def message_parser(data: str):
                 # TODO : actually rotate
         return mtype
     except: # Exception as e:
-        print(f"The message was : {data}")
+        print(f"SERVER - {data}")
         return "exception"
 
 # ------------------------------------------------------- #
@@ -72,9 +72,15 @@ def message_data_builder(mtype, *args):
                 "event_name": ename,
                 "parameters": eparams
             }
-
+        case "video":
+            vbytes = args[0][0] ## TODO why is this so ugly
+            assert_argument_type("video", bytes, type(vbytes))
+            return {
+                "bytes": base64.b64encode(vbytes).decode("utf-8") # TODO pour plus de perf, on peut faire une exception pour le feed video, et ne pas l'encapsuler en json, pour pouvoir utiliser les raw bytes, et gagner 33% de taille des paquets. 
+            }
         case _:
             raise ValueError(f"Unknown type {mtype} to send.")
+
 
 
 # ROBOT -> SERVER Message builder ------------------------- #

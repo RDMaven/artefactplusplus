@@ -43,9 +43,37 @@ async def robot_page(request: Request, robot_id: int = 1):
     )
 
 
-@router.get("/video")
-async def video():
+# Video stuff
+from www.routes.utils.frame_store import frame_store
+import cv2
+import time
+
+def mjpeg_generator(client_id: int):
+    while not frame_store.stop:
+        frame = frame_store.get_frame(client_id)
+        if frame is None:
+            time.sleep(0.01)
+            continue
+
+        ret, buffer = cv2.imencode(".jpg", frame)
+        if not ret:
+            continue
+
+        yield b"--frame\r\n" \
+              b"Content-Type: image/jpeg\r\n\r\n" + buffer.tobytes() + b"\r\n"
+
+        time.sleep(0.01)
+
+@router.get("/video/{robot_id}")
+async def video(robot_id):
     return StreamingResponse(
-        im.capture_video(Config.ID_CAMERA, Config.OS_IS_LINUX),
+        mjpeg_generator(int(robot_id)),
         media_type="multipart/x-mixed-replace; boundary=frame"
     )
+
+# @router.get("/video")
+# async def video():
+#     return StreamingResponse(
+#         im.capture_video(Config.ID_CAMERA, Config.OS_IS_LINUX),
+#         media_type="multipart/x-mixed-replace; boundary=frame"
+#     )

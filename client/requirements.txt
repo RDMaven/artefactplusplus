@@ -1,1 +1,2 @@
 webockets
+opencv-python

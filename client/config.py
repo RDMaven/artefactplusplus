@@ -17,13 +17,16 @@ class Config:
     is_prod = (ENV == "prod")
 
     # TODO Ranger ces env.
-    ID_CAMERA = int(environ["ID_CAMERA"])
     OS_IS_LINUX=any([e in platform for e in ['linux']])
     print(f"Detected OS : {platform}.")
     
     class Web:
         PORT=int(environ["WEB_PORT"])
         HOST=(environ["WEB_HOST"])
+
+    class Camera:
+        ID = int(environ["CAMERA_ID"])
+        FPS = int(environ["CAMERA_FPS"])
 
     class Robot:
         ID = int(environ["ROBOT_ID"])

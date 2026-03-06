@@ -1,4 +1,8 @@
-import json, time
+import json, time, base64
+import cv2
+import numpy as np
+from www.routes.utils.frame_store import frame_store
+
 # ------------------------------------------------------- #
 # Message parsers (receivers) --------------------------- #
 # ------------------------------------------------------- #
@@ -31,11 +35,12 @@ def interface_message_parser(data: str, client_name: str):
 
 
 # ROBOT -> SERVER Message parser ------------------------ #
-def robot_message_parser(data: str, client_name: str): 
+def robot_message_parser(data: str, client_name: str, client_id: int): 
     # TODO
     data = json.loads(data)
     rt, rtime, _, rdata = data.values() # TODO, pour l'instant, on ignore le for, comme c'est toujours le serveur. A changer peut-être
-    print(f"{rt.upper()} - {client_name} ", end="")
+    if rt != "video" : 
+        print(f"{rt.upper()} - {client_name} ", end="")
     match data["type"]:
         case "status":
             rp, rb, rm = rdata.values()
@@ -44,6 +49,16 @@ def robot_message_parser(data: str, client_name: str):
         case "event":
             en, ep = rdata.values()
             print(f"'{en}' : {ep}")
+        
+        case "video":
+            vbytes = list(rdata.values())[0]
+            frame_bytes = base64.b64decode(vbytes)
+            np_arr = np.frombuffer(frame_bytes, np.uint8)
+            frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            # store the latest frame
+            frame_store.set_frame(client_id, frame)
+
+            # print("sent video frame.") #print(f"{displayable}")
         case _ :
             print(f": {rdata}")
     return rt

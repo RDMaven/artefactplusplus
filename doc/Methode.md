@@ -26,4 +26,4 @@ Ou encore (pour avoir le nom de la caméra) :
 - Vous rendre dans votre navigateur préféré pour taper :
 http://localhost:8080
 
-=> PS ça marche bien sûr avec votre webcam perso si vous modifiez dans le fichier .env **ID_CAMERA = 0**.
+=> PS ça marche bien sûr avec votre webcam perso si vous modifiez dans le fichier .env **CAMERA_ID = 0**.
