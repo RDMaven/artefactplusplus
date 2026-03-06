@@ -23,7 +23,6 @@ class Config:
     is_prod = ENV == "prod"
 
     # TODO Ranger ces env.
-    ID_CAMERA = int(environ["ID_CAMERA"])
     OS_IS_LINUX=any([e in platform for e in ['linux']])
     print(f"Detected OS : {platform}.")
     
@@ -31,14 +30,8 @@ class Config:
         PORT=int(environ["WEB_PORT"])
         HOST=(environ["WEB_HOST"])
 
-    # class Motor:
-    #     TIMEOUT = int(environ["MOTOR_TIMEOUT"])
-    #     SPEED = int(environ["MOTOR_SPEED"])
-    #     TURN_FACTOR = float(environ["MOTOR_TURN_FACTOR"])
-    #     TO_REAL_SPEED_FACTOR = float(environ["MOTOR_TO_REAL_SPEED_FACTOR"])
-    #     TICKS_PER_CM = int(environ["MOTOR_TICKS_PER_CM"])
-    #     TICKS_PER_DEGREE = int(environ["MOTOR_TICKS_PER_DEGREE"])
-
+    class Camera:
+        ID = int(environ["CAMERA_ID"]) # TODO enlever, ceci est pour tester.
 
 def compare_env_with_example():
     # Import env files
