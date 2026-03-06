@@ -1,6 +1,19 @@
 import asyncio, websockets
 from config import Config
 from communication_utils import message_builder, message_parser
+import cv2
+
+
+class Counter: # for debug of potentially lost messages (resolved normalement)
+    def __init__(self):
+        self._counter = 0
+
+    def update(self):
+        self._counter +=1
+        return self.get()
+
+    def get(self):
+        return self._counter
 
 
 # Client class for the websocket ------------------------ #
@@ -9,7 +22,12 @@ class WebSocketClient:
         self.uri = uri
         self.websocket = None
         self.stop_event = asyncio.Event()
+        self.sent_counter = Counter() # for debug
+        self.receive_counter = Counter() # for debug
     
+    def counter_status(self): # for debug
+        print(f"COUNTERS - Received : {self.receive_counter.get()}. Sent : {self.sent_counter.get()}") 
+
     async def stop(self):
         self.stop_event.set()
 
@@ -20,33 +38,94 @@ class WebSocketClient:
     async def send(self, mtype, mfor, *args):
         message = message_builder(mtype, mfor, args)
         await self.websocket.send(message)
+        self.sent_counter.update() # for debug
+
+    async def video_streamer(self):
+        cap = cv2.VideoCapture(Config.Camera.ID)
+        timeout_for_fps = round(1/Config.Camera.FPS,3)
+        print(f"CAMERA - To achieve {Config.Camera.FPS} FPS, setting timeout to {timeout_for_fps}s")
+
+        try:
+            while not self.stop_event.is_set():
+                ret, frame = cap.read()
+                if not ret:
+                    await asyncio.sleep(0.01)
+                    continue
+
+                frame = cv2.resize(frame, (320, 240)) # reduce size
+                frame = cv2.flip(frame, 1) # flip image TODO enlever pour les robots (peut-être)
+                _, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 70]) # reduce quality
+
+                await self.send("video", "server", buffer.tobytes())
+                await asyncio.sleep(timeout_for_fps)
+
+        finally:
+            cap.release()
+
+    async def event_sender(self): # for testing, TODO faire un sender pour tout les messages du robot !
+        while not self.stop_event.is_set():
+            await self.send("event", "server", "test", {"prout": 99})
+            await asyncio.sleep(5)
+
+
+    async def receiver(self):
+        while not self.stop_event.is_set():
+            try:
+                data = await self.websocket.recv()
+                if data == "STOP":
+                    self.stop_event.set()
+                    break
+
+                data_type = message_parser(data)
+
+                self.receive_counter.update() # for debug
+
+            except Exception as e:
+                print("Receive error:", e)
+                break
+
 
     async def run(self):
         await self.connect()
 
-        while not self.stop_event.is_set():
-            data = await self.websocket.recv()
-            data_type = message_parser(data)
+        receiver_task = asyncio.create_task(self.receiver())
+        video_task = asyncio.create_task(self.video_streamer())
+        event_task = asyncio.create_task(self.event_sender())
 
-            await asyncio.sleep(5)
+        try:
+            await asyncio.wait(
+                [receiver_task, video_task, event_task],
+                return_when=asyncio.FIRST_EXCEPTION
+            )
 
-            # test TODO enlever 
-            await self.send("event", "server", "test", {"prout": 99})
-                
-        await self.websocket.close()
+        finally:
+            self.stop_event.set()
+
+            for task in [receiver_task, video_task, event_task]:
+                task.cancel()
+
+            await asyncio.gather(
+                receiver_task,
+                video_task,
+                event_task,
+                return_exceptions=True
+            )
+
+            await self.websocket.close()
+
+
 
 async def stop_listener(client):
     await asyncio.to_thread(input, "Press ENTER to stop\n")
     await client.stop()
 
-# ---- Run Client ----
-async def main():
-    client = WebSocketClient(f"ws://{Config.Web.HOST}:{Config.Web.PORT}/ws/{Config.Robot.ID}") # TODO : automatically assign a number, no hardcoded 1.
-    await asyncio.gather(
-       client.run(),
-        stop_listener(client)
-    )
 
-
+# Run Client -------------------------------------------- #
 if __name__ == "__main__":
-    asyncio.run(main())
+    client = WebSocketClient(
+        f"ws://{Config.Web.HOST}:{Config.Web.PORT}/ws/{Config.Robot.ID}"
+    )
+    try:
+        asyncio.run(client.run())
+    except KeyboardInterrupt:
+        print("Quitting with Ctrl+C...")
