@@ -41,9 +41,18 @@ class WebSocketClient:
         self.sent_counter.update() # for debug
 
     async def video_streamer(self):
-        cap = cv2.VideoCapture(Config.Camera.ID)
+        if Config.OS_IS_LINUX: # selon si on est sous linux, il faut cv.CAP_V4L2
+            cap = cv2.VideoCapture(Config.Camera.ID, cv.CAP_V4L2)              #Valeur propre à mon pc : id = 2
+        else:
+            cap = cv2.VideoCapture(Config.Camera.ID)
+
+        # Determine timeout for the requested FPS rate.
         timeout_for_fps = round(1/Config.Camera.FPS,3)
         print(f"CAMERA - To achieve {Config.Camera.FPS} FPS, setting timeout to {timeout_for_fps}s")
+
+        # Resize
+        # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640) # 320)
+        # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) # 240)
 
         try:
             while not self.stop_event.is_set():
@@ -52,7 +61,7 @@ class WebSocketClient:
                     await asyncio.sleep(0.01)
                     continue
 
-                frame = cv2.resize(frame, (320, 240)) # reduce size
+                frame = cv2.resize(frame, (640, 480)) #(320, 240)) # reduce size maybe TODO
                 frame = cv2.flip(frame, 1) # flip image TODO enlever pour les robots (peut-être)
                 _, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 70]) # reduce quality
 
@@ -61,6 +70,7 @@ class WebSocketClient:
 
         finally:
             cap.release()
+            cv2.destroyAllWindows()
 
     async def event_sender(self): # for testing, TODO faire un sender pour tout les messages du robot !
         while not self.stop_event.is_set():
