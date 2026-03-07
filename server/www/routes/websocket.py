@@ -43,10 +43,10 @@ class ConnectionManager:
         self.active_connections = {}
 
     def get_client(self, client_id):
-        return self.active_connections.get(client_id, print(f"Le client d'ID {client_id} n'existe pas.")) # None si inexistant comme le type de retour de print c'est None (un peu funky)
+        return self.active_connections.get(client_id) # None si inexistant
 
     def print_status(self):
-        print(f"Currently have {len(self.active_connections)} connections : ", end="")
+        print(f"STATUS - Currently have {len(self.active_connections)} connections : ", end="")
         print(", ".join(client.name for client in self.active_connections.values()))
 
     async def connect(self, websocket: WebSocket, client_id):
@@ -54,20 +54,22 @@ class ConnectionManager:
         assert client_id not in self.active_connections, f"Client ID {client_id} is already in use, can't connect"
         client = WSClient(websocket, client_id)
         self.active_connections[client_id] = client
-        print(f"CLIENT CONNECTED : {client.name}")
+        print(f"STATUS - CLIENT CONNECTED : {client.name}")
         if client_id == 0:
-            print("ACTIVATING THE VIDEO FEED")
+            print("STATUS - ACTIVATING THE VIDEO FEED")
             frame_store.stop = False
         await client.send(f"Hi from server, you are {client.name}")
+        self.print_status()
 
     async def disconnect(self, client_id):
         client = self.get_client(client_id)
         if client:
             if client_id == 0:
-                print("STOPPING THE VIDEO FEED")
+                print("STATUS - STOPPING THE VIDEO FEED")
                 frame_store.stop = True
-            print(f"CLIENT DISCONNECTED : {client.name}")
+            print(f"STATUS - CLIENT DISCONNECTED : {client.name}")
             del self.active_connections[client_id]
+        self.print_status()
 
 # Let me talk to your MANAGER (manager instance init)
 manager = ConnectionManager()

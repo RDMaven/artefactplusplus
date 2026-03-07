@@ -1,2 +1,3 @@
-webockets
+websockets
 opencv-python
+dotenv

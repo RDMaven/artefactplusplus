@@ -1,4 +1,4 @@
-opencv-python
+opencv-python # TODO enlever
 dotenv
 pyserial
 fastapi[standard-no-fastapi-cloud-cli]
