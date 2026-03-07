@@ -21,7 +21,7 @@ class Robot(WifiBot):
 
     def moveManual(self, x:float ,y:float ):
         assert(x >= -1 and x <= 1 and y >= -1 and y <= 1, "moveManual : a recu un x ou y hors de [-1,1]")
-        print("LOLOLOLOLOLOLOLO")
+        print("moveManual Test")
 
         # # Différentiel
         # left = y - (x * Config.Motor.TURN_FACTOR)
