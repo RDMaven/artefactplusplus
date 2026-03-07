@@ -1,23 +1,20 @@
 from fastapi import APIRouter, Request, Body
 from fastapi.responses import HTMLResponse, StreamingResponse, FileResponse
 from fastapi.templating import Jinja2Templates
-import sys
 
-sys.path.append('../src')
+# import sys
+# sys.path.append('../src')
+# import src.camera.image as im
 
-import src.camera.image as im
 from config import Config
 
 router = APIRouter()
-
 templates = Jinja2Templates(directory=Config.Path.TEMPLATES_DIRECTORY)
-
-favicon_path = Config.Path.STATIC_DIRECTORY + '/images/favicon.ico'
 
 
 @router.get('/favicon.ico', include_in_schema=False)
 async def favicon():
-    return FileResponse(favicon_path)
+    return FileResponse(Config.Path.STATIC_DIRECTORY + '/images/favicon.ico')
 
 
 @router.get("/", response_class=HTMLResponse)
