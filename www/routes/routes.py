@@ -1,22 +1,29 @@
+# ------------------------------------------------------- #
+# ROUTES NORMALES (i.e. non WebSockets) ----------------- #
+# ------------------------------------------------------- #
+
 from fastapi import APIRouter, Request, Body
 from fastapi.responses import HTMLResponse, StreamingResponse, FileResponse
 from fastapi.templating import Jinja2Templates
+
+from config import Config
+from www.routes.utils.utils_video import mjpeg_generator
 
 # import sys
 # sys.path.append('../src')
 # import src.camera.image as im
 
-from config import Config
-
+# Init router, et import des templates ------------------ #
 router = APIRouter()
 templates = Jinja2Templates(directory=Config.Path.TEMPLATES_DIRECTORY)
 
 
+# ICON du projet ---------------------------------------- #
 @router.get('/favicon.ico', include_in_schema=False)
 async def favicon():
     return FileResponse(Config.Path.STATIC_DIRECTORY + '/images/favicon.ico')
 
-
+# Page principale --------------------------------------- #
 @router.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse(
@@ -24,7 +31,7 @@ async def index(request: Request):
         name="index.html"
     )
 
-
+# Page de contrôle pour chaque robot. ------------------- #
 @router.get("/{robot_id}/", response_class=HTMLResponse)
 async def robot_page(request: Request, robot_id: int = 1):
 
@@ -39,28 +46,7 @@ async def robot_page(request: Request, robot_id: int = 1):
         context={"robot_id": robot_id}
     )
 
-
-# Video stuff
-from www.routes.utils.frame_store import frame_store
-import cv2
-import time
-
-def mjpeg_generator(client_id: int):
-    while not frame_store.stop:
-        frame = frame_store.get_frame(client_id)
-        if frame is None:
-            time.sleep(0.01)
-            continue
-
-        ret, buffer = cv2.imencode(".jpg", frame)
-        if not ret:
-            continue
-
-        yield b"--frame\r\n" \
-              b"Content-Type: image/jpeg\r\n\r\n" + buffer.tobytes() + b"\r\n"
-
-        time.sleep(0.01)
-
+# Pages de feed video par robot ------------------------- #
 @router.get("/video/{robot_id}")
 async def video(robot_id):
     return StreamingResponse(
