@@ -1,7 +1,7 @@
 import json, time, base64
 import cv2
 import numpy as np
-from www.routes.utils.frame_store import frame_store
+from www.routes.utils.utils_video import frame_store
 
 # ------------------------------------------------------- #
 # Message parsers (receivers) --------------------------- #

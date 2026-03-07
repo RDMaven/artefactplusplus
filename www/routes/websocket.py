@@ -1,46 +1,53 @@
+# ------------------------------------------------------- #
+# GESTION DE COMMUNICATION WEBSOCKET -------------------- #
+# ------------------------------------------------------- #
+
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Body
 import json, asyncio
+
 from www.routes.utils.message_parse_and_build import \
     interface_message_parser, robot_message_parser, \
     message_builder
-from www.routes.utils.frame_store import frame_store
+from www.routes.utils.utils_video import frame_store
+
+# Init router, et évenement d'arrêt général ------------- #
 router = APIRouter()
 shutdown_event = asyncio.Event()
 
 
+# Profil pour un client WebSocket ----------------------- #
 class WSClient:
-    Ci = 0 # C(lient)i(ndex)
     def __init__(self, websocket, client_id):
         self.ws = websocket
         self.id = client_id
-        self.is_robot = self.id != 0
+        self.is_robot = (self.id != 0)
         self.name = f"ROBOT {client_id}" if self.is_robot else "THE INTERFACE"
 
-        # MÉTHODES DE COMMUNICATIONS --------------------
-        # -> Recevoir depuis robot/interface ------------
+    # MÉTHODES DE COMMUNICATIONS --------------------
+    # -> Recevoir depuis robot/interface ------------
         # Assigner la bonne fonction de parsing pour recevoir des messages
         if self.is_robot:
             self.parse = lambda d: robot_message_parser(d, self.name, self.id)
         else:
             self.parse = lambda d: interface_message_parser(d, self.name)
-
+        
     # -> Envoyer vers robot/interface ---------------
     # TODO
     async def send(self, message: str):
         await self.ws.send_text(message)
 
 
-
+# Gestionnaire des communications WS
 class ConnectionManager:
     def __init__(self):
         self.active_connections = {}
 
     def get_client(self, client_id):
-        if client_id not in self.active_connections:
-            print(f"Le client d'ID {client_id} n'existe pas.")
-            return None
-        else:
-            return self.active_connections[client_id]
+        return self.active_connections.get(client_id, print(f"Le client d'ID {client_id} n'existe pas.")) # None si inexistant comme le type de retour de print c'est None (un peu funky)
+
+    def print_status(self):
+        print(f"Currently have {len(self.active_connections)} connections : ", end="")
+        print(", ".join(client.name for client in self.active_connections.values()))
 
     async def connect(self, websocket: WebSocket, client_id):
         await websocket.accept()
@@ -56,23 +63,11 @@ class ConnectionManager:
     async def disconnect(self, client_id):
         client = self.get_client(client_id)
         if client:
-            # await client.send("STOP")
-            # await asyncio.sleep(2)
             if client_id == 0:
                 print("STOPPING THE VIDEO FEED")
                 frame_store.stop = True
             print(f"CLIENT DISCONNECTED : {client.name}")
             del self.active_connections[client_id]
-        
-    # async def broadcast_shutdown(self):
-    #     print("Here, nb of clients : ", len(self.active_connections))
-    #     for client in self.active_connections.values():
-    #         try:
-    #             await client.send("Server is shutting down…")
-    #             await client.ws.close()
-    #         except Exception:
-    #             pass
-    #     self.active_connections.clear()
 
 # Let me talk to your MANAGER (manager instance init)
 manager = ConnectionManager()
@@ -99,6 +94,4 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
     except KeyboardInterrupt:
         pass
-
-    
 
