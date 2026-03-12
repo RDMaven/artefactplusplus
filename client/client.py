@@ -1,6 +1,6 @@
 import asyncio, websockets
 from config import Config
-from communication_utils import message_builder, message_parser
+from src.utils.message_parse_and_build import message_builder, message_parser
 import cv2
 
 
@@ -36,7 +36,7 @@ class WebSocketClient:
         print("Connected to server")
 
     async def send(self, mtype, mfor, *args):
-        message = message_builder(mtype, mfor, args)
+        message = message_builder(mtype, Config.Robot.ID, mfor, args)
         await self.websocket.send(message)
         self.sent_counter.update() # for debug
 
@@ -65,7 +65,7 @@ class WebSocketClient:
                 frame = cv2.flip(frame, 1) # flip image TODO enlever pour les robots (peut-être)
                 _, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 70]) # reduce quality
 
-                await self.send("video", "server", buffer.tobytes())
+                await self.send("video", -1, buffer.tobytes())
                 await asyncio.sleep(timeout_for_fps)
 
         finally:
@@ -74,8 +74,8 @@ class WebSocketClient:
 
     async def event_sender(self): # for testing, TODO faire un sender pour tout les messages du robot !
         while not self.stop_event.is_set():
-            await self.send("event", "server", "test", {"prout": 99})
-            await asyncio.sleep(5)
+            await self.send("event", -1, "test", {"test": 99})
+            await asyncio.sleep(10)
 
 
     async def receiver(self):
@@ -122,12 +122,6 @@ class WebSocketClient:
             )
 
             await self.websocket.close()
-
-
-
-async def stop_listener(client):
-    await asyncio.to_thread(input, "Press ENTER to stop\n")
-    await client.stop()
 
 
 # Run Client -------------------------------------------- #

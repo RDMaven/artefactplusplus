@@ -2,6 +2,13 @@
 La communication entre les robots et le serveur et l'interface se fait par **WebSocket**.
 Le serveur est central : les informations ne passent **JAMAIS** directement entre interface et robots, mais toujours par le serveur.
 
+## Convention d'identifiant
+Dans les communications, chaque message porte l'identifiant de l'envoyeur, et du destinataire. Par convention, voici les identifiants possibles :
+* `-1`: le serveur
+* `0` : l'interface web
+* `1-99` : un robot
+
+## Les types de messages possibles
 Les informations qui doivent circuler sont les suivantes :
 * Robot -> Serveur:
     * `status` : L'état du robot, le **mode**, le **niveau de batterie**, et la **position**.
@@ -30,8 +37,9 @@ En règle générale, les messages doivent **TOUS** avoir cette structure :
 ```json
 {
   "type": "...",
-  "timestamp": ...,
+  "from": ...,
   "for": ...,
+  "timestamp": ...,
   "data": {...}
 }
 ```
@@ -42,8 +50,8 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 ```json
 {
   "type": "status|cam|event",
-  "robot_id": 99|"Flash Mcqueen",
-  "for": "server",
+  "from": 42,
+  "for": -1,
   "timestamp": 1700000000.123,
   "data": {
     // Pour 'status'
@@ -69,8 +77,9 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 ```json
 {
   "type": "status",
+  "from": 2,
+  "for": -1,
   "timestamp": 1700000000.123,
-  "for": "server",
   "data": {
     "position": {"x": 42, "y": 42, "theta": 42},
     "battery": 42,
@@ -82,8 +91,9 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 ```json
 {
   "type": "event",
+  "from": 3,
+  "for": -1,
   "timestamp": 1700000000.456,
-  "for": "server",
   "data": {
     "event_name": "obstacle_detected",
     "distance": 42
@@ -92,6 +102,8 @@ Pour les messages du robot vers le serveur, voici les possibilités :
 ```
 
 ---
+# Le format pour les suivant n'est pas corrigé (flemme), mais c'est toujours à appliquer comme précisé plus haut.
+
 
 ### Serveur -> Robot
 Pour les messages du serveur vers un robot, voici les possibilités :
