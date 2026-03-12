@@ -84,9 +84,22 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     try:
         while True:
             data = await websocket.receive_text() # Wait for a message
-            data_type = client.parse(data) # Parse the message
+            data_type, data_for = client.parse(data) # Parse the message
+            
+            # Forward message (ex. Robot 1 -> Server -> Interface)
+            if data_for != -1: 
+                recipient = manager.get_client(data_for)
+                if recipient:
+                    await recipient.send(data)
+                    await client.send(
+                        f"Forwarded '{data_type.upper()}' message from you, {client.name}, to {recipient.name}"
+                    )
+                else:
+                    await client.send(f"ALERT - Le client {data_for} n'est pas connecté.")
+                continue
 
-            if data_type != "video": # Pong when it's not a video frame (else the terminal would explode)
+            # Pong when it's not a video frame (else the terminal would explode)
+            if data_type != "video":
                 await client.send(
                     f"Received '{data_type.upper()}' message from you, {client.name}."
                 )
