@@ -107,7 +107,7 @@ $("#btnMode").on("change", function () {
     }
     currentMode = 'Auto';
   }
-  sendWSMessage("mode", currentMode.toLowerCase());
+  sendWSMessage("set_parameter", "mode", currentMode.toLowerCase());
   onScreenLog(`Switched to ${currentMode} Mode`, "error");
 
 });

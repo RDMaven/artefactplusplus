@@ -35,15 +35,15 @@ function getTimestamp() {
 }
 
 // Turn arguments into dict type.
-const buildMoveMsg = (x, y) => {return {x,y}};
-const buildModeMsg = (mode) => {return {mode}};
-const buildStopMsg = (stop) => {return {stop}};
+const buildMoveMsg  = (x, y) => {return {x,y}};
+const buildParamMsg = (parameter_name, value) => {return {parameter_name, value}};
+const buildStopMsg  = (stop) => {return {stop}};
 
 // Classify the builder function for the different types
 const messageBuilders = {
     "move": buildMoveMsg,
-    "mode": buildModeMsg,
-    "stop": buildStopMsg
+    "stop": buildStopMsg,
+    "set_parameter": buildParamMsg,
 }
 
 // Main message builder function
@@ -55,7 +55,7 @@ function buildWSMessage(type, ...args) {
 
     return {
         type,
-        id: clientID,
+        from: clientID,
         for: currentRobot,
         timestamp: getTimestamp(),
         data: builder(...args)
