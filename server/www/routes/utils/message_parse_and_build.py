@@ -17,18 +17,18 @@ def interface_message_parser(data: str, client_name: str):
             case "move":
                 rx, ry = rdata.values()
                 print(f"to move following differential [x={rx}, y={ry}]")
-                # TODO : send to the robot
-            case "mode":
-                mm = list(rdata.values())[0]
-                print(f" to set mode to '{mm}'")
-                # TODO : send to the robot
+                # TODO : log it, or ...
+            case "set_parameter":
+                pname, pvalue = rdata.values()
+                print(f" to set {pname} to '{pvalue}'")
+                # TODO : log it, or ...
             case "stop":
                 print(" to stop.")
-                # TODO : send to the robot
+                # TODO : log it, or ...
                 # TODO implémenter un bouton stop sur l'interface
             case _ :
                 print(f": {rdata}")
-        return rt
+        return rt,rfor
     except: # Exception as e:
         print(f"The message was : {data}")
         return "exception"
@@ -38,7 +38,7 @@ def interface_message_parser(data: str, client_name: str):
 def robot_message_parser(data: str, client_name: str, client_id: int): 
     # TODO
     data = json.loads(data)
-    rt, rtime, _, rdata = data.values() # TODO, pour l'instant, on ignore le for, comme c'est toujours le serveur. A changer peut-être
+    rt, rfrom, rfor, rtime, rdata = data.values()
     if rt != "video" : 
         print(f"{rt.upper()} - {client_name} ", end="")
     match data["type"]:
@@ -61,7 +61,7 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
             # print("sent video frame.") #print(f"{displayable}")
         case _ :
             print(f": {rdata}")
-    return rt
+    return rt, rfor
 
 
 # ------------------------------------------------------- #
@@ -154,8 +154,9 @@ def interface_message_data_builder(mtype, *args):
 def message_builder(mtype, mfor, *args):
     return {
         "type": mtype,
-        "timestamp": time.time(),
+        "from": -1,
         "for": mfor,
-        "data": robot_message_data_builder(mtype, *args) if mfor not in ["interface", 0] else interface_message_data_builder(mtype, *args)
+        "timestamp": time.time(),
+        "data": robot_message_data_builder(mtype, *args) if mfor != 0 else interface_message_data_builder(mtype, *args)
     }
 
