@@ -30,10 +30,12 @@ class Config:
 
     class Robot:
         ID = int(environ["ROBOT_ID"])
+        SERIAL_PORT = str(environ["ROBOT_SERIAL_PORT"])
         WHEELS_DIAMETER = 0
         WHEELS_DISTANCE = 0
-        SPEED_MANUAL = int(environ["ROBOT_SPEED_MANUAL"])
-        SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
+        SPEED = int(environ["ROBOT_SPEED"])
+        # SPEED_MANUAL = int(environ["ROBOT_SPEED_MANUAL"])
+        # SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
         TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
 
     # class Motor:
