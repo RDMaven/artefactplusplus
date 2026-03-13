@@ -84,6 +84,7 @@ class WebSocketClient:
                 data = await self.websocket.recv()
                 if data == "STOP":
                     self.stop_event.set()
+                    print("STOP detected")
                     break
 
                 data_type = message_parser(data)
@@ -110,6 +111,7 @@ class WebSocketClient:
 
         finally:
             self.stop_event.set()
+            print("Je suis arrivé au finally de STOP yeah !")
 
             for task in [receiver_task, video_task, event_task]:
                 task.cancel()

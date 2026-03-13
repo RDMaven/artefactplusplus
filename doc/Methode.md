@@ -27,3 +27,11 @@ Ou encore (pour avoir le nom de la caméra) :
 http://localhost:8080
 
 => PS ça marche bien sûr avec votre webcam perso si vous modifiez dans le fichier .env **CAMERA_ID = 0**.
+
+### VM REZEL :
+
+Connection VM Rezel :
+
+```bash
+>>> ssh root@2a09:6847:fa10:1410::306
+```

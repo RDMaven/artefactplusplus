@@ -105,6 +105,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
                 )
 
     except WebSocketDisconnect:
+        print("Pipipoupou je me déconnecte ! Hahaahaha")
         await manager.disconnect(client_id)
 
     except KeyboardInterrupt:
