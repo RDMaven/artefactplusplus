@@ -1,5 +1,8 @@
 ## Document de Suivi de projet ARTEFACT +++
 
+Ce document rend compte de l'avancement du groupe artishow, avec des points de suivi datés correspondants aux différentes séances effectuées en présentiel. 
+Pour ne pas multiplier les dates, les travaux réalisés entre deux séances seront placés à la date de la séance suivante.
+
 ### Mercredi 11/02 :
 
 - Toutes les tâches ont été effectuées en groupe
@@ -25,3 +28,5 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 - Max : prise en main du déplacement du robot et moteur, test de différentes vitesses, déplacement linéaire + rotation. 
 
 - Thibaut et Max : ajout de logs sur l'interface web et mise en place d'une connexion Web Sockets
+
+### Vendredi 13/03
