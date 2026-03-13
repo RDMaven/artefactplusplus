@@ -30,3 +30,8 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 - Thibaut et Max : ajout de logs sur l'interface web et mise en place d'une connexion Web Sockets
 
 ### Vendredi 13/03
+
+- Thibaut et Max : Mise en place d'une VM à Rezel pour le serveur central
+- Thibaut : refonte du README.md, définition du graphe de cartographie de l'école
+- Max : Debug et tests du serveur Web et serveur de suivi
+- Colin : aide aux debugs
