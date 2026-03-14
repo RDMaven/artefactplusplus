@@ -42,7 +42,7 @@ class WebSocketClient:
 
     async def video_streamer(self):
         if Config.OS_IS_LINUX: # selon si on est sous linux, il faut cv.CAP_V4L2
-            cap = cv2.VideoCapture(Config.Camera.ID, cv.CAP_V4L2)              #Valeur propre à mon pc : id = 2
+            cap = cv2.VideoCapture(Config.Camera.ID, cv2.CAP_V4L2)
         else:
             cap = cv2.VideoCapture(Config.Camera.ID)
 
