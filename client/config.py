@@ -31,12 +31,13 @@ class Config:
     class Robot:
         ID = int(environ["ROBOT_ID"])
         SERIAL_PORT = str(environ["ROBOT_SERIAL_PORT"])
-        WHEELS_DIAMETER = 0
-        WHEELS_DISTANCE = 0
+        WHEELS_DIAMETER = float(environ["ROBOT_WHEELS_DIAMETER"])
+        DISTANCE_BTW_WHEELS = float(environ["ROBOT_DISTANCE_BTW_WHEELS"])
         SPEED = int(environ["ROBOT_SPEED"])
         # SPEED_MANUAL = int(environ["ROBOT_SPEED_MANUAL"])
         # SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
         TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
+        TICKS_TO_METERS=float(environ["ROBOT_TICKS_TO_METERS"])
 
     # class Motor:
     #     TIMEOUT = int(environ["MOTOR_TIMEOUT"])

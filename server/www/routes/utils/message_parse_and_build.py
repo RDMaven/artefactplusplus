@@ -20,10 +20,10 @@ def interface_message_parser(data: str, client_name: str):
                 # TODO : log it, or ...
             case "set_parameter":
                 pname, pvalue = rdata.values()
-                print(f" to set {pname} to '{pvalue}'")
+                print(f"to set {pname} to '{pvalue}'")
                 # TODO : log it, or ...
             case "stop":
-                print(" to stop.")
+                print("to stop.")
                 # TODO : log it, or ...
                 # TODO implémenter un bouton stop sur l'interface
             case _ :

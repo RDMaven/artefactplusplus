@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
 from threading import Thread
-from time import sleep
+import time
 
 from config import Config
-# if Config.is_prod:
-from src.robot.controller import WifiBot
+from src.robot.controller import WifiBot, Reference
+import src.utils.math_utils as mu
 
 
 
@@ -22,6 +22,8 @@ class RobotDriver(WifiBot):
     def __init__(self, serPath):
         if Config.is_prod:
             super().__init__(serPath)
+    
+        self.position = mu.Position(x0=0, y0=0, theta0=0)
         self.local_config = {
             "mode": "manual",
             "speed": Config.Robot.SPEED,
@@ -39,15 +41,24 @@ class RobotDriver(WifiBot):
         self.local_config[parameter_name] = new_value
         print(f"Updated config : {self.local_config}")
 
-    def setSpeed(self, l:int, r:int):
+    def getSpeed(self):
+        return self.local_config['speed']
+
+    def setMovingSpeed(self, l:int = Config.Robot.SPEED, r:int = Config.Robot.SPEED):
         if not Config.is_prod:
-            print(f"setSpeed : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
+            print(f"setMovingSpeed : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
             return
         self.setLeftForward( (l >= 0)) # Update the wheel directions
         self.setRightForward((r >= 0)) # //
         self.setLeftSpeed( abs(l)) # Set the speeds
         self.setRightSpeed(abs(r)) # //
 
+
+    def stopMoving(self):
+        self.setMovingSpeed(0,0)
+
+
+    # POUR LE MODE MANUEL ------------------------------- #
     def moveManual(self, x:float ,y:float ):
         assert x >= -1 and x <= 1 and y >= -1 and y <= 1, "moveManual : a recu un x ou y hors de [-1,1]"
         
@@ -61,17 +72,41 @@ class RobotDriver(WifiBot):
         right /= norm
 
         # Scale
-        left *= Config.Robot.SPEED_MANUAL
-        right *= Config.Robot.SPEED_MANUAL
+        left *= self.getSpeed()
+        right *= self.getSpeed()
 
-        self.setSpeed(round(left,1), round(right,1))
+        self.setMovingSpeed(round(left,1), round(right,1))
+
+    # Pour le mode AUTO --------------------------------- #
+    def forwardByDistance(self, distance:float):
+        """ Avance d'une certaine distance, donnée en cm. """
+
+        distance_in_ticks = distance / Config.Robot.TICKS_TO_METERS
+        ref = Reference(self.getOdom())
+        
+        self.setMovingSpeed()
+        while ref.l < distance_in_ticks or ref.r < distance_in_ticks:
+            time.sleep(0.1)
+            self.updateOdomReference(ref)
+
+        # Stop the movement, and record overshoot
+        self.stopMoving()
+        time.sleep(1)
+
+        self.updateOdomReference(ref)
+        overL, overR =  ref.l - distance_in_ticks, ref.r - distance_in_ticks
+        over = mu.avg(overL, overR) * Config.Robot.TICKS_TO_METERS
+
+        print(
+          f'forwardByDistance() : d={distance}cm ({distance_in_ticks}t),\n\
+            over={over}cm ({mu.avg(overL, overR)})'
+        )
 
 
+    def rotateByAngle(self, angle:float):
+        """ Tourne d'un certain angle, donné en degrés. """
+        angle = mu.normaliser_degrees(angle)
 
-
-# # TODO Enlever cette instance temporaire
-# robot_instance = Robot(Config.Robot.SERIAL_PORT)
-# robot_instance.start()
 
 
 if __name__ == "__main__":
