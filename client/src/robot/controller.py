@@ -3,6 +3,16 @@ import serial
 from threading import Thread
 from time import sleep
 
+class Reference:
+    def __init__(self, odom: tuple):
+        self.l0, self.r0 = odom
+        self.l, self.r = 0,0
+
+    def update(self, odom):
+        tl, tr = odom
+        self.l, self.r = tl-self.l0, tr-self.r0
+
+
 class WifiBot:
     def __init__(self, serPath):
         # open the serial port
@@ -207,6 +217,12 @@ class WifiBot:
                 self.stop()
                 break
 
+    def getOdom(self):
+        return self.OdomL, self.OdomR
+
+    def updateOdomReference(self, ref: Reference):
+        ref.update(self.getOdom)
+        
 
 if __name__ == "__main__":
    wb = WifiBot("/dev/ttyUSB0")
