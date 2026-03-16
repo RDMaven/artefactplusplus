@@ -62,7 +62,7 @@ if (b2)  {
         b2.style.fontWeight = "normal";
     })
     b2.addEventListener('click',() => {
-        window.open('/wait');
+        window.open('/map_build');
     })
 }
 
