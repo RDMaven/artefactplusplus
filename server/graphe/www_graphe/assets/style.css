@@ -1,0 +1,108 @@
+
+/*############ BODY ############*/
+
+
+#images{
+    display: flex;
+    height: auto;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+#image_container{
+    width:90%;
+    height: auto;
+    overflow: hidden;
+}
+
+#image_track{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    transition: transform 1s ease;
+}
+
+#image_track img{
+    width: 100%;
+    max-width: none;
+    height: auto;
+    flex-shrink: 0;
+}
+
+#image_num{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    height: 2.5rem;
+    gap:0.5rem;
+    align-self:flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.vide{
+    width: 2.5rem;
+    height: auto;
+}
+
+#plein{
+    display: flex;
+    width:2.5rem;
+    height: auto;
+    position: absolute;
+    top:0;
+    left:0;
+    transition: transform 1s ease;
+}
+
+#containeur_princ{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-family: TiroTelugu, sans-serif;
+}
+
+#text_presentation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75%;
+    height: 45rem;
+    background-color: white;
+    border: black solid 0.1rem;
+    border-radius: 4rem;
+    box-shadow: 2rem 2rem 0.75rem 0.5rem rgba(0,0,0,0.4);
+}
+
+#p1{
+    font-weight: bold;
+    font-size: 3rem;
+    margin: 0.2rem;
+}
+
+.classic_text{
+    width: 90%;
+    text-align: start;
+    font-size: 1.5rem;
+    text-indent: 3rem;
+}
+
+#button_containeur{
+    display: flex;
+    flex-direction: row;
+    gap:1rem;
+}
+
+.button{
+    display: flex;
+    width:15rem;
+    height: 7.5rem;
+    border: black solid 0.15rem;
+    border-radius:2rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.button p{
+    margin:0.3rem;
+}

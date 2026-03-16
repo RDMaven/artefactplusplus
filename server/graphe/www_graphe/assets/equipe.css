@@ -1,0 +1,88 @@
+#main_title{
+    display: flex;
+    width:100%;
+    font-family: TiroTelugu, sans-serif;
+}
+
+#main_title p{
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 5rem;
+    margin:0;
+}
+
+#main_containeur{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    position: relative;
+}
+
+#logo_background{
+    width: 80%;
+    margin: 0.5rem;
+    margin-bottom: 1.5rem;
+    z-index: -1;
+}
+
+.team_member{
+    display: flex;
+    flex-direction: column;
+    width:45rem;
+    height: 25rem;
+    position: absolute;
+    border: solid black 0.15rem;
+    border-radius:2rem;
+    background-color: rgba(255,255,255,0.8);
+}
+
+.team_member img {
+    width: 12rem;
+    height: auto;
+    object-fit: contain;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    
+}
+
+.separator{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.text_part {
+    margin-right: 1rem;
+    margin-left: 1rem;
+    font-family: TiroTelugu, sans-serif;
+    font-size: 1.7rem;
+}
+
+.Name{
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+#Max{
+    top:0;
+    left:5%;
+}
+
+#Colin{
+    top:22rem;
+    right:5%
+}
+
+#Eden{
+    top:44rem;
+    left:5%;
+}
+
+#Thibaut{
+    top:66rem;
+    right:5%;
+}

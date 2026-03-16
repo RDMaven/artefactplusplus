@@ -1,0 +1,137 @@
+@font-face {
+    font-family: "Quicksand";
+    src: url(/fonts/Quicksand/static/Quicksand-Regular.ttf) format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Quicksand";
+    src: url(/fonts/Quicksand/static/Quicksand-Bold.ttf) format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Geo";
+    src: url(/fonts/Geo/Geo-Regular.ttf) format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Geo";
+    src: url(/fonts/Geo/Geo-Italic.ttf) format("truetype");
+    font-weight: italic;
+}
+
+@font-face {
+    font-family: "TiroTelugu";
+    src: url(/fonts/Tiro_Telugu/TiroTelugu-Regular.ttf) format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "TiroTelugu";
+    src: url(/fonts/Tiro_Telugu/TiroTelugu-Italic.ttf) format("truetype");
+    font-weight: italic;
+}
+
+
+/*############ PAGES ############*/
+.content {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/*############ HEADER ############*/
+
+
+header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: antiquewhite;
+    /*margin-bottom: 1rem;*/
+}
+
+#header_content{
+    justify-content: center;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:3rem;
+    width: 90%;
+    height: 9rem;
+}
+
+#logo {
+    position: absolute;
+    left:0;
+    width: 8rem;
+    height: auto;
+    margin:2rem;
+}
+
+#language{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right:0;
+    width:8rem;
+}
+
+#language a, #language p{
+    height: 1rem;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1rem;
+    color: black;
+    text-decoration: none;
+}
+
+#language a:hover{
+    text-decoration: underline;
+}
+
+#title1{
+    font-size: 4rem;
+    font-weight: bold;
+    font-style: italic;
+    width:fit-content;
+    margin: 0;
+}
+
+#title1_container{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: flex-end;
+    height: fit-content;
+    justify-content: center;
+}
+
+#title_date{
+    margin-top:0;
+    width: fit-content;
+    font-size: 1.5rem;
+}
+
+#title_date, #title1 {
+    font-family:Geo;
+}

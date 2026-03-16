@@ -1,11 +1,27 @@
 import numpy as np
-from flask import Flask, Response, request, send_from_directory
-from flask_sock import Sock
+
 
 
 ###GESTION DES GRAPH
 
-graphe = {} #Dictoinnaire des voisins d'un sommet recconnu grâce à son id
+class graph():
+    def __init_(self, vertexs = {}):
+        self.vertexs = vertexs
+    
+    def addVertex(self, vertex: vertex):
+        if not vertex.id in self.vertexs.keys():
+            self.vertexs[vertex.id] = []
+
+    def addEdge(self, vertex1: vertex, vertex2: vertex):
+        if not (vertex1.id in self.vertexs.keys() and vertex2.id in self.vertexs.keys()):
+            self.addVertex(vertex1)
+            self.addVertex(vertex2)
+        if not vertex2.id in self.vertexs[vertex1.id]:
+            self.vertexs[vertex1.id].append(vertex2.id)
+        if not vertex1.id in self.vertexs[vertex2.id]:
+            self.vertexs[vertex2.id].append(vertex1.id)
+
+
 id_list = []
 
 class vertex:
@@ -21,16 +37,3 @@ class vertex:
     
     def calcul_dist(self, other_vertex: vertex):
         return np.sqrt((self.x - other_vertex.x)**2 + (self.y - other_vertex.y)**2)
-    
-
-###GESTION WEB
-
-static_dir = "./www_graphe"
-
-app = Flask(__name__, static_folder=static_dir, static_url_path="/")
-sock = Sock(app)
-
-@app.get("/")
-def index():
-    return send_from_directory(static_dir, "index.html")
-
