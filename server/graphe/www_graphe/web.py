@@ -1,7 +1,7 @@
 from flask import Flask, Response, request, send_from_directory
 from flask_sock import Sock
 import threading
-from utils import LOG_FILE, log, sendAll
+from utils import LOG_FILE, log, sendAll, validation
 import json
 import www_graphe.graphe as G
 
@@ -59,17 +59,9 @@ def ws(ws):
                     y:float =  data.get('y')
                     vertex = G.vertex(id, x, y)
                     GRAPHE.addVertex(vertex)
-                    object: str = {
-                        "name": "validation",
-                        "operation": "setVertex",
-                        "result":1
-                    }
+                    object = validation("setVertex", 1)
                 except:
-                    object: str = {
-                        "name": "validation",
-                        "operation": "setVertex",
-                        "result":0
-                    }
+                    object = validation("setVertex", 0)
                 sendAll(object, sockets)
             case "setEdge":
                 try:
@@ -80,16 +72,18 @@ def ws(ws):
                     v1 = G.vertex(v1_json.get('id'), v1_json.get('x'), v1_json('y'))
                     v2 = G.vertex(v2_json.get('id'), v2_json.get('x'), v2_json('y'))
                     GRAPHE.addEdge(v1,v2)
-                    object: str = {
-                        "name": "validation",
-                        "operation": "setEdge",
-                        "result":1
-                    }
+                    object = validation("setEdge", 1)
                 except:
-                    object: str = {
-                        "name": "validation",
-                        "operation": "setEdge",
-                        "result":0
-                    }
-                sendAll(object)
+                    object = validation("setEdge", 0)
+                sendAll(object, sockets)
+            case "suppressVertex":
+                try:
+                    vertexId: int = data.get("vertexId")
+                    GRAPHE.removeVertex(vertexId)
+                    object = validation("suppressVertex", 1)
+                except:
+                    object = validation("suppressVertex", 0)
+                sendAll(object, sockets)
+                    
+
 

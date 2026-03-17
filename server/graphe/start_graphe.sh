@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "==============="
 echo "Lancement de l'environnement server"
-source ../.venv/bin/activate
+. ../.venv/bin/activate
 
 echo "==============="
 echo "Conversion suivie du TypeScript pour exécution :"
-tsc ./www_graphe/assets/script/script.ts
+tsc ./www_graphe/assets/script/script_index.ts
+tsc ./www_graphe/assets/script/script_map.ts
 
 echo "==============="
 echo "Lancement de l'application sur le port 4242"

@@ -38,6 +38,11 @@ class graph():
         res += "}"
         print(res)
 
+    def removeVertex(self, vertixId: int):
+        '''Supprime le sommet d'id : vertexId'''
+        if vertixId in self.vertexs.keys():
+            del self.vertexs[vertixId]
+
 id_list = []
 
 class vertex():
@@ -56,11 +61,11 @@ class vertex():
 
 
 ### Exemple ###
-Graphe_ex = graph()
+'''Graphe_ex = graph()
 v1, v2, v3 = vertex(0, 1, 1), vertex(1,2,2), vertex(2,3,3)
 Graphe_ex.addVertex(v1)
 Graphe_ex.addVertex(v2)
 Graphe_ex.addVertex(v3)
 Graphe_ex.addEdge(v1,v3)
 
-Graphe_ex.toString()
+Graphe_ex.toString()'''
