@@ -22,10 +22,64 @@
     justify-content: center;
     align-items: center;
     font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 #picture_done p{
     font-family: TiroTelugu, sans-serif;
     color: rgb(70, 70, 70);
     font-weight: bold;
+}
+
+#part_1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+#buttonFile{
+    display: flex;
+    background-color: antiquewhite;
+    width:12rem;
+    height: 3rem;
+    border: solid black 0.1rem;
+    border-radius:1rem ;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+}
+
+
+
+#File{
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    height: auto;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* TESTS*/
+#buttonFile{
+    display: flex;
+    background-color: antiquewhite;
+    width:12rem;
+    height: 3rem;
+    border: solid black 0.1rem;
+    border-radius:1rem ;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
 }

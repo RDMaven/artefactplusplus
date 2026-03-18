@@ -27,6 +27,6 @@ def sendAll(msg: str, sockets: list):
 def validation(operation: str, code_retour: int):
     object: str = {
         "name": "validation",
-        "operation": "{operation}",
-        "result":"{code_retour}"
+        "operation": f"{operation}",
+        "result": f"{code_retour}"
     }

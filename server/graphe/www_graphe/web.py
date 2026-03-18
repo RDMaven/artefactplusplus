@@ -4,7 +4,8 @@ import threading
 from utils import LOG_FILE, log, sendAll, validation
 import json
 import www_graphe.graphe as G
-
+import os
+import subprocess
 
 ###GESTION WEB
 
@@ -35,6 +36,21 @@ def team():
 def map_build():
     GRAPHE.reset()
     return send_from_directory('./templates', 'map_builder.html')
+
+@app.post("/upload")
+def upload_files():
+    files = request.files.getlist("file") 
+    dir_name = request.form.getlist("export_name")[0]
+    os.mkdir(f'./Cartes/{dir_name}')
+    for f in files:
+        f.save(f"./Cartes/{dir_name}/{dir_name}_{f.filename}")
+
+    #Mise à jour du git
+    result = subprocess.run(['./deploy.sh'], capture_output=True, text=True, shell=True)
+    #print("Erreurs : ",result.stderr)
+    print("Mise à jour automatique du git (si c'est zéro ça fonctionne): ",result.returncode)
+    return f"{len(files)} fichiers reçus lors du transfert."
+
 
 @sock.route("/ws")
 def ws(ws):
