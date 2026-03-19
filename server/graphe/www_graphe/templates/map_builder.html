@@ -27,7 +27,7 @@
     </header>
     <div id="main_content">
         <p id="main_title">Création de carte :</p>
-        <div id="part_1">
+        <div class="part" id="part_1">
             <div id="picture_done">
                 <p>Déposez ici votre fichier (image)...</p>
             </div>
@@ -43,10 +43,61 @@
 
                 </div>
             </div>
-            <p> ATTENTION IL FAUT VÉRIFIER LE NOM DU PROJET (POUR QUE L'EXPORT SE FASSE) LORS DE LA CRÉATION DE CE DERNIER</p>
+            <div id="creating_box">
+                <div id="project_name_box">
+                    <input type="text" placeholder="Nom du nouveau projet" id="project_name">
+                    <div id="project_name_validate">
+                        <p>Création du projet</p>
+                    </div>
+                </div>
+                <div id="verif_project_name">
+
+                </div>
+            </div>
+            <div id="create_project">
+                <div id="create_project_button">
+                    <p>Continuer</p>
+                </div>
+            </div>
+        </div>
+        <div class="part" id="part_2">
+            <div id="caracteristics">
+                <p>Carectéristiques de l'image</p>
+                <div id="picture_measurement_box">
+                    <input id="picture_measurement" type="text" placeholder="Largeur de l'image">
+                    <p id="picture_measurement_m">m</p>
+                </div>
+            </div>
+            <div class="plus_icon" id="plus_caracteristics">
+                <img src="/src/plus.svg">
+            </div>
+            <div id="graphe_box">
+                <div class="icone_creator">
+                    <img id ="sommet" src="/src/graphe.svg">
+                    <p>Sommet</p>
+                </div>
+                <div class="icone_creator">
+                    <img id="arrete" src="/src/arrete.svg">
+                    <p>Arrête</p>
+                </div>
+            </div>
+            <div class="plus_icon" id="plus_graphe">
+                <img src="/src/plus.svg">
+            </div>
+            <div id="onglet_box">
+                <!--<div id="image_content">
+
+                </div>-->
+            </div>
+            <div id="onglet_box_bottom">
+            </div>
+            <div class="plus_icon" id="plus_onglet">
+                <img src="/src/plus.svg">
+            </div>
         </div>
     </div>
 </body>
+<script src="/script/panzoom.js"></script>
 <script src="/script/script_map.js"></script>
 
 </html>

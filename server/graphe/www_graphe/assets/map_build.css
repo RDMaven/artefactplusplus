@@ -1,19 +1,21 @@
-#main_content{
-    width:100%;
+#main_content {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1;
 }
 
-#main_title{
+#main_title {
     display: inline-flex;
     font-family: TiroTelugu, sans-serif;
     font-size: 3rem;
     text-align: center;
     margin-top: 0.5rem;
+    margin-bottom: 0;
 }
 
-#picture_done{
+#picture_done {
     display: flex;
     width: 95%;
     height: 25rem;
@@ -25,26 +27,26 @@
     margin-bottom: 2rem;
 }
 
-#picture_done p{
+#picture_done p {
     font-family: TiroTelugu, sans-serif;
     color: rgb(70, 70, 70);
     font-weight: bold;
 }
 
-#part_1{
+.part {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
 }
 
-#buttonFile{
+#buttonFile {
     display: flex;
     background-color: antiquewhite;
-    width:12rem;
+    width: 12rem;
     height: 3rem;
     border: solid black 0.1rem;
-    border-radius:1rem ;
+    border-radius: 1rem;
     align-items: center;
     justify-content: center;
     font-style: italic;
@@ -52,7 +54,7 @@
 
 
 
-#File{
+#File {
     display: flex;
     flex-direction: row;
     width: 75%;
@@ -60,25 +62,243 @@
     justify-content: space-between;
 }
 
+#creating_box {
+    display: flex;
+    width: 75%;
+    margin-top: 3rem;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#project_name {
+    display: flex;
+    width: 15rem;
+    height: 1.5rem;
+    border: solid black 0.1rem;
+    border-radius: 0.5rem;
+}
+
+#project_name_box{
+    display: inline-flex;
+    flex-direction: row;
+}
+
+#project_name_validate{
+    display: inline-flex;
+    flex-direction: row;
+    margin-left: 4rem;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(45, 105, 194);
+    border: solid black 0.1rem;
+    border-radius: 0.5rem;
+    width:10rem;
+    height: 1.5rem;
+}
 
 
+#project_name_validate p{
+    margin: 0;
+    text-align: center;
+}
+
+#verif_project_name{
+    display: flex;
+    width:25rem;
+    flex-direction: column;
+}
+
+#create_project{
+    display: flex;
+    width: 100%;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+#create_project_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.5rem;
+    width: 15rem;
+    background-color: rgb(45, 105, 194);
+    border: solid black 0.1rem;
+    border-radius: 0.5rem;
+}
+
+/*PARTIE 2*/
+#part_1 {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#image_content{
+    display: flex;
+    width: 90%;
+    height: 40rem;
+
+    background-color: red;
+}
+
+#onglet_box{
+    display: flex;
+    width: 100%;
+    height: 45rem;
+    overflow: hidden;
+}
+
+#caracteristics{
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    background-color: white;
+    border: solid 0.2rem black;
+    border-radius: 0.5rem;
+    width:15rem;
+    align-items: center;
+    top:1rem;
+    left: -14.5rem;
+    transition: all 0.5s ease;
+    box-shadow: 0.2rem 0.3rem 0.05rem 0.05rem rgba(0,0,0,0.4);
+    z-index:30;
+
+}
+
+#caracteristics p{
+    font-weight: bold;
+}
+
+#picture_measurement_box{
+    display: flex;
+    width: 95%;
+    height: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom:1rem ;
+}
+
+#picture_measurement{
+    display: flex;
+    width: 10rem;
+    height: 1.5rem;
+    border: solid black 0.1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    margin: 0;
+}
+
+#picture_measurement_m{
+    width: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1rem;
+}
+
+.plus_icon{
+    background-color: white;
+    transition: all 0.5s ease;
+    position: absolute;
+    display: flex;
+    width: 3rem;
+    height: 3rem;
+    border: solid black 0.2rem;
+    border-radius: 0.5rem;
+    z-index:30;
+}
+
+#plus_caracteristics {
+    border-left: none;
+    left: 0.7rem;
+    top:2rem;
+    box-shadow: 0.1rem 0.2rem 0.05rem 0.05rem rgba(0,0,0,0.4);    
+}
+
+.plus_icon img{
+    width: 2.8rem;
+    height: 2.8rem;
+    margin: 0.1rem;
+}
+
+#part_2{
+    display: none;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#graphe_box{
+    display: flex;
+    flex-direction: column;
+    width:10rem;
+    height: auto;
+    position: absolute;
+    right: -9.5rem;
+    top:2rem;
+    background-color: white;
+    border: solid black 0.2rem;
+    border-radius: 0.5rem;
+    box-shadow: -0.1rem 0.2rem 0.05rem 0.05rem rgba(0,0,0,0.4);
+    transition: all 0.5s ease;
+    z-index:30;
+
+}
+
+#plus_graphe{
+    border-right: none;
+    right: 0.7rem;
+    top:3rem;
+    box-shadow: -0.1rem 0.2rem 0.05rem 0.05rem rgba(0,0,0,0.4);  
+}
+
+.icone_creator{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#sommet{
+    width: 6rem;
+}
+
+#arrete{
+    width: 6rem;
+}
 
 
+#onglet_box_bottom{
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    height: 10rem;
+    background-color: white;
+    border: solid black 0.2rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    bottom:0;
+    justify-content: center;
+    z-index:30;
+    transition: all 0.5s ease;
+}
 
-
-
-
-
-
+#plus_onglet{
+    border-bottom: none;
+    bottom:10.2rem;
+    box-shadow: -0.1rem -0.2rem 0.05rem 0.05rem rgba(0,0,0,0.4);  
+}
 
 /* TESTS*/
-#buttonFile{
+#buttonFile {
     display: flex;
     background-color: antiquewhite;
-    width:12rem;
+    width: 12rem;
     height: 3rem;
     border: solid black 0.1rem;
-    border-radius:1rem ;
+    border-radius: 1rem;
     align-items: center;
     justify-content: center;
     font-style: italic;

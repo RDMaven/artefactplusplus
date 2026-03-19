@@ -51,6 +51,13 @@ def upload_files():
     print("Mise à jour automatique du git (si c'est zéro ça fonctionne): ",result.returncode)
     return f"{len(files)} fichiers reçus lors du transfert."
 
+@app.get("/getProjects")
+def get_project():
+    name = request.args.get("name")
+    for entry in os.scandir('./Cartes'):
+        if entry.name == name:
+            return {"isUnique":False}
+    return {"isUnique":True}
 
 @sock.route("/ws")
 def ws(ws):
@@ -100,6 +107,4 @@ def ws(ws):
                 except:
                     object = validation("suppressVertex", 0)
                 sendAll(object, sockets)
-                    
-
-
+                
