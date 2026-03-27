@@ -4,13 +4,16 @@ from threading import Thread
 from time import sleep
 
 class Reference:
-    def __init__(self, odom: tuple):
+    def __init__(self, odom: list):
         self.l0, self.r0 = odom
-        self.l, self.r = 0,0
+        self.l = 0
+        self.r = 0
 
     def update(self, odom):
         tl, tr = odom
-        self.l, self.r = tl-self.l0, tr-self.r0
+        self.l = tl-self.l0
+        self.r = tr-self.r0
+        # print(f"ref update : odom={odom} et l0={self.l0}, r0={self.r0} -> l={self.l}, r={self.r}")
 
 
 class WifiBot:
@@ -217,11 +220,21 @@ class WifiBot:
                 self.stop()
                 break
 
-    def getOdom(self):
-        return self.OdomL, self.OdomR
+    def forceStart(self):
+        if not self.started:
+            print("Robot was not started, starting.")
+            self.start()
+            self.setLeftSpeed(1) # TODO try with 0
+            self.setRightSpeed(1)
+
+    def getOdom(self, is_setup=False):
+        if is_setup:
+            self.forceStart()
+            sleep(0.5)
+        return [self.OdomL, self.OdomR]
 
     def updateOdomReference(self, ref: Reference):
-        ref.update(self.getOdom)
+        ref.update(self.getOdom())
         
 
 if __name__ == "__main__":
