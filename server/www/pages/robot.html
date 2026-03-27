@@ -32,7 +32,7 @@
 
             <div class="camera-area">
                 <div class="map">
-                    <img src="/static/images/carte_telecom.png" alt="Carte de Télécom">
+                    <img src="/static/images/carte_telecom.png" draggable="false" alt="Carte de Télécom">
                 </div>
                 <div class="camera">
                     <img src="/video/{{ robot_id }}" class="camera-feed">
@@ -52,13 +52,16 @@
                 <div class="console-body"></div>
             </div>
 
-            <div class="joystick-container">
-                <div class="joystick">
-
+            <div class="controls-container">
+                <div class="top-controls">
+                    <button id="controls-rotate-left"><img src="/static/images/rotate-left.png" draggable="false"></button>
+                    <button id="controls-up"><img src="/static/images/arrow.png" draggable="false" class="rotate270"></button>
+                    <button id="controls-rotate-right"><img src="/static/images/rotate-right.png" draggable="false"></button>
                 </div>
-                <div class="joystick-deltas">
-                    <p>X=<span id="stat-x"></span></p>
-                    <p>Y=<span id="stat-y"></span></p>
+                <div class="bottom-controls">
+                    <button id="controls-left"><img src="/static/images/arrow.png" draggable="false" class="rotate180"></button>
+                    <button id="controls-down"><img src="/static/images/arrow.png" draggable="false" class="rotate90"></button>
+                    <button id="controls-right"><img src="/static/images/arrow.png" draggable="false"></button>
                 </div>
             </div>
             <button class="big-button" id="ws-test-button">Test WebSocket</button>

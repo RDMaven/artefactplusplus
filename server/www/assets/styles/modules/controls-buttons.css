@@ -1,0 +1,66 @@
+
+.rotate90 {
+    -webkit-transform:  rotate(90deg);
+    -moz-transform:     rotate(90deg);
+    -o-transform:       rotate(90deg);
+    -ms-transform:      rotate(90deg);
+    transform:          rotate(90deg);
+}
+
+.rotate180 {
+    -webkit-transform:  rotate(180deg);
+    -moz-transform:     rotate(180deg);
+    -o-transform:       rotate(180deg);
+    -ms-transform:      rotate(180deg);
+    transform:          rotate(180deg);
+}
+
+.rotate270 {
+    -webkit-transform:  rotate(270deg);
+    -moz-transform:     rotate(270deg);
+    -o-transform:       rotate(270deg);
+    -ms-transform:      rotate(270deg);
+    transform:          rotate(270deg);
+}
+
+
+.controls-container {
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5%;
+    background-color: var(--color-primary-bg);
+    padding: 3% 3% 3% 3%;
+}
+
+.top-controls, .bottom-controls {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 47%;
+    margin-bottom: 3%;
+}
+
+
+.controls-container button {
+    width: 100%;
+    height: 100%;
+    margin: 0% 1.5%;
+}
+
+.top-controls > :first-child, .bottom-controls > :first-child {
+    margin-left: 0%;
+}
+.top-controls > :last-child, .bottom-controls > :last-child {
+    margin-right: 0%;
+}
+
+
+.controls-container img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.controls-container button.active {
+    background-color: var(--color-accent);
+}

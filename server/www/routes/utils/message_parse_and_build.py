@@ -15,8 +15,10 @@ def interface_message_parser(data: str, client_name: str):
         print(f"{rt.upper()} - {client_name} asks for {rfor} ", end="")
         match data["type"]:
             case "move":
-                rx, ry = rdata.values()
-                print(f"to move following differential [x={rx}, y={ry}]")
+                # rx, ry = rdata.values()
+                # print(f"to move following differential [x={rx}, y={ry}]")
+                rl, rr = rdata.values()
+                print(f"to move manually with [l={rl}, r={rr}]")
                 # TODO : log it, or ...
             case "set_parameter":
                 pname, pvalue = rdata.values()
