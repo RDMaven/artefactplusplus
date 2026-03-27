@@ -37,7 +37,8 @@ class Config:
         # SPEED_MANUAL = int(environ["ROBOT_SPEED_MANUAL"])
         # SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
         TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
-        TICKS_TO_METERS=float(environ["ROBOT_TICKS_TO_METERS"])
+        # TICKS_TO_METERS=float(environ["ROBOT_TICKS_TO_METERS"])
+        TICKS_PER_METRE=float(environ["ROBOT_TICKS_PER_METER"])
 
     # class Motor:
     #     TIMEOUT = int(environ["MOTOR_TIMEOUT"])
