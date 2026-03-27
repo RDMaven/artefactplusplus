@@ -7,7 +7,6 @@ from src.robot.controller import WifiBot, Reference
 import src.utils.math_utils as mu
 
 
-
 class RobotDriver(WifiBot):
     """ WifiBot methods :
     setLeftSpeed   | setRightSpeed 
@@ -24,9 +23,9 @@ class RobotDriver(WifiBot):
             super().__init__(serPath)
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
+        self.speed = Config.Robot.SPEED
         self.local_config = {
             "mode": "manual",
-            "speed": Config.Robot.SPEED,
             }
 
     def setLocalParameter(self, parameter_name, new_value):
@@ -34,16 +33,14 @@ class RobotDriver(WifiBot):
         match parameter_name:
             case "mode":
                 assert new_value in ['auto', 'manual'], f"Asked to set to an unknown mode : {new_mode}"
+                self.local_config[parameter_name] = new_value
             case "speed":
                 assert type(new_value) == int and new_value > 0, f"Bad new speed given ({new_value}). Expected strictly positive int" 
+                self.speed = new_value
             case _:
                 raise KeyError(f"Unknown parameter name : {parameter_name}")
-        self.local_config[parameter_name] = new_value
         print(f"Updated config : {self.local_config}")
 
-
-    def getSpeed(self):
-        return self.local_config['speed']
 
     def setMovingSpeed(self, l:int = Config.Robot.SPEED, r:int = Config.Robot.SPEED):
         if not Config.is_prod:
@@ -52,7 +49,7 @@ class RobotDriver(WifiBot):
 
         self.forceStart()
 
-        print(f"setMovingSpeed (prod) : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
+        # print(f"setMovingSpeed (prod) : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
         self.setLeftForward( (l >= 0)) # Update the wheel directions
         self.setRightForward((r >= 0)) # //
         self.setLeftSpeed( abs(l)) # Set the speeds
@@ -68,14 +65,14 @@ class RobotDriver(WifiBot):
         assert l >= -1 and l <= 1 and r >= -1 and r <= 1, "moveManual : a recu un x ou y hors de [-1,1]"
 
         # Scale
-        l *= self.getSpeed()
-        r *= self.getSpeed()
+        l *= self.speed
+        r *= self.speed
 
         if l == 0.0 and r == 0.0:
             self.stop()
         else:
             self.setMovingSpeed(round(l,1), round(r,1))
-
+    
 
     # OLD - TODO ENLEVER 'POUR LE MODE MANUEL' ---------- #
     def moveManualJoystick(self, x:float ,y:float ):
@@ -91,13 +88,14 @@ class RobotDriver(WifiBot):
         right /= norm
 
         # Scale
-        left *= self.getSpeed()
-        right *= self.getSpeed()
+        left  *= self.speed
+        right *= self.speed
 
         if x == 0.0 and y == 0.0:
             self.stop()
         else:
             self.setMovingSpeed(round(left,1), round(right,1))
+
 
     # Pour le mode AUTO --------------------------------- #
     def forwardByDistance(self, distance:float):
@@ -105,7 +103,6 @@ class RobotDriver(WifiBot):
 
         # Init the odometry : the robot need to be in movement to get the odometry.
         ref = Reference(self.getOdom(is_setup=True))
-
         distance_in_ticks = mu.distanceInTickForForward(distance)
 
         self.setMovingSpeed()
@@ -114,7 +111,6 @@ class RobotDriver(WifiBot):
             time.sleep(0.05)
             self.updateOdomReference(ref)
             print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
-
 
         # Stop the movement, and record overshoot
         self.stopMoving()
@@ -138,7 +134,6 @@ class RobotDriver(WifiBot):
 
         # Init the odometry : the robot need to be in movement to get the odometry.
         ref = Reference(self.getOdom(is_setup=True))
-
         distance_in_ticks = mu.distanceInTickForRotation(angle)
 
         dir = -1 if angle < 0 else 1 # A ajuster
@@ -148,7 +143,6 @@ class RobotDriver(WifiBot):
             time.sleep(0.05)
             self.updateOdomReference(ref)
             print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
-
 
         # Stop the movement, and record overshoot
         self.stopMoving()
@@ -171,34 +165,11 @@ if __name__ == "__main__":
    wb = RobotDriver(Config.Robot.SERIAL_PORT)
    wb.start()
    sleep(1)
-
    print("--------------------------")
    wb.printStatus()
    print("--------------------------")
    wb.runInteractive()
-#    wb.setLeftSpeed(200)
-#    wb.setRightSpeed(200)
-#    wb.setLeftForward(True)
-#    wb.setRightForward(False)
-#    sleep(3)
    wb.printStatus()
    print("--------------------------")
-
-#    wb.setLeftSpeed(40)
-#    sleep(2)
-#    wb.printStatus()
-#    print("--------------------------")
-#    wb.setRightSpeed(40)
-#    sleep(2)
-#    wb.printStatus()
-#    print("--------------------------")
-#    wb.setLeftForward(True)
-#    sleep(2)
-#    wb.printStatus()
-#    print("--------------------------")
-#    wb.setRightForward(True)
-#    sleep(2)
-#    wb.printStatus()
-#    print("--------------------------")
    wb.stop()
 
