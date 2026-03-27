@@ -2,6 +2,7 @@ import asyncio, websockets
 from config import Config
 from src.utils.message_parse_and_build import message_builder, message_parser
 import cv2
+from src.camera.camera import Camera
 
 
 class Counter: # for debug of potentially lost messages (resolved normalement)
@@ -41,36 +42,16 @@ class WebSocketClient:
         self.sent_counter.update() # for debug
 
     async def video_streamer(self):
-        if Config.OS_IS_LINUX: # selon si on est sous linux, il faut cv.CAP_V4L2
-            cap = cv2.VideoCapture(Config.Camera.ID, cv2.CAP_V4L2)
-        else:
-            cap = cv2.VideoCapture(Config.Camera.ID)
-
-        # Determine timeout for the requested FPS rate.
-        timeout_for_fps = round(1/Config.Camera.FPS,3)
-        print(f"CAMERA - To achieve {Config.Camera.FPS} FPS, setting timeout to {timeout_for_fps}s")
-
-        # Resize
-        # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640) # 320)
-        # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) # 240)
+        camera = Camera()
 
         try:
             while not self.stop_event.is_set():
-                ret, frame = cap.read()
-                if not ret:
-                    await asyncio.sleep(0.01)
-                    continue
-
-                frame = cv2.resize(frame, (640, 480)) #(320, 240)) # reduce size maybe TODO
-                frame = cv2.flip(frame, 1) # flip image TODO enlever pour les robots (peut-être)
-                _, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 70]) # reduce quality
-
-                await self.send("video", -1, buffer.tobytes())
-                await asyncio.sleep(timeout_for_fps)
+                frame = await camera.get_frame()
+                await self.send("video", -1, frame)
+                await asyncio.sleep(camera.timeout_for_fps)
 
         finally:
-            cap.release()
-            cv2.destroyAllWindows()
+            camera.quit()
 
     async def event_sender(self): # for testing, TODO faire un sender pour tout les messages du robot !
         while not self.stop_event.is_set():
