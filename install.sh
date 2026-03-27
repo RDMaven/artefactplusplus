@@ -6,11 +6,6 @@ YELLOW="\e[33m"
 END="\e[0m"
 BOLD="\e[1m"
 
-BLUE="\033[34m"
-GREEN="\033[32m"
-RED="\033[31m"
-END="\033[0m"
-
 line_start() {
   TEXT="$1"
   printf "%b" "${BLUE}${TEXT}${END}"
