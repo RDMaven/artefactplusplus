@@ -48,3 +48,7 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 - Thibaut : Récupération du matériel pour la centrale inertielle
     - Mise en place de l'accéléromètre
 - Max : Changement du joystick de l'interface en boutons
+
+### Jeudi 2/04
+
+- Thibaut : Correction de problèmes de l'accéléromètre
