@@ -35,3 +35,16 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 - Thibaut : refonte du README.md, définition du graphe de cartographie de l'école
 - Max : Debug et tests du serveur Web et serveur de suivi
 - Colin : aide aux debugs
+
+### Lundi 16/03
+
+- Thibaut : Interface Web pour les graphes de position
+- Max : Contrôle manuel du robot à partir de l'interface Web
+
+### Vendredi 27/03
+
+- Colin, Max, Thibaut : Rencontre avec les encadrants
+- Colin : Mise en place des cartes SIM et première connexion au réseau 4G de l'école (avec un ordinateur)
+- Thibaut : Récupération du matériel pour la centrale inertielle
+    - Mise en place de l'accéléromètre
+- Max : Changement du joystick de l'interface en boutons
