@@ -230,10 +230,14 @@ if (buttonFile && fillInput) {
     buttonFile.addEventListener('mouseenter', function () {
         buttonFile.style.fontWeight = "bold";
         buttonFile.style.border = "solid black 0.2rem";
+        buttonFile.style.width = "11.8rem";
+        buttonFile.style.height = "2.8rem";
     });
     buttonFile.addEventListener('mouseleave', function () {
         buttonFile.style.fontWeight = "normal";
         buttonFile.style.border = "solid black 0.1rem";
+        buttonFile.style.width = "12rem";
+        buttonFile.style.height = "3rem";
     });
     buttonFile.addEventListener('click', function () {
         fillInput.click();
@@ -252,10 +256,14 @@ if (buttonProjetName && nameInput && verifNameProject) {
     buttonProjetName.addEventListener('mouseenter', function () {
         buttonProjetName.style.border = "solid black 0.2rem";
         buttonProjetName.style.fontWeight = "bold";
+        buttonProjetName.style.width = "9.8rem";
+        buttonProjetName.style.height = "1.3rem";
     });
     buttonProjetName.addEventListener('mouseleave', function () {
         buttonProjetName.style.border = "solid black 0.1rem";
         buttonProjetName.style.fontWeight = "normal";
+        buttonProjetName.style.width = "10rem";
+        buttonProjetName.style.height = "1.5rem";
     });
     buttonProjetName.addEventListener('click', function () {
         var p_elt = document.createElement("p");
@@ -314,10 +322,14 @@ if (continueButton) {
     continueButton.addEventListener('mouseenter', function () {
         continueButton.style.border = "solid black 0.2rem";
         continueButton.style.fontWeight = "bold";
+        continueButton.style.width = "14.8rem";
+        continueButton.style.height = "1.3rem";
     });
     continueButton.addEventListener('mouseleave', function () {
         continueButton.style.border = "solid black 0.1rem";
         continueButton.style.fontWeight = "normal";
+        continueButton.style.width = "15rem";
+        continueButton.style.height = "1.5rem";
     });
     continueButton.addEventListener('click', function () {
         if (PARTIE1 && PARTIE2) {
@@ -327,14 +339,6 @@ if (continueButton) {
         }
     });
 }
-/*
-TODO:
-- récpetion coté python normalement ok pour la création d'un graphe.
-- to do:
-    - réception des message de validation
-    - envoie des messages json de vertex (classes Ts à écrire)
-    - IG
-*/
 //PARTIE 2
 var Caract = document.getElementById("caracteristics");
 var plusCaract = document.getElementById("plus_caracteristics");
@@ -387,44 +391,38 @@ if (plusOnglet && ongletBoxBottom) {
         }
     });
 }
-/*ID_LIST.forEach((id) => {
-    const div: HTMLDivElement | null = document.getElementById(id) as HTMLDivElement | null;
-    if (div) {
-        div.addEventListener(('click'), () => {
-            ID_LIST.forEach((id) => {
-                const div: HTMLDivElement | null = document.getElementById(id) as HTMLDivElement | null;
-                if (div) {
-                    div.style.border = "solid black 0rem";
-                    div.style.borderRadius = "0rem";
-                    div.style.backgroundColor = "white";
-                    const index: number = ID_LIST.indexOf(div.id);
-                    const img: HTMLImageElement = IMG_LIST[index];
-                    img.style.display = "none";
-                }
-            })
-            div.style.border = "solid black 0.1rem";
-            div.style.borderRadius = "0.5rem";
-            div.style.backgroundColor = "rgb(200, 196, 183)";
-            const index: number = ID_LIST.indexOf(div.id);
-            const img: HTMLImageElement = IMG_LIST[index];
-            img.style.display = "block";
-            setTimeout(() => {
-                panzoom(img),
-                    10
-            })
-        })
-    }
-})*/
 /* TESTS */
-var buttonExport = document.getElementById("buttonExport");
-if (buttonExport) {
-    buttonExport.addEventListener('click', function () {
+var buttonReset = document.getElementById("buttonExport");
+if (buttonReset) {
+    buttonReset.addEventListener('click', function () {
         if (FILE_LIST.length == 0)
             return;
-        uploadFile(FILE_LIST, 'test');
         if (fileList) {
             fileList.innerHTML = "";
             FILE_LIST = [];
         }
     });
+    buttonReset.addEventListener('mouseenter', function () {
+        buttonReset.style.border = "solid 0.2rem black";
+        buttonReset.style.fontWeight = "bold";
+        buttonReset.style.width = "9.8rem";
+        buttonReset.style.height = "1.3rem";
+    });
+    buttonReset.addEventListener('mouseleave', function () {
+        buttonReset.style.border = "solid 0.1rem black";
+        buttonReset.style.fontWeight = "normal";
+        buttonReset.style.width = "10rem";
+        buttonReset.style.height = "1.5rem";
+    });
 }
+/*
+TODO:
+- récpetion coté python normalement ok pour la création d'un graphe.
+- to do:
+    - réception des message de validation
+    - envoie des messages json de vertex (classes Ts à écrire)
+    - IG
+    - Logs lorsqu'un sommet est créé
+    - Bouton Reset
+- Lecture de carte
+*/ 
