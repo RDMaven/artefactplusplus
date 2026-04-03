@@ -34,9 +34,9 @@ Nous avons établi notre planning pour les deux périodes suivantes. Vous trouve
             <td rowspan="3"> Construction des algorithmes nécessaires à la traque </td>
             <td> Semaines 14,15,16 </td>
             <td> Modifier le composant de communication pour employer la 4G du réseau de Télécom Paris. </td>
-            <td> Modifier le calcul de trajectoire pour contourner d’éventuels obstacles lors de la poursuite d’un robot cible. </td>
+            <td> Fabriquer une centrale inertielle (Accéléromètre) </td>
             <td> Modifier le composant de localisation du robot pour utiliser une position géographique au lieu des repères prédéfinis. </td>
-            <td> Développer un algorithme qui sera utilisé pour décider du moment opportun de communiquer avec le serveur central de la traque. </td>
+            <td>Fabriquer une centrale inertielle (Capteur à effet Hall)</td>
         </tr>
         <tr>
             <td> Semaines 17,18 </td>
