@@ -186,35 +186,6 @@ class GraphicFile {
     }
 }
 
-class Vertex {
-    //Classe représentant les sommets
-    private x: number;
-    private y: number;
-    private id: number;
-
-    constructor(x: number, y: number, id: number) {
-        this.x = x;
-        this.y = y;
-        this.id = id;
-    }
-
-    getX(): number {
-        return this.x
-    }
-    getY(): number {
-        return this.y
-    }
-    getId(): number {
-        return this.id
-    }
-    setX(x: number): void {
-        this.x = x
-    }
-    setY(y: number): void {
-        this.y = y
-    }
-}
-
 
 // GESTION PAGE
 
@@ -268,11 +239,15 @@ if (buttonFile && fillInput) {
     buttonFile.addEventListener('mouseenter', () => {
         buttonFile.style.fontWeight = "bold";
         buttonFile.style.border = "solid black 0.2rem";
+        buttonFile.style.width="11.8rem";
+        buttonFile.style.height="2.8rem";
     })
 
     buttonFile.addEventListener('mouseleave', () => {
         buttonFile.style.fontWeight = "normal";
-        buttonFile.style.border = "solid black 0.1rem"
+        buttonFile.style.border = "solid black 0.1rem";
+        buttonFile.style.width="12rem";
+        buttonFile.style.height="3rem";
     })
 
     buttonFile.addEventListener('click', () => {
@@ -296,11 +271,15 @@ if (buttonProjetName && nameInput && verifNameProject) {
     buttonProjetName.addEventListener('mouseenter', () => {
         buttonProjetName.style.border = "solid black 0.2rem";
         buttonProjetName.style.fontWeight = "bold";
+        buttonProjetName.style.width="9.8rem";
+        buttonProjetName.style.height="1.3rem";
     })
 
     buttonProjetName.addEventListener('mouseleave', () => {
         buttonProjetName.style.border = "solid black 0.1rem";
         buttonProjetName.style.fontWeight = "normal";
+        buttonProjetName.style.width="10rem";
+        buttonProjetName.style.height="1.5rem";
     })
 
     buttonProjetName.addEventListener('click', () => {
@@ -363,11 +342,15 @@ if (continueButton) {
     continueButton.addEventListener('mouseenter', () => {
         continueButton.style.border = "solid black 0.2rem";
         continueButton.style.fontWeight = "bold";
+        continueButton.style.width="14.8rem";
+        continueButton.style.height="1.3rem";
     })
 
     continueButton.addEventListener('mouseleave', () => {
         continueButton.style.border = "solid black 0.1rem";
         continueButton.style.fontWeight = "normal";
+        continueButton.style.width="15rem";
+        continueButton.style.height="1.5rem";
     })
 
     continueButton.addEventListener('click', () => {
@@ -445,15 +428,28 @@ if (plusOnglet && ongletBoxBottom) {
 
 
 /* TESTS */
-const buttonExport: HTMLDivElement | null = document.getElementById("buttonExport") as HTMLDivElement | null;
-if (buttonExport) {
-    buttonExport.addEventListener('click', () => {
+const buttonReset: HTMLDivElement | null = document.getElementById("buttonExport") as HTMLDivElement | null;
+if (buttonReset) {
+    buttonReset.addEventListener('click', () => {
         if (FILE_LIST.length == 0) return;
-        uploadFile(FILE_LIST, 'test');
         if (fileList) {
             fileList.innerHTML = "";
             FILE_LIST = [];
         }
+    })
+
+    buttonReset.addEventListener('mouseenter', () => {
+        buttonReset.style.border = "solid 0.2rem black";
+        buttonReset.style.fontWeight = "bold";
+        buttonReset.style.width = "9.8rem";
+        buttonReset.style.height= "1.3rem";
+    })
+
+    buttonReset.addEventListener('mouseleave', () => {
+        buttonReset.style.border = "solid 0.1rem black";
+        buttonReset.style.fontWeight = "normal";
+        buttonReset.style.width = "10rem";
+        buttonReset.style.height= "1.5rem";
     })
 }
 
@@ -465,5 +461,53 @@ TODO:
     - envoie des messages json de vertex (classes Ts à écrire)
     - IG
     - Logs lorsqu'un sommet est créé
+    - Bouton Reset
 - Lecture de carte
 */
+
+//CREATION DE SOMMETS - ARRETE
+
+class Vertex {
+    //Classe représentant les sommets
+    private x: number;
+    private y: number;
+    private id: number;
+
+    constructor(x: number, y: number, id: number) {
+        this.x = x;
+        this.y = y;
+        this.id = id;
+    }
+
+    getX(): number {
+        return this.x
+    }
+    getY(): number {
+        return this.y
+    }
+    getId(): number {
+        return this.id
+    }
+    setX(x: number): void {
+        this.x = x
+    }
+    setY(y: number): void {
+        this.y = y
+    }
+}
+
+const sommet: HTMLImageElement | null = document.getElementById("sommet") as HTMLImageElement | null;
+const arrete: HTMLImageElement | null = document.getElementById("arrete") as HTMLImageElement | null;
+let x_souris: number = 0;
+let y_souris: number = 0;
+
+document.addEventListener('mousemove', (event: MouseEvent) => {
+    x_souris = event.clientX;
+    y_souris = event.clientY;
+})
+
+if (sommet && arrete) {
+    sommet.addEventListener('click', () => {
+        
+    })
+}
