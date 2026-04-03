@@ -49,6 +49,14 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
     - Mise en place de l'accéléromètre
 - Max : Changement du joystick de l'interface en boutons
 
-### Jeudi 2/04
+### Jeudi 02/04
 
 - Thibaut : Correction de problèmes de l'accéléromètre
+
+### Vendredi 03/04
+
+- Thibaut : 
+    - Mise en place de capteurs à effet Hall
+    - Premiers tests et validation du bon fonctionnement des capteurs
+    - Recherche d'un capteur plus préci pour notre application
+- Colin : Début de mise en place de la connexion 4G au réseau de l'école sur Raspberry Pi
