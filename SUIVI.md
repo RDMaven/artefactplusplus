@@ -18,6 +18,7 @@ Pour ne pas multiplier les dates, les travaux réalisés entre deux séances ser
 ### Vendredi 20/02
 
 - Colin : Récupération de la Raspberry auprès de Tarik Graba et remplacement de l'adaptateur USB-Serie
+- Thibaut : prise en main de cv2.
 
 ### Lundi 23/02
 
@@ -51,7 +52,7 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 
 ### Jeudi 02/04
 
-- Thibaut : Correction de problèmes de l'accéléromètre
+- Thibaut, Max : Correction de problèmes de l'accéléromètre
 
 ### Vendredi 03/04
 
