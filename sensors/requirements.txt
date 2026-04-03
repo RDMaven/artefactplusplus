@@ -1,1 +1,4 @@
 mpu6050-raspberrypi
+smbus
+smbus2
+RPi.GPIO
