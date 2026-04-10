@@ -61,3 +61,13 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
     - Premiers tests et validation du bon fonctionnement des capteurs
     - Recherche d'un capteur plus préci pour notre application
 - Colin : Début de mise en place de la connexion 4G au réseau de l'école sur Raspberry Pi
+
+
+### Vendredi 03/04
+
+- Max: réglage de la calibration des moteurs en trouvant le ratio tick/cm
+- Thibaut : 
+    - Commande des capteurs prévues avec l'encadrant (livraison fin avril)
+    - Documentation sur la reconnaissance d'image par un modèle d'IA (cours de Stanford)
+- Max et Thibaut : Tests caméra ; les mouvements de la caméra peuvent être maîtrisés par le raspberry 
+
