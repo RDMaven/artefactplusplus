@@ -25,7 +25,7 @@ $("#btnMode").on("change", function () {
   if ($(this).is(":checked")) {
 
     // Message de confirmation
-    if (!confirm("Are you sure you want to switch to Auto mode? (*FLASHBANG INCOMING*")) {
+    if (!confirm("Are you sure you want to switch to Auto mode?")) {
       
       $(this).prop("checked", false); // revert toggle
       return;

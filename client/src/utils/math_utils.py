@@ -2,7 +2,7 @@ from config import Config
 import math
 
 class Ratio:
-    TperM = Config.Robot.TICKS_PER_METRE 
+    TperM = Config.Robot.TICKS_PER_CM 
     MperT = 1 / TperM
 
 
