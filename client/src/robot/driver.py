@@ -117,8 +117,10 @@ class RobotDriver(WifiBot):
         time.sleep(1)
 
         self.updateOdomReference(ref)
+        print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+
         overL, overR =  ref.l - distance_in_ticks, ref.r - distance_in_ticks
-        over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_METRE
+        over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
         print(
           f'forwardByDistance() : d={distance}cm ({distance_in_ticks}t),\n\
@@ -150,7 +152,7 @@ class RobotDriver(WifiBot):
 
         self.updateOdomReference(ref)
         overL, overR =  abs(ref.l - distance_in_ticks), abs(ref.r - distance_in_ticks)
-        over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_METRE
+        over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
         print(
           f'forwardByDistance() : theta={angle}° ({distance_in_ticks}t),\n\
