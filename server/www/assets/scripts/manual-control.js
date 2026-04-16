@@ -144,3 +144,37 @@ window.addEventListener("keydown", (e) => {
 window.addEventListener("keyup", stopMove);
 
 
+
+/* ===================================================== */
+/* CONTROLS CAMERA ===================================== */
+/* ===================================================== */
+
+var currentMoveCam = STOP;
+
+function sendMoveCam(l, r) {
+  if (currentMoveCam.l === l && currentMoveCam.r === r) return;
+  sendWSMessage("move_cam", l, r);
+  currentMoveCam = { l, r };
+}
+
+export function stopMoveCam() {
+    sendMoveCam(0, 0);
+}
+
+
+// --- Keyboard mappings ---
+const keyMapCam = {
+  ArrowUp: [ 1,  1],
+  ArrowLeft: [ 1,  0],
+  ArrowDown: [-1, -1],
+  ArrowRight: [ 0,  1],
+};
+
+window.addEventListener("keydown", (e) => {
+  const move = keyMapCam[e.code];
+  if (move) sendMoveCam(...move);
+});
+
+window.addEventListener("keyup", stopMoveCam);
+
+

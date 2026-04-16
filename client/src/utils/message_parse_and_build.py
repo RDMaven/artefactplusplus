@@ -1,5 +1,6 @@
 import json, time, base64
-from src.robot import robot
+from src.robot import robot, camera
+
 
 # ------------------------------------------------------- #
 # Message parsers (receivers) --------------------------- #
@@ -25,8 +26,14 @@ def message_parser(data: str):
                 print(f"Asked to move following differential x={mx}, y={my}")
                 robot.moveManual(mx, my)
                 # TODO : actually move.
-
                 
+            case "move_cam":
+                mx, my = mdata.values()
+                print(f"Asked to move the cam following differential x={mx}, y={my}")
+                camera.move_controls(mx, my)
+                # TODO : actually move.
+
+
             case "forward":
                 d = mdata.values()
                 print(f"Asked to move forward by {d}cm")

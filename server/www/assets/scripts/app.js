@@ -55,4 +55,17 @@ $(".console-btn").on("click", function () {
   consoleClear(ws.readyState);
 })
 
+const $cameraButtonContainer =   $(".camera-buttons-container");
+const $cameraRevealArrow = $(".camera-buttons-reveal-arrow img");
+$(".camera-buttons-reveal-arrow").on("click", function () {
+  $cameraRevealArrow.toggleClass('rotate180');
+  if ($cameraButtonContainer.hasClass("slide-hide")) {
+    $cameraButtonContainer.removeClass("slide-hide");
+    $cameraButtonContainer.addClass("slide-open");
+  } else {
+    $cameraButtonContainer.removeClass("slide-open");
+    $cameraButtonContainer.addClass("slide-hide");
+  }
+})
+
 

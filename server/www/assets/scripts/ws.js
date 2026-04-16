@@ -44,6 +44,7 @@ const messageBuilders = {
     "move": buildMoveMsg,
     "stop": buildStopMsg,
     "set_parameter": buildParamMsg,
+    "move_cam": buildMoveMsg
 }
 
 // Main message builder function

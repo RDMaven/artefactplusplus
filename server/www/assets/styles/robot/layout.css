@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-.container div,.container a {
+.container div,.container a, .camera-buttons-container {
     border-radius: 7px;
     align-content: center;
     text-align: center;
