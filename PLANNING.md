@@ -134,3 +134,36 @@ Algo cartographie + test : a8, after a7, 10d
 Cartographie collective : a9, after a8, 5d
 PoC AI de l'Edge : a10, after a9, 5d
 ```
+
+# Planning différentiel pour évaluation intermédiaire :
+
+<table>
+<thead>
+<th>Semaine</th>
+<th>Traque</th>
+<th>Cartographie</th>
+</thead>
+<tbody>
+<tr>
+<td>Semaines 19,20</td>
+<td colspan=2>Code général du robot (éviter obstacles, analyse d'image...) <br/>+centrale inertielle</td>
+<td>Rapport enjeux</td>
+</tr>
+<tr>
+<td rowspan=2>Semaine 21,22</td>
+<td colspan=2>Personnalisation de la logique de déplacement</td>
+</tr>
+<tr>
+<td>Lancement du Poc AI Edge <br/> (pour la caméra)</td>
+<td>Fonctions d'analyse du réseau <br/> + modélisation du couloir (carte)</td>
+</tr>
+<tr>
+<td>Semaines 23,24</td>
+<td colspan=2>Tests en communs des différents parties réalisées jusqu'à présent + poster</td>
+</tr>
+<tr>
+<td>Semaine 25</td>
+<td colspan=2>Réparation des bugs, préparation de soutenances + ajout d'autres fonctionnalités </td>
+</tr>
+</tbody>
+</table>

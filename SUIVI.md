@@ -1,4 +1,4 @@
-## Document de Suivi de projet ARTEFACT +++
+## Document de Suivi de projet ARTEFACT ++++++++++
 
 Ce document rend compte de l'avancement du groupe artishow, avec des points de suivi datés correspondants aux différentes séances effectuées en présentiel. 
 Pour ne pas multiplier les dates, les travaux réalisés entre deux séances seront placés à la date de la séance suivante.
@@ -63,11 +63,20 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 - Colin : Début de mise en place de la connexion 4G au réseau de l'école sur Raspberry Pi
 
 
-### Vendredi 03/04
+### Vendredi 10/04
 
 - Max: réglage de la calibration des moteurs en trouvant le ratio tick/cm
 - Thibaut : 
     - Commande des capteurs prévues avec l'encadrant (livraison fin avril)
     - Documentation sur la reconnaissance d'image par un modèle d'IA (cours de Stanford)
-- Max et Thibaut : Tests caméra ; les mouvements de la caméra peuvent être maîtrisés par le raspberry 
 
+
+### Mercredi 15/04 :
+
+- Max et Thibaut : Tests caméra ; les mouvements de la caméra peuvent être maîtrisés par le raspberry et par l'utilisateur
+
+
+### Mardi 28/04 :
+
+- Réunion de mi-projet : modification du planning et réévaluation des objectifs (cf nouveau [planning.md](./PLANNING.md))
+- Max : ajout d'un bouton STOP pour arrêter le robot
