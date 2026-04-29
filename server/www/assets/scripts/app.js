@@ -69,3 +69,8 @@ $(".camera-buttons-reveal-arrow").on("click", function () {
 })
 
 
+$('.btn-stop').on('click', () => {
+  $('.btn-stop').toggleClass("active");
+  stopMove();
+  setTimeout(() => $('.btn-stop').removeClass('active'), 1000);
+})
