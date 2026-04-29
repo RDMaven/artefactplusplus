@@ -80,3 +80,9 @@ clonage du git + lecture du code wifibot pour prise en main préliminaire des ca
 
 - Réunion de mi-projet : modification du planning et réévaluation des objectifs (cf nouveau [planning.md](./PLANNING.md))
 - Max : ajout d'un bouton STOP pour arrêter le robot
+
+
+### Évaluation intermédiaire :
+
+- Nouveaux objectifs datés fixés pour la semaine 19 afin d'avoir un robot complètement fonctionnel
+- Nouvelle répartition des tâches (décidée à la [réunion précédente](#mardi-2804-)) validées par l'encadrant.

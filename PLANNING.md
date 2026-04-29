@@ -68,7 +68,6 @@ Nous avons établi notre planning pour les deux périodes suivantes. Vous trouve
     </tbody>
 </table>
 
-
 ```mermaid
 
 
@@ -91,7 +90,7 @@ axisFormat %e %b %y
 tickInterval 1month
 weekday monday
 todayMarker off
- 
+
 section Encadrant-Tuteur
 Planning: milestone, 24/02/2026, 1d
 Mi-Projet: milestone, 07/04/2026, 18/04/2026
@@ -110,7 +109,7 @@ git-Juin: milestone, 26/06/2026, 1d
 section Professeurs
 Présentation Hall: milestone, 26/06/2026, 1d
 
-section Colin 
+section Colin
 Rasberry + Connexion : a1, 23/02/2026, 15d
 Composant Communication : a4, after a3, 15d
 
