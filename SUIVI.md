@@ -1,7 +1,7 @@
 ## Document de Suivi de projet ARTEFACT ++++++++++
 
-Ce document rend compte de l'avancement du groupe artishow, avec des points de suivi datés correspondants aux différentes séances effectuées en présentiel. 
-Pour ne pas multiplier les dates, les travaux réalisés entre deux séances seront placés à la date de la séance suivante.
+Ce document rend compte de l'avancement du groupe ARTEFACT++++++++++++, avec des points de suivi datés correspondants aux différentes séances effectuées en présentiel. 
+> **Pour ne pas multiplier les dates, les travaux réalisés entre deux séances seront placés à la date de la séance suivante.**
 
 
 <details open>
@@ -201,7 +201,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 ### Mardi 28/04 :
 
 - Tous : **Réunion de mi-projet** : modification du planning et réévaluation des objectifs (cf nouveau [planning.md](./PLANNING.md))
-- Max : ajout d'un **bouton STOP** pour arrêter le robot
+- Max : ajout d'un **bouton STOP** pour arrêter le robot.
 
 
 ### Évaluation intermédiaire 29/04 :
@@ -209,3 +209,10 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Nouveaux objectifs datés fixés pour la semaine 19 afin d'avoir un robot complètement fonctionnel
 - Nouvelle **répartition des tâches** (décidée à la [réunion précédente](#mardi-2804-)) validées par l'encadrant.
 - Thibaut : Création du **diagramme d'architecture** du projet, pour connaître précisemment la place de chaque fichier dans le git.
+
+
+### Mardi 05/05 :
+- Max : 
+    - Refonte du contrôle clavier sur l'interface web : avant, certaines actions fonctionnaient sur toutes les touches, maintenant elles sont toujours spéficiques à certaines touches. Ajout de touches pour arrêter le robot. (29/04) 
+    - Première version de la documentation et du pseudo-code pour les modes auto (traque et carographie). (29/04) 
+    - Travail sur un algorithme de parcours pour la cartographie, un DFS modifié (29/04). Amélioration, reconstruction du parcours, nettoyage du code, commentaires et doc. (30/04)
