@@ -143,7 +143,7 @@ def find_discontinuites(parcours: list[tuple[int, int]], display_grid: list[list
 # FONCTION PRINCIPALE : DFS ============================= #
 # ======================================================= #
 
-def dfs(grid, x0=0, y0=0):
+def dfs(grid, x0=0, y0=0) -> list[tuple[int, int]]:
     """ Effectue un DFS modifié pour corriger les cases potentiellement oubliées.
     """
     # CONSTANTES
@@ -231,7 +231,6 @@ def dfs(grid, x0=0, y0=0):
                     stack.extend(voisins(cx,y, new_direction))
                     cx += new_direction
 
-
     # Display le résultat du parcours : 
     #   Jaune = vu ; 
     #   Rouge = reparcouru pour récupérer des cases isolées ; 
@@ -283,15 +282,15 @@ def dfs(grid, x0=0, y0=0):
     discontinuites_check = find_discontinuites(parcours, display_grid, verbose=False, display=False)
     assert discontinuites_check == [], f"Il y a encore des discontinuités... :: {discontinuites_check}."
     
-    # parcours final avec affichage étape par étape
-    print_chemin_robot(display_grid, parcours)
-        
+    return parcours
+    
+
 
 
 if __name__ == "__main__":
 
+    # Numéroter et afficher les fichiers txt dans le dossier 'exemples'
     files = {i: f for i, f in enumerate(Path("exemples").glob("*.txt"))}
-
     for i, f in files.items():
         print(i, f.name)
 
@@ -301,4 +300,6 @@ if __name__ == "__main__":
     with open(files[choice], 'r') as f:
         data = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in f.readlines()]
 
-    dfs(data, x0,y0)
+    # Exécuter le parcours et afficher le résultat !
+    parcours = dfs(data, x0,y0)
+    print_chemin_robot(data, parcours)
