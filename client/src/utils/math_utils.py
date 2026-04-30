@@ -27,6 +27,7 @@ class Position:
 
     def updateForTankRotation(self, real_tick_angle_left: int, real_tick_angle_right: int):
         var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
+        # la formules est fause : TODO
 
         self.theta_rad += var_angle_rad
         self.theta += round(math.degrees(var_angle_rad), 3)
