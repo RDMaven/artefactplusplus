@@ -8,6 +8,7 @@ from pathlib import Path
 # ======================================================= #
 # FONCTIONS D'AFFICHAGE ================================= #
 # ======================================================= #
+
 class Symbols:
     dfs   = 'o'
     robot = '*'
@@ -18,7 +19,7 @@ class Colors:
     def yellow(s): return "\033[93m{}\033[00m".format(s)
     def cyan(s):   return "\033[96m{}\033[00m".format(s)
     seen_once   = green(Symbols.robot)
-    seen_twice  = yellow(Symbols.robot)
+    seen_twice  = cyan(Symbols.robot)
     seen_thrice = red(Symbols.robot)
 
 
@@ -61,6 +62,7 @@ def print_parcours(p: list[tuple[int, int]], count_per_line = 10, pause=False) -
 
     return print()
 
+
 def print_chemin_robot(display_grid: list[list[int | str]], parcours: [list[tuple[int, int]]]) -> None:
     """ Print de la progression finale pour le robot sur la grille.
         Le code couleur distingue les caes où le robot passes 1, 2 ou 3 fois (jamais plus).
@@ -87,6 +89,10 @@ def print_chemin_robot(display_grid: list[list[int | str]], parcours: [list[tupl
         time.sleep(0.03) # réduire ou enlever fait apparaître les refresh sale.
 
 
+
+# ======================================================= #
+# FONCTIONS AUXILIAIRES CONSÉQUENTES ==================== #
+# ======================================================= #
 
 def find_discontinuites(parcours: list[tuple[int, int]], display_grid: list[list[int | str]], verbose=False, display=False) -> list[tuple[int]]:
     """ Détermine les couples de discontinuité dans le parcours entré,
@@ -133,84 +139,97 @@ def find_discontinuites(parcours: list[tuple[int, int]], display_grid: list[list
 
 
 
-
+# ======================================================= #
+# FONCTION PRINCIPALE : DFS ============================= #
+# ======================================================= #
 
 def dfs(grid, x0=0, y0=0):
+    """ Effectue un DFS modifié pour corriger les cases potentiellement oubliées.
+    """
+    # CONSTANTES
     N = len(grid)
     M = len(grid[0])
-    TOTAL = sum([sum(l) for l in grid])
-    count = 0
-    vu = set()
-    
-    display_grid = []
-    for l in grid: display_grid.append(l.copy())
+    TOTAL = sum([sum(l) for l in grid]) # nb total de cases à visiter
 
-    parcours = []
+    # VARIABLES GÉNÉRALES
+    count = 0 # nb de cases vues, pour stopper le parcours le plus tôt possible.
+    vu = set() # cases vues    
+    display_grid = [l.copy() for l in grid] # grille d'affichage
+    parcours = [] # parcours final à suivre
 
     ## Pour changer le sens de parcours, il suffit de changer l'ordre de priorité de cette variable AUTOUR
     AUTOUR = {
-         1: [(1,0), (-1,0), (0,1), (0,-1)], # lorsqu'on va vers la droite; (droite gauche bas haut)
-        -1: [(-1,0), (1,0), (0,-1), (0,1)] # lorsqu'on va vers la gauche;   (gauche droite haut bas)
+         1: [(1,0), (-1,0), (0,1), (0,-1)], # lorsqu'on va vers la droite; (droite > gauche > bas > haut)
+        -1: [(-1,0), (1,0), (0,-1), (0,1)] # lorsqu'on va vers la gauche;  (gauche > droite > haut  >bas)
     }
 
-    def checkIsolatedEdgeNode(x,y):
+    # FONCTIONS AUXILIAIRES
+    def checkIsolatedEdgeNode(x,y) -> int:
+        """Renvoie la direction où se trouve une case isolée, 0 sinon."""
         ligne = grid[y]
     
-        x2 = x + 1
-        while x2 < M and x2 >= 0 and ligne[x2] and (x2,y) in vu:
-            x2 += 1
-        res_d = not (x2 >= M or x2 < 0 or not ligne[x2])
+        def scan(dx) -> bool:
+            cx = x + dx
+            while cx < M and cx >= 0 and ligne[cx] and (cx,y) in vu:
+                cx += dx
+            return not (cx >= M or cx < 0 or not ligne[cx])
 
-        x2 = x - 1
-        while x2 < M and x2 >= 0 and ligne[x2] and (x2,y) in vu:
-            x2 -= 1
-        res_g = not (x2 >= M or x2 < 0 or not ligne[x2])
+        return -1 if scan(-1) else 1 if scan(1) else 0
 
-        return -1 if res_g else 1 if res_d else 0
-
-
-    def voisins(x,y, dir): # Renvoie la liste des voisins possible dans l'ordre de priorité croissante (dernier = plus privilégié)
+    def voisins(x,y, dir):
+        """Renvoie la liste des voisins possible dans l'ordre de priorité croissante (dernier = plus privilégié)
+        Logique : on ne considère que les cases qui:
+        * Sont dans la grille
+        * Sont visitables (i.e. ne sont pas interdites)
+        * Ne sont pas visités OU ont des cases isolées derrière elles. (lignes seulemennt)"""
         return [(x+dx, y+dy) for dx, dy in AUTOUR[dir] \
                     if x+dx < M and x+dx >= 0 and y+dy < N and y+dy >= 0 and \
                     grid[y+dy][x+dx] and \
-                    ((x+dx, y+dy) not in vu  or checkIsolatedEdgeNode(x,y) != 0) 
+                    ((x+dx, y+dy) not in vu or (checkIsolatedEdgeNode(x,y) != 0 and dy == 0)) 
                ][::-1]
 
+    def get_direction(x,y, px, py, direction):
+        """ Renvoie la nouvelle direction à suivre, selon 
+        * le déplacement que l'on vient d'effectuer
+        * et la direction précédente (pour garde la même si x = px)."""
+        return 1 if x-px > 0 else -1 if x-px <0 else direction
 
+    # VARIABLE DE PARCOURS
     direction = 1 # 1=droite, -1=gauche
-    prev = None
+    prev = (x0,y0) # Case précédente pour toujours connaître la direction à suivre, à l'initialisation, on peut prendre x0y0, cela donnera la valeur par défaut de 'direction' d'aprs la logique de get_direction.
+
+    # BOUCLE PRINCIPALE DU DFS
     stack = [(x0,y0)]
     while stack and count != TOTAL:
-        # time.sleep(0.01)
         x,y = stack.pop()
-        if prev != None:
-            direction = 1 if x-prev[0] > 0 else (-1 if x-prev[0] < 0 else direction) # on garde la direction précédente si on vertical
+        direction = get_direction(x,y, *prev, direction)
+        
         if (x,y) not in vu:
             count += 1
             parcours.append((x,y))
             vu.add((x,y))
-            display_grid[y][x] = "\033[93mo\033[00m"
+            display_grid[y][x] = Colors.yellow(Symbols.dfs)
             stack.extend(voisins(x,y, direction))
-            # os.system('clear')
-            # print_grid(display_grid, clear=True)
-            # print(direction, prev, (x,y))
-
             prev = (x,y)
-            # input()
+
+            # print_grid(display_grid, clear=True) # DEBUG
+            # print(direction, prev, (x,y)) # DEBUG : à placer avant le prev = (x,y)
         else:
-            dir = checkIsolatedEdgeNode(x,y)
-            if dir != 0:
-                x2 = x
-                while x2 < M and x2 >= 0 and grid[y][x2]:
-                    parcours.append((x2,y))
-                    if (x2,y) in vu:
-                        display_grid[y][x2] = "\033[91mo\033[00m"
+            # Hijack du DFS, si il y a des cases oubliées sur la ligne,
+            # on va les chercher, puis on reprend le DFS.
+            new_direction = checkIsolatedEdgeNode(x,y)
+            if new_direction != 0:
+                cx = x
+                while cx < M and cx >= 0 and grid[y][cx]:
+                    parcours.append((cx,y))
+                    if (cx,y) in vu:
+                        display_grid[y][cx] = Colors.red(Symbols.dfs)
                     else:
-                        display_grid[y][x2] = "\033[93mo\033[00m"
-                        vu.add((x2,y))
+                        display_grid[y][cx] = Colors.yellow(Symbols.dfs)
+                        vu.add((cx,y))
             
-                    # stack.extend(voisins(x,y, direction))
-                    x2 += dir
+                    stack.extend(voisins(cx,y, new_direction))
+                    cx += new_direction
 
 
     # Display le résultat du parcours : 
@@ -220,7 +239,7 @@ def dfs(grid, x0=0, y0=0):
     print_grid(display_grid, clear=False)
 
 
-    # Gestion des discontinuités ======================== #
+    # GESTION DES DISCONTINUITÉS
     # Récupérer les couples de discontinuité
     discontinuites = find_discontinuites(parcours, display_grid, verbose=False, display=False)
 
