@@ -1,11 +1,15 @@
+# Fichier définissant le client WS : récéption, envoie; gestion de threads, gestions d'erreurs.
+
 import asyncio, websockets
 from config import Config
 from src.utils.message_parse_and_build import message_builder, message_parser
 import cv2
 from src.camera.camera import Camera
 
-
-class Counter: # for debug of potentially lost messages (resolved normalement)
+# ======================================================= #
+# DEBUG COUNTER CLASS =================================== #
+# ======================================================= #
+class Counter: # DEBUG of potentially lost messages (resolved normalement)
     def __init__(self):
         self._counter = 0
 
@@ -17,31 +21,44 @@ class Counter: # for debug of potentially lost messages (resolved normalement)
         return self._counter
 
 
-# Client class for the websocket ------------------------ #
+# ======================================================= #
+# WEBSOCKET CLIENT ====================================== #
+# ======================================================= #
 class WebSocketClient:
-    def __init__(self, uri):
+    """ Client WS pour un robot, qui prend l'url de connection en argument. """
+    def __init__(self, uri, debug = False):
         self.uri = uri
         self.websocket = None
         self.stop_event = asyncio.Event()
-        self.sent_counter = Counter() # for debug
-        self.receive_counter = Counter() # for debug
+        self.debug = debug
+        if self.debug:
+            self.sent_counter = Counter() # DEBUG
+            self.receive_counter = Counter() # DEBUG
     
-    def counter_status(self): # for debug
+    def counter_status(self): # DEBUG
         print(f"COUNTERS - Received : {self.receive_counter.get()}. Sent : {self.sent_counter.get()}") 
 
     async def stop(self):
+        """ Arrêter le robot n'importe quand avec de l'async."""
         self.stop_event.set()
 
     async def connect(self):
+        """ Initialiser la connection WS. """
         self.websocket = await websockets.connect(self.uri)
-        print("Connected to server")
+        if self.debug : print("Connected to server")
 
     async def send(self, mtype, mfor, *args):
+        """ Formatter et envoyer un message :
+        * mtype : le type du message (cf. src.utils.message_parse_and_build)
+        * mfor : le code du destinataire (cf. doc) 
+        * *args : les arguments nécessaires pour le message (nombre variable d'ou l'*)"""
         message = message_builder(mtype, Config.Robot.ID, mfor, args)
         await self.websocket.send(message)
-        self.sent_counter.update() # for debug
+        if self.debug: self.sent_counter.update() # DEBUG
 
     async def video_streamer(self):
+        """ Fonction pour le thread video, récupère et 
+        envoie les frames video à la fréquence paramétrée. """
         camera = Camera()
 
         try:
@@ -53,31 +70,29 @@ class WebSocketClient:
         finally:
             camera.quit()
 
-    async def event_sender(self): # for testing, TODO faire un sender pour tout les messages du robot !
+    async def event_sender(self): # DEBUG, TODO faire un sender pour tout les messages du robot !
         while not self.stop_event.is_set():
             await self.send("event", -1, "test", {"test": 99})
             await asyncio.sleep(10)
 
-
     async def receiver(self):
+        """ Fonction pour le thread de réception des messages WS.
+        Parsing et gestion d'erreurs. """
         while not self.stop_event.is_set():
             try:
                 data = await self.websocket.recv()
-                if data == "STOP":
-                    self.stop_event.set()
-                    print("STOP detected")
-                    break
-
                 data_type = message_parser(data)
 
-                self.receive_counter.update() # for debug
+                if self.debug: self.receive_counter.update() # DEBUG
 
             except Exception as e:
-                print("Receive error:", e)
+                self.send("event", -1, 'ERROR', {"data": f"Robot receiver error: {e}."})
+                if self.debug: print("Receive error:", e)
                 break
 
 
     async def run(self):
+        """ Fonction principale du client WS : lance les threads, gère les erreurs."""
         await self.connect()
 
         receiver_task = asyncio.create_task(self.receiver())
@@ -92,7 +107,7 @@ class WebSocketClient:
 
         finally:
             self.stop_event.set()
-            print("Je suis arrivé au finally de STOP yeah !")
+            if self.debug: print("Robot WSClient, arrivé au 'finally' de 'run()' yeah !")
 
             for task in [receiver_task, video_task, event_task]:
                 task.cancel()
@@ -105,9 +120,12 @@ class WebSocketClient:
             )
 
             await self.websocket.close()
+            if self.debug: print("Robot WSClient, gracefully stopped the WS connection")
 
 
-# Run Client -------------------------------------------- #
+# ======================================================= #
+# POUR TESTER LE CLIENT WS ============================== #
+# ======================================================= #
 if __name__ == "__main__":
     client = WebSocketClient(
         f"ws://{Config.Web.HOST}:{Config.Web.PORT}/ws/{Config.Robot.ID}"
