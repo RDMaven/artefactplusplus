@@ -2,11 +2,11 @@ import json, time, base64
 from src.robot import robot, camera
 
 
-# ------------------------------------------------------- #
-# Message parsers (receivers) --------------------------- #
-# ------------------------------------------------------- #
+# ======================================================= #
+# Message parsers (receivers) =========================== #
+# ======================================================= #
 
-# SERVER -> ROBOT Message parser ------------------------ #
+# SERVER -> ROBOT Message parser ======================== #
 def message_parser(data: str):
     try:
         data = json.loads(data)
@@ -25,41 +25,40 @@ def message_parser(data: str):
                 mx, my = mdata.values()
                 print(f"Asked to move following differential x={mx}, y={my}")
                 robot.moveManual(mx, my)
-                # TODO : actually move.
                 
             case "move_cam":
                 mx, my = mdata.values()
                 print(f"Asked to move the cam following differential x={mx}, y={my}")
-                camera.move_controls(mx, my)
-                # TODO : actually move.
-
+                camera.move(mx, my)
 
             case "forward":
                 d = mdata.values()
                 print(f"Asked to move forward by {d}cm")
-                # TODO : actually move
+                robot.forwardByDistance(d)
+
             case "rotate":
                 a = mdata.values()
-                print(f"asked to rotate by {a} degrees")
-                # TODO : actually rotate
+                print(f"Asked to rotate by {a} degrees")
+                robot.rotateByAngle(a)
+
         return mtype
-    except: # Exception as e:
+    
+    except Exception as e:
         print(f"SERVER - {data}")
-        return "exception"
+        
 
-# ------------------------------------------------------- #
-# Message builders -------------------------------------- #
-# ------------------------------------------------------- #
+# ======================================================= #
+# Message builders (senders) ============================ #
+# ======================================================= #
 
-# Utility functions ------------------------------------- #
+# Utility functions ===================================== #
 def assert_number_of_arguments(mtype, expected, got):
     assert got == expected, f"{mtype} message requires {expected} args, got {got}"
 
 def assert_argument_type(vname, expected, got):
     assert got == expected, f"Type of {vname} must be {expected}, got {got}"
 
-
-# ROBOT -> SERVER Message data builder ------------------ #
+# ROBOT -> SERVER Message data builder ================== #
 def message_data_builder(mtype, *args):
     match mtype:
         case "status":
@@ -86,7 +85,7 @@ def message_data_builder(mtype, *args):
                 "parameters": eparams
             }
         case "video":
-            vbytes = args[0][0] ## TODO why is this so ugly
+            vbytes = args[0][0]
             assert_argument_type("video", bytes, type(vbytes))
             return {
                 "bytes": base64.b64encode(vbytes).decode("utf-8") # TODO pour plus de perf, on peut faire une exception pour le feed video, et ne pas l'encapsuler en json, pour pouvoir utiliser les raw bytes, et gagner 33% de taille des paquets. 
@@ -96,7 +95,7 @@ def message_data_builder(mtype, *args):
 
 
 
-# ROBOT -> SERVER Message builder ------------------------- #
+# ROBOT -> SERVER Message builder ======================= #
 def message_builder(mtype, mfrom, mfor, *args):
     return json.dumps({
         "type": mtype,
