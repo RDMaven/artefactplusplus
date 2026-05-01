@@ -8,17 +8,8 @@ import src.utils.math_utils as mu
 
 
 class RobotDriver(WifiBot):
-    """ WifiBot methods :
-    setLeftSpeed   | setRightSpeed 
-    setLeftForward | setRightForward 
-    sendCmd 
-    updateStatus 
-    printStatus 
-    runSendCmd 
-    runUpdateStatus 
-    runInteractive
-    """
-    def __init__(self, serPath):
+
+    def __init__(self, serPath = Config.Robot.SERIAL_PORT):
         if Config.is_prod:
             super().__init__(serPath)
     
@@ -73,30 +64,7 @@ class RobotDriver(WifiBot):
         else:
             self.setMovingSpeed(round(l,1), round(r,1))
     
-
-    # OLD - TODO ENLEVER 'POUR LE MODE MANUEL' ---------- #
-    def moveManualJoystick(self, x:float ,y:float ):
-        assert x >= -1 and x <= 1 and y >= -1 and y <= 1, "moveManual : a recu un x ou y hors de [-1,1]"
-
-        # Différentiel
-        left = y - (x * Config.Robot.TURN_FACTOR)
-        right = y + (x * Config.Robot.TURN_FACTOR)
-
-        # Normaliser : ex, fwd+right => left = 1 + (+0.5) = 1.5 ~> = 1        
-        norm = max(1, abs(left), abs(right))
-        left /= norm
-        right /= norm
-
-        # Scale
-        left  *= self.speed
-        right *= self.speed
-
-        if x == 0.0 and y == 0.0:
-            self.stop()
-        else:
-            self.setMovingSpeed(round(left,1), round(right,1))
-
-
+    
     # Pour le mode AUTO --------------------------------- #
     def forwardByDistance(self, distance:float):
         """ Avance d'une certaine distance, donnée en cm. """
