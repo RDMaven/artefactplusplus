@@ -1,22 +1,20 @@
+# Fichier de configuration des variables d'environment : classification, typage, vérification d'intégrité.
+
 from dotenv import load_dotenv, find_dotenv,dotenv_values
 from os import environ
 from sys import platform
 
 
-print("+--+ Config SETUP +--+")
+print("= Loading robot configuration =============================")
 load_dotenv()
     
-
 class Config:
-    """
-    Clean main class to manage environment variables.
-    """
+    """ Gestionnaire organisé des variables d'environment. """
 
     # Working environment type (dev or prod)
-    ENV = environ["APP_ENV"]  # test ou prod
+    ENV = environ["APP_ENV"]  # /any/ ou prod
     is_prod = (ENV == "prod")
 
-    # TODO Ranger ces env.
     OS_IS_LINUX=any([e in platform for e in ['linux']])
     print(f"Detected OS : {platform}.")
     
@@ -37,41 +35,33 @@ class Config:
         # SPEED_MANUAL = int(environ["ROBOT_SPEED_MANUAL"])
         # SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
         TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
-        # TICKS_TO_METERS=float(environ["ROBOT_TICKS_TO_METERS"])
         TICKS_PER_CM=float(environ["ROBOT_TICKS_PER_CM"])
-
-    # class Motor:
-    #     TIMEOUT = int(environ["MOTOR_TIMEOUT"])
-    #     SPEED = int(environ["MOTOR_SPEED"])
-    #     TURN_FACTOR = float(environ["MOTOR_TURN_FACTOR"])
-    #     TO_REAL_SPEED_FACTOR = float(environ["MOTOR_TO_REAL_SPEED_FACTOR"])
-    #     TICKS_PER_CM = int(environ["MOTOR_TICKS_PER_CM"])
-    #     TICKS_PER_DEGREE = int(environ["MOTOR_TICKS_PER_DEGREE"])
 
 
 def compare_env_with_example():
+    """ Compare '.env' avec '.env.example', pour vérifier l'intégralité du fichier."""
     # Import env files
     env = dict(dotenv_values(".env"))
     env_ex = dict(dotenv_values(".env.example"))
 
-    # 
     changed=0
     for k,v in env.items():
         if v == "":
-            print(f'ERROR : Key {k} has no value in .env.')
+            print(f'ERROR    : Key {k} has no value in .env.')
 
     for k,v in env_ex.items():
         if k not in env:
             changed+=1
-            print(f"Missing environment variable : {k}. Replacing by default value.")
+            print(f"MISSING  : {k}. Replacing by default value.")
             with open('.env', 'a') as f:
-                f.write(f'\n\n#Copied from .env.example.\n{k}={v}')
+                f.write(f'\n{k}={v} # Copied from .env.example.\n')
     if changed:
         print(f"Added {changed} variables to .env.")
 
-    print("Loaded .env")
+
+    print("Successfully loaded and verified the '.env' file.")
 
 
 compare_env_with_example()
 
-print("+--+ Config SETUP (END) +--+")
+print("===========================================================")

@@ -1,4 +1,8 @@
 #!/bin/sh
+# Lançement automatique du client.
+# - Activation du venv
+# - Recherche de python
+# - Exécution de 'client.py'
 
 . .venv/bin/activate
 

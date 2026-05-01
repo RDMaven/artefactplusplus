@@ -2,11 +2,15 @@ from config import Config
 import math
 
 class Ratio:
+    """ Definition des ratios Ticks - CM """
     TperM = Config.Robot.TICKS_PER_CM 
     MperT = 1 / TperM
 
 
-# Positions --------------------------------------------- #
+# ======================================================= #
+# Gestion de la position, mises à jour par odométrie ==== #
+# ======================================================= #
+
 class Position:
 
     def __init__(self, x0=0, y0=0, theta0=0):
@@ -33,6 +37,10 @@ class Position:
         self.theta += round(math.degrees(var_angle_rad), 3)
 
 
+# ======================================================= #
+# Conversion en ticks de cm et angles =================== #
+# ======================================================= #
+
 def distanceInTickForForward(distance: float):
     """ distance : in cm """
     return int(distance * Ratio.TperM)
@@ -42,19 +50,16 @@ def distanceInTickForRotation(angle: float):
     return int(1/2 * abs(math.radians(angle) * Config.Robot.DISTANCE_BTW_WHEELS * Ratio.TperM))
 
 
+# ======================================================= #
+# Fonctions maths diverses ============================== #
+# ======================================================= #
 
-# Numbers ----------------------------------------------- #
 def avg(*args):
     return sum(args)/len(args)
 
 def normaliser_degrees(degrees):
-    """
-    Replacer une mesure en degré dans -180,180,
-    avec des exceptions.
-    """
+    """ Replacer une mesure en degré dans -180,180, avec des exceptions. """
     excluded = [360, 1080]
     if degrees not in excluded:
         degrees = (degrees + 180) % 360 - 180
     return degrees
-
-    
