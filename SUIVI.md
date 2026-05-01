@@ -243,7 +243,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Max : 
     - Refonte du contrôle clavier sur l'interface web : avant, certaines actions fonctionnaient sur toutes les touches, maintenant elles sont toujours spéficiques à certaines touches. Ajout de touches pour arrêter le robot. (29/04) 
     - Première version de la documentation et du pseudo-code pour les modes auto (traque et carographie). (29/04) 
-    - Travail sur un algorithme de parcours pour la cartographie, un DFS modifié (29/04). Fin : amélioration, reconstruction du parcours, nettoyage du code, commentaires et doc. (30/04)
+    - Travail sur un algorithme de parcours du robot sur un carte prédéfinie pour la cartographie 4G : un DFS modifié (29/04). Amélioration, reconstruction du parcours, nettoyage du code, commentaires, doc et fin. (30/04)
 
 
 ### Mercreci 13/05
