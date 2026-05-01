@@ -5,6 +5,9 @@ import subprocess,time
 
 STATIC_COMMAND = "/usr/bin/uvcdynctrl"
 
+# ======================================================= #
+# Contrôle des données de la caméra ===================== #
+# ======================================================= #
 class Camera:
 
     def __init__(self):
@@ -36,11 +39,17 @@ class Camera:
 
         return buffer.tobytes()
 
+
+# ======================================================= #
+# Contrôle de l'orientation de la caméra ================ #
+# ======================================================= #
 class CameraMove:
 
     def __init__(self):
         self.id = Config.Camera.ID
-
+        self.x = 0
+        self.y = 0
+        self.move(0,0) # Initialisation de la caméra à (0,0)
 
     def command_make(self, instruction: str, value: str):
         subprocess.call(f"{STATIC_COMMAND} -d video{self.id} -s '{instruction}' -- '{value}'", shell=True)
@@ -49,20 +58,28 @@ class CameraMove:
     def camera_up(self, value: int):
         if -32000 < value < 32000 : 
             self.command_make("Tilt, Relative",str(value))
+            self.y += value
             return True
         return False
     
     def camera_right(self, value: int):
         if -32000 < value < 32000 : 
             self.command_make("Pan, Relative",str(value))
+            self.x += value
             return True
         return False
     
     def reset_camera_up(self):
         self.command_make("Tilt, Reset","0")
+        self.y = 0
     
     def reset_camera_right(self):
         self.command_make("Pan, Reset", "0")
+        self.x = 0
+
+    def reset(self):
+        self.reset_camera_up()
+        self.reset_camera_right()
 
     def demo(self, slp=2):
         self.camera_up(1000)
@@ -86,12 +103,14 @@ class CameraMove:
         time.sleep(slp)
 
 
-    def move_controls(self,x, y):
-        if x==0 and y==0:
-            self.reset_camera_right()
-            self.reset_camera_up()
-            return
-        if y==0:
-            self.camera_up(x*1000)
-        else:
-            self.camera_right(y*1000)
+    def move(self, dx, dy):
+        """ Bouger la caméra de manière relative.
+        (dx, dy) = (0,0) est spécial : reset à l'origine. """
+        if dx==0 and dy==0:
+            self.reset()
+        if dx != 0:
+            self.camera_right(dx*1000)
+        if dy != 0:
+            self.camera_up(dy*1000)
+
+
