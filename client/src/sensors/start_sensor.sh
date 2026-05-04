@@ -24,4 +24,4 @@ fi
 "$PYTHON" install -r requirements.txt
 
 echo "====================="
-"$PYTHON" Hall_sensor.py
+"$PYTHON" MPU_9250_6500.py
