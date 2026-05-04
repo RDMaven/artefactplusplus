@@ -5,7 +5,7 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 # Create an MPU9250 instance
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
-    address_mpu_master=MPU9050_ADDRESS_68,  # In case the MPU9250 is connected to another I2C device
+    #address_mpu_master=MPU9050_ADDRESS_68,  # In case the MPU9250 is connected to another I2C device
     address_mpu_slave=None,
     bus=1,
     gfs=GFS_1000,
