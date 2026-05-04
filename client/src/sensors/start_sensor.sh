@@ -2,13 +2,13 @@
 
 echo "====================="
 echo "Lancement de l'environnement des capteurs"
-source ./sens/bin/activate
+source ../../../sensors/sens/bin/activate
 
 
-pip install -r requirements.txt
-echo "====================="
 
 echo "====================="
+
+
 
 if command -v python3 >/dev/null 2>&1; then
     PYTHON=python3
@@ -21,4 +21,7 @@ else
     exit 1
 fi
 
+"$PYTHON" install -r requirements.txt
+
+echo "====================="
 "$PYTHON" Hall_sensor.py
