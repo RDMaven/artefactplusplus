@@ -1,20 +1,17 @@
 #!/bin/bash
+
 echo "====================="
 
+cd "$(dirname "$0")"
 
-
-if command -v python3 >/dev/null 2>&1; then
-    PYTHON=python3
-elif command -v python >/dev/null 2>&1; then
-    PYTHON=python
-elif command -v py >/dev/null 2>&1; then
-    PYTHON=py
-else
-    echo "Python not found"
-    exit 1
+if [ ! -d "sens" ]; then
+    python3 -m venv sens
 fi
 
-"$PYTHON" -m pip install -r ./requirements.txt
+source sens/bin/activate
+
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
 echo "====================="
-"$PYTHON" MPU_9250_6500.py
+python MPU_9250_6500.py
