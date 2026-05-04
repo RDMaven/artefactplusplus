@@ -21,7 +21,7 @@ else
     exit 1
 fi
 
-pip install -r ./requirements.txt
+"$PYTHON" -m pip install -r ./requirements.txt
 
 echo "====================="
 "$PYTHON" MPU_9250_6500.py
