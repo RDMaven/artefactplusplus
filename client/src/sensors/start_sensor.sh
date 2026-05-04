@@ -2,7 +2,7 @@
 
 echo "====================="
 echo "Lancement de l'environnement des capteurs"
-source ../../../sensors/sens/bin/activate
+source ./sens/bin/activate
 
 
 
@@ -21,7 +21,7 @@ else
     exit 1
 fi
 
-"$PYTHON" install -r requirements.txt
+pip install -r ./requirements.txt
 
 echo "====================="
 "$PYTHON" MPU_9250_6500.py
