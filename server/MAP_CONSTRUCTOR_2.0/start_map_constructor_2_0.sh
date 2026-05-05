@@ -8,7 +8,9 @@ NC="\033[0m" # No Color
 PROJECT_NAME="map_constructor_2.0"
 TEMPLATE="react-ts"
 
-echo -e "${BLUE}====### LANCEMENT DU PROJET ###====${NC}"
+cd "./MAP_CONSTRUCTOR_2.0"
+
+echo -e "${BLUE}========### LANCEMENT DU PROJET ###========${NC}"
 
 echo "Vérification que le projet vite existe"
 
@@ -21,10 +23,10 @@ fi
 echo "Le projet vite est bien créé !"
 cd "$PROJECT_NAME" || exit
 
-echo -e "${BLUE}====### INSTALATION DES DÉPENDANCES DE NPM ###====${NC}"
+echo -e "${BLUE}========### INSTALATION DES DÉPENDANCES DE NPM ###========${NC}"
 npm install
 
-echo -e "${BLUE}====### LANCEMENT DU SERVEUR ET DU REACT ###====${NC}"
+echo -e "${BLUE}========### LANCEMENT DU SERVEUR ET DU REACT ###========${NC}"
 
-npm run dev
+npm run dev 
 

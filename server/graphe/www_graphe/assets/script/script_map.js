@@ -163,29 +163,6 @@ var GraphicFile = /** @class */ (function () {
     };
     return GraphicFile;
 }());
-var Vertex = /** @class */ (function () {
-    function Vertex(x, y, id) {
-        this.x = x;
-        this.y = y;
-        this.id = id;
-    }
-    Vertex.prototype.getX = function () {
-        return this.x;
-    };
-    Vertex.prototype.getY = function () {
-        return this.y;
-    };
-    Vertex.prototype.getId = function () {
-        return this.id;
-    };
-    Vertex.prototype.setX = function (x) {
-        this.x = x;
-    };
-    Vertex.prototype.setY = function (y) {
-        this.y = y;
-    };
-    return Vertex;
-}());
 // GESTION PAGE
 var socket = new WebSocket("/ws");
 var PARTIE1 = document.getElementById("part_1");
@@ -425,4 +402,40 @@ TODO:
     - Logs lorsqu'un sommet est créé
     - Bouton Reset
 - Lecture de carte
-*/ 
+*/
+//CREATION DE SOMMETS - ARRETE
+var Vertex = /** @class */ (function () {
+    function Vertex(x, y, id) {
+        this.x = x;
+        this.y = y;
+        this.id = id;
+    }
+    Vertex.prototype.getX = function () {
+        return this.x;
+    };
+    Vertex.prototype.getY = function () {
+        return this.y;
+    };
+    Vertex.prototype.getId = function () {
+        return this.id;
+    };
+    Vertex.prototype.setX = function (x) {
+        this.x = x;
+    };
+    Vertex.prototype.setY = function (y) {
+        this.y = y;
+    };
+    return Vertex;
+}());
+var sommet = document.getElementById("sommet");
+var arrete = document.getElementById("arrete");
+var x_souris = 0;
+var y_souris = 0;
+document.addEventListener('mousemove', function (event) {
+    x_souris = event.clientX;
+    y_souris = event.clientY;
+});
+if (sommet && arrete) {
+    sommet.addEventListener('click', function () {
+    });
+}

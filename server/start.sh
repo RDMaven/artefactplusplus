@@ -13,4 +13,5 @@ else
     exit 1
 fi
 
-"$PYTHON" run.py
+
+"$PYTHON" run.py & ./MAP_CONSTRUCTOR_2.0/start_map_constructor_2_0.sh
