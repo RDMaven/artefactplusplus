@@ -161,7 +161,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 ### Vendredi 13/03
 
-- Max (Travail inter-séance (vacances)) :
+- Max (Inter-séance) :
     - Migration du serveur web de Flask vers FastAPI pour une vraie implémentation de WS. (27/02)
     - Nouveau style des pages web 'robot'. Liaison des nouveaux éléments HTML aux fonctions JS + WS. (27/02)
     - Debug de la compatibilité Linux de la caméra. (27/02)
@@ -183,7 +183,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 ### Lundi 16/03
 
-- Max (Travail inter-séance) : Script d'installation du projet pour UNIX. (14/03)
+- Max (Inter-séance) : Script d'installation du projet pour UNIX. (14/03)
 
 - Thibaut : **Interface Web** pour les graphes de position (abandonnée depuis...)
 - Max : **Contrôle manuel** du robot à partir de l'interface Web. Le robot à 4 roues, le joystick est donc inutilisable (flop). 
@@ -240,16 +240,17 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 ### Mardi 05/05
 
-- Max : 
+- Max (Inter-Séance): 
     - Refonte du contrôle clavier sur l'interface web : avant, certaines actions fonctionnaient sur toutes les touches, maintenant elles sont toujours spéficiques à certaines touches. Ajout de touches pour arrêter le robot. (29/04) 
     - Première version de la documentation et du pseudo-code pour les modes auto (traque et carographie). (29/04) 
     - Travail sur un algorithme de parcours du robot sur un carte prédéfinie pour la cartographie 4G : un DFS modifié (29/04). Amélioration, reconstruction du parcours, nettoyage du code, commentaires, doc et fin. (30/04)
     - Ajout et unification des commentaires coté client, tracking de la rotation de la caméra. (01/05)
 
+- Max et Thibaut : Refléxion et aboutissement d'une méthode pour intégrer la détéction d'obstacles au mode auto du robot.
 
-### Mercreci 13/05
+### Mercredi 13/05
 ### Mercredi 27/05
-### Mercreci 10/06
+### Mercredi 10/06
 ### Lundi 15/06
 ### Mardi 16/06
 ### Lundi 22/06
