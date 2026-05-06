@@ -245,6 +245,14 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
     - Première version de la documentation et du pseudo-code pour les modes auto (traque et carographie). (29/04) 
     - Travail sur un algorithme de parcours du robot sur un carte prédéfinie pour la cartographie 4G : un DFS modifié (29/04). Amélioration, reconstruction du parcours, nettoyage du code, commentaires, doc et fin. (30/04)
     - Ajout et unification des commentaires coté client, tracking de la rotation de la caméra. (01/05)
+- Colin :
+    - Branchement de l'antenne
+    - Mise en place de la configuration réseau à partir de l'antenne
+- Thibaut :
+    - Réception des nouveaux composants (04/05)
+    - Recherche d'un algorithme pour gérer le MPU-9250/6050 (04/05)
+    - Réglages de bug avec le bus I2C (04/05)
+    - Tests de la raspberry avec un **Voltmètre** pour vérifier que les ports SDA et SLC ne sont pas court-circuités
 
 - Max et Thibaut : Refléxion et aboutissement d'une méthode pour intégrer la détéction d'obstacles au mode auto du robot.
 
