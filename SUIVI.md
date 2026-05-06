@@ -17,12 +17,15 @@ Ce document rend compte de l'avancement du groupe ARTEFACT++++++++++++, avec des
 
 - Réunion commune pour **mettre en place le planning.**
 - Dès la prochaine séance, les travaux individuels pourront commencer.
+- Thibaut : **prise en main de cv2**
 
 
 ### Vendredi 20/02
 
 - Colin : **Récupération de la Raspberry** auprès de Tarik Graba et remplacement de l'adaptateur USB-Serie
-- Thibaut : **prise en main de cv2.**
+- Thibaut : 
+    - **Première interface caméra** : récupération du flux et affichage sur un serveur web
+    - Modifications d'environnement
 - Max : Architecture générale (fichiers d'env, de configuration, squelette du projet), et du serveur web (Flask), pages web de dashbard (général) et de contrôle robot individuel (flux video, animations...). Proposition d'une doc "API" pour la communication Robot-Serveur. Mise en place des canaux WS (interface-serveur).
 
 
@@ -54,7 +57,9 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 
 - Thibaut et Max : Mise en place d'une **VM à Rezel** pour le serveur central
-- Thibaut : refonte du [README.md](README.md), définition du graphe de cartographie de l'école
+- Thibaut :
+    - refonte du [README.md](README.md)
+    - Début de la création d'une application pour représenter les cartes utilisées par le robot avec des **graphes**
 - Max : **Debug et tests** du serveur Web et serveur de suivi. Reprise des fonctions de mouvement robot 'auto' du projet Artefact.
 - Colin : aide aux **debugs**
 
@@ -63,12 +68,18 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 - Max (Inter-séance) : Script d'installation du projet pour UNIX. (14/03)
 
-- Thibaut : **Interface Web** pour les graphes de position (abandonnée depuis...)
+- Thibaut : 
+    - **Interface Web** pour les graphes de position, appellé **MAP_CONSTRUCTOR** (abandonnée depuis...)
+    - Mise en place d'une **liaison websocket** avec un background python pour cette interface web
 - Max : **Contrôle manuel** du robot à partir de l'interface Web. Le robot à 4 roues, le joystick est donc inutilisable (flop). 
 
 
 ### Vendredi 27/03
 
+- Thibaut (interséance) :
+    - 18/03 : **git push automatique** sur l'interface web de MAP_CONSTRUCTOR lors de l'export d'un graphe pour qu'elle soit accessible à tous
+    - 19/03 : possibilité d'importer des images dans MAP_CONSTRUCTOR (et donc des cartes pour dessiner un graphe dessus)
+    - 19/03 : Mise en place de la création de graphe.
 - Colin, Max, Thibaut : Rencontre avec les encadrants 
 - Colin : **Mise en place des cartes SIM** et première connexion au réseau 4G de l'école (avec un ordinateur)
 - Thibaut : Récupération du matériel pour la centrale inertielle
@@ -118,6 +129,10 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 ### Mardi 05/05
 
+- Thibaut (04/05):
+    - Réception des nouveaux composants
+    - Recherche d'un algorithme pour gérer le MPU-9250/6050
+    - Réglages de bug avec le bus I2C
 - Max (Inter-Séance): 
     - Refonte du contrôle clavier sur l'interface web : avant, certaines actions fonctionnaient sur toutes les touches, maintenant elles sont toujours spéficiques à certaines touches. Ajout de touches pour arrêter le robot. (29/04) 
     - Première version de la documentation et du pseudo-code pour les modes auto (traque et carographie). (29/04) 
@@ -127,12 +142,12 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
     - Branchement de l'antenne
     - Mise en place de la configuration réseau à partir de l'antenne
 - Thibaut :
-    - Réception des nouveaux composants (04/05)
-    - Recherche d'un algorithme pour gérer le MPU-9250/6050 (04/05)
-    - Réglages de bug avec le bus I2C (04/05)
     - Tests de la raspberry avec un **Voltmètre** pour vérifier que les ports SDA et SLC ne sont pas court-circuités
+    - Mise en évidence de la nécessité de **souder** les composants
+    - Début de la création de **MAP_CONSTRUCTOR_2.0**, interface web permettant de modéliser des cartes non pas à partir de graphes, mais d'une grille de pixels
 
-- Max et Thibaut : Refléxion et aboutissement d'une méthode pour intégrer la détéction d'obstacles au mode auto du robot.
+- Max et Thibaut : 
+    - Refléxion et aboutissement d'une méthode pour intégrer la détéction d'obstacles au mode auto du robot.
 
 ### Mercredi 13/05
 ### Mercredi 27/05
