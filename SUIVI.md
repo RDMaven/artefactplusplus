@@ -150,6 +150,8 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
     - Refléxion et aboutissement d'une méthode pour intégrer la détéction d'obstacles au mode auto du robot.
 
 ### Mercredi 13/05
+
+- Thibaut (07/05) : mise en place d'une réception de fichiers images sur l'interface web de MAP_CONSTRUCTOR_2.0
 ### Mercredi 27/05
 ### Mercredi 10/06
 ### Lundi 15/06
