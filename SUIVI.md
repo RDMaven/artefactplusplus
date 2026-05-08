@@ -152,6 +152,9 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 ### Mercredi 13/05
 
 - Thibaut (07/05) : mise en place d'une réception de fichiers images sur l'interface web de MAP_CONSTRUCTOR_2.0
+- Thibaut (09/05) : mise en place d'un fichier *start.sh* global permettant d'accéder aux différents applications présentes dans le git sans succomber aux dédales de notre architecture...
+
+
 ### Mercredi 27/05
 ### Mercredi 10/06
 ### Lundi 15/06

@@ -3,6 +3,7 @@
 ```
 artefactplusplus
 ├── install.sh (préparer le projet)
+├── start.sh
 ├── PLANNING.md
 ├── README.md
 ├── SUIVI.md (VOUS ÊTES ICI)
@@ -41,7 +42,7 @@ artefactplusplus
     ├── config.py
     ├── requirements.txt
     ├── run.py
-    ├── start.sh
+    ├── start_www.sh
     ├── graphe/ (interface Map Constructor)
     │   ├── API.md
     │   ├── deploy.sh (git push automatique du dossier Cartes/)
