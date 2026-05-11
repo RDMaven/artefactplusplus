@@ -153,7 +153,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 - Thibaut (07/05) : mise en place d'une réception de fichiers images sur l'interface web de MAP_CONSTRUCTOR_2.0
 - Thibaut (09/05) : mise en place d'un fichier *start.sh* global permettant d'accéder aux différents applications présentes dans le git sans succomber aux dédales de notre architecture...
-
+- Max (06/05) : Code d'évitement d'obstacle, calcul des nouvelles coordonnées vers l'objectif après évitement et adaptation des fonction pour les modes automatiques. 
 
 ### Mercredi 27/05
 ### Mercredi 10/06
