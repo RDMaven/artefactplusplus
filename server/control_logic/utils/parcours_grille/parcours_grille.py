@@ -143,7 +143,7 @@ def find_discontinuites(parcours: list[tuple[int, int]], display_grid: list[list
 # FONCTION PRINCIPALE : DFS ============================= #
 # ======================================================= #
 
-def dfs(grid, x0=0, y0=0) -> list[tuple[int, int]]:
+def main(grid, x0=0, y0=0) -> list[tuple[int, int]]:
     """ Effectue un DFS modifié pour corriger les cases potentiellement oubliées.
     """
     # CONSTANTES
@@ -301,5 +301,5 @@ if __name__ == "__main__":
         data = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in f.readlines()]
 
     # Exécuter le parcours et afficher le résultat !
-    parcours = dfs(data, x0,y0)
+    parcours = main(data, x0,y0)
     print_chemin_robot(data, parcours)

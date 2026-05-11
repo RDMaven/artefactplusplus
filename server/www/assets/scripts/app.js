@@ -13,10 +13,6 @@ $('#ws-test-button').on("click", () => {
   ws.send("Hello from JS");
 })
 
-
-// STOP Button (TODO)
-
-
 // Mode switch Button
 var currentMode = 'Manual';
 
