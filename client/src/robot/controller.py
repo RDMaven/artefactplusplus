@@ -4,17 +4,29 @@ from threading import Thread
 from time import sleep
 
 class Reference:
-    def __init__(self, odom: list):
+    def __init__(self, odom: list, is_relative = False):
+        """ Si is_relative est vrai, alors on récupèrera toujours seulement le nombre de ticks depuis le dernière appel. 
+        Si faux, ils seront relatifs aux nombre de ticks à la création de la référence."""
         self.l0, self.r0 = odom
-        self.l = 0
-        self.r = 0
+        if is_relative:
+            self.l, self.r = odom
+        else:
+            self.l = 0
+            self.r = 0
+        
+        self.update = (lambda odom: self.update_non_relative(odom)) if not is_relative else (lambda odom: self.update_relative(odom))
 
-    def update(self, odom):
+    def update_non_relative(self, odom):
         tl, tr = odom
         self.l = tl-self.l0
         self.r = tr-self.r0
         # print(f"ref update : odom={odom} et l0={self.l0}, r0={self.r0} -> l={self.l}, r={self.r}")
 
+    def update_relative(self, odom):
+        tl, tr = odom
+        self.l = tl - self.l
+        self.r = tr - self.r
+        
 
 class WifiBot:
     def __init__(self, serPath):
