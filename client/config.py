@@ -37,6 +37,9 @@ class Config:
         TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
         TICKS_PER_CM=float(environ["ROBOT_TICKS_PER_CM"])
 
+    class Sensors:
+        MIN_OBSTACLE_DISTANCE = int(environ["SENSORS_MIN_OBSTACLE_DISTANCE"])
+
 
 def compare_env_with_example():
     """ Compare '.env' avec '.env.example', pour vérifier l'intégralité du fichier."""

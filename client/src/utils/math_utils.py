@@ -63,3 +63,28 @@ def normaliser_degrees(degrees):
     if degrees not in excluded:
         degrees = (degrees + 180) % 360 - 180
     return degrees
+
+def calculate_new_polar(r0, alpha, d):
+    """ Voici l'énoncé que cette fonction résout :
+    Soit, A, B et O. On note r0 = AO, d = AB, OAB = alpha.
+    Déterminer r = BO et theta = ABO.
+    Utile pour recalculer les paramètre de mouvement après avoir évité un obstacle.
+    """
+    alpha_rad = math.radians(alpha)
+
+    cosalpha = math.cos(alpha_rad)
+
+    r2 = r0**2 + d**2 - 2*r0*d*cosalpha
+    r = math.sqrt(r2)
+
+    theta = math.degrees(math.asin( (math.sqrt((r2 - (r*cosalpha)**2)))/r ))
+    theta = round(theta, 2)
+
+    return r, theta
+
+def convert_cartesian_to_radial(x1,y1,x2,y2):
+
+    r = math.hypot(x1 - x2, y1 - y2)
+    theta = math.atan2(y1 - y2, x1 - x2)
+
+    return r, theta

@@ -19,6 +19,11 @@ class RobotDriver(WifiBot):
             "mode": "manual",
             }
 
+        self.sensors = None # Sensors() TODO
+        self.current_objective = 0 # POUR LES MODES AUTO
+
+        self.relative_ticks = Reference(self.getOdom(is_setup=True)) # Voir 'controller.py/Reference'
+
     def setLocalParameter(self, parameter_name, new_value):
         # ASSERT
         match parameter_name:
@@ -66,38 +71,70 @@ class RobotDriver(WifiBot):
     
     
     # Pour le mode AUTO --------------------------------- #
-    def forwardByDistance(self, distance:float):
-        """ Avance d'une certaine distance, donnée en cm. """
+    def forwardByDistance(self, distance:float, is_local_instr: bool = True):
+        """ Avance d'une certaine distance, donnée en cm. 
+        is_local_instr : si vrai, on ne met pas a jour l'objectif global. """
 
         # Init the odometry : the robot need to be in movement to get the odometry.
         ref = Reference(self.getOdom(is_setup=True))
-        distance_in_ticks = mu.distanceInTickForForward(distance)
+        if is_local_instr:
+            distance_in_ticks = mu.distanceInTickForForward(distance)
 
-        self.setMovingSpeed()
-        print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
-        while ref.l < distance_in_ticks and ref.r < distance_in_ticks:
-            time.sleep(0.05)
+            self.setMovingSpeed()
+            print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+            while ref.l < distance_in_ticks and ref.r < distance_in_ticks:
+                time.sleep(0.05)
+                self.updateOdomReference(ref)
+                # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+
+            # Stop the movement, and record overshoot
+            self.stopMoving()
+            time.sleep(1)
+
             self.updateOdomReference(ref)
             print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
-        # Stop the movement, and record overshoot
-        self.stopMoving()
-        time.sleep(1)
+            overL, overR =  ref.l - distance_in_ticks, ref.r - distance_in_ticks
+            over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
-        self.updateOdomReference(ref)
-        print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+            self.position.updateForLinearMovement(mu.avg(ref.l, ref.r))
 
-        overL, overR =  ref.l - distance_in_ticks, ref.r - distance_in_ticks
-        over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
+            print(
+            f'forwardByDistance() : d={distance}cm ({distance_in_ticks}t),\n\
+                over={over}cm ({mu.avg(overL, overR)})'
+            )
 
-        self.position.updateForLinearMovement(mu.avg(ref.l, ref.r))
+            self.printStatus()
+        
+        else: ## Mode appelé seulement par la méthode 'goto'
 
-        print(
-          f'forwardByDistance() : d={distance}cm ({distance_in_ticks}t),\n\
-            over={over}cm ({mu.avg(overL, overR)})'
-        )
+            self.updateOdomReference(self.relative_ticks) # S'assurer qu'on commence à 0
+            self.setMovingSpeed()
 
-        self.printStatus()
+            # MODIFIER LA 1e CONDITION POUR 'LES CAPTEUR NE DÉTÈCTENT PAS D'OBSTACLE' TODO
+            while self.sensors and self.current_objective != 0:
+                time.sleep(0.05)
+                self.updateOdomReference(self.relative_ticks)
+                step = mu.avg(self.relative_ticks.l, self.relative_ticks.r) # ON CHOISI DE PRENDRE LA MOYENNE
+                self.current_objective -= step 
+                self.position.updateForLinearMovement(step)
+
+
+            # Stop the movement, dans tous les cas
+            self.stopMoving()
+            time.sleep(1)
+
+            # Gestion de l'overshoot
+            self.updateOdomReference(self.relative_ticks)
+            self.current_objective -= mu.avg(self.relative_ticks.l, self.relative_ticks.r)
+
+
+            if self.sensors:
+                print(f"forwardByDistance(global): OBSTACLE stopped me at r={self.current_objective / Config.Robot.TICKS_PER_CM} from objective")
+            else:
+                print(f'forwardByDistance(global): DONE.')
+                self.printStatus()
+
 
 
     def rotateByAngle(self, angle:float):
@@ -132,6 +169,39 @@ class RobotDriver(WifiBot):
         )
 
         self.printStatus()
+
+
+    def avoidObstacle(self):
+        angles = [45, -45, -90, 90, 180]
+        correction_distance = 10 # Arbitraire, TODO le mettre en variable d'environment, et prendre plus petit que la distance minimale des capteurs !
+
+        for a in angles:
+            self.rotateByAngle(a) # TODO : OR ONLY ROTATE SENSORS
+            if not self.sensors: # TODO : CHANGER À, SI LES CAPTEURS NE DÉTECTENT PAS D'OBSTACLE
+                self.forwardByDistance(correction_distance)
+                return correction_distance, a
+
+        raise Exception("Robot.avoidObstacle() : Je suis bloqué...")
+
+
+    def goto(self, r0, theta0):
+        """ Aller à un objectif donné en radial, tout en évitant les potentiels obstacles. """
+        r, theta = r0, theta0
+
+        self.current_objective = mu.distanceInTickForForward(r)
+        self.rotateByAngle(theta)
+        self.forwardByDistance(r, is_local_instr=False)
+
+        while self.current_objective != 0:
+            d, alpha = self.avoidObstacle()
+            r, theta = mu.calculate_new_polar(r, alpha, d)
+            self.current_objective = mu.distanceInTickForForward(r)
+            self.rotateByAngle(theta)
+            self.forwardByDistance(r, is_local_instr=False)
+
+    def goto_cartesian(x1,y1,x2,y2):
+        r, theta = mu.convert_cartesian_to_radial(x1,y1,x2,y2)
+        self.goto(r, theta)
 
 
 
