@@ -1,0 +1,61 @@
+.mainBuildMap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.allFiles{
+    display: flex;
+    width: 95%;
+    height: 13rem;
+    border: solid darkorchid 0.2rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    align-self: center;
+    justify-content: center;
+    bottom:10rem;
+}
+
+.filesDiv{
+    width: 85%;
+    height: 12rem;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    grid-auto-rows: 10rem;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.filesDiv img{
+    width: 7rem;
+    height: 7rem;
+    margin:0.2rem;
+}
+
+.filesDiv img:focus, .filesDiv img:hover{
+    width: 7.4rem;
+    height: 7.4rem;
+    margin: 0rem;
+}
+
+.fileChoice{
+    display: flex;
+    flex-direction: column;
+    width: 7rem;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.fileChoice:focus, .fileChoice:hover{
+    font-weight: bold;
+}
+
+.fileChoice p {
+    margin-top: 0.2rem;
+    margin-bottom: 0.6rem;
+}

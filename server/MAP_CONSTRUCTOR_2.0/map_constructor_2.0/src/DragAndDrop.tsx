@@ -68,7 +68,7 @@ export default function DragZone({ fileList, setFileList, setIsOpenCreateMap }: 
       newToast(false, "Aucun fichier sélectionné...")
     } else {
       setIsOpenCreateMap(true)
-      newToast(true, "Un fichier vient d'être supprimé")
+      newToast(true, "Passage à l'étape suivante!")
     }
   }
 
@@ -80,6 +80,7 @@ export default function DragZone({ fileList, setFileList, setIsOpenCreateMap }: 
         accept="image/*"
         ref={inputFile}
         onChange={newFile}
+        multiple
       ></input>
       <div
         className={styles.dragZone}
