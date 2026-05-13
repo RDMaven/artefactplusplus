@@ -154,7 +154,13 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Thibaut (07/05) : mise en place d'une réception de fichiers images sur l'interface web de MAP_CONSTRUCTOR_2.0
 - Thibaut (09/05) : mise en place d'un fichier *start.sh* global permettant d'accéder aux différents applications présentes dans le git sans succomber aux dédales de notre architecture...
 - Max (06/05) : Code d'évitement d'obstacle, calcul des nouvelles coordonnées vers l'objectif après évitement et adaptation des fonction pour les modes automatiques. 
+- Thibaut (11/05) : Début du rapport "Enjeux"
 - Thibaut (12/05) : Accès aux cartes MAP_CONSTRUCTOR2.0
+- Colin (12/05) : Ajout d'une fonction de test de vitesse et qualité de connexion Wifi
+
+- Colin : Modification de la fonction de test de vitesse et qualité de connexion Wifi pour l'adapter à la connexion 4G
+- Max : Finalisation du rapport "Enjeux"
+- Thibaut : Modèle théorique du stockage et de la modélisation d'une carte sur le Git
 
 ### Mercredi 27/05
 ### Mercredi 10/06
