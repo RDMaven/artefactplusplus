@@ -159,7 +159,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Colin (12/05) : Ajout d'une fonction de test de vitesse et qualité de connexion Wifi
 
 - Colin : Modification de la fonction de test de vitesse et qualité de connexion Wifi pour l'adapter à la connexion 4G
-- Max : Finalisation du rapport "Enjeux"
+- Max : Rédaction, reformuation, et fin du rapport "Enjeux".
 - Thibaut : Modèle théorique du stockage et de la modélisation d'une carte sur le Git
 
 ### Mercredi 27/05
