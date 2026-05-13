@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 .allFiles{
@@ -16,7 +17,18 @@
     position: absolute;
     align-self: center;
     justify-content: center;
-    bottom:10rem;
+    bottom:2rem;
+    transform: translateY(var(--translateAllFile));
+    transition: transform 0.8s ease;
+}
+
+.croixContainer{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .filesDiv{
@@ -58,4 +70,21 @@
 .fileChoice p {
     margin-top: 0.2rem;
     margin-bottom: 0.6rem;
+}
+
+.exitAllFiles{
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+    transform: rotate(var(--rotationFleche));
+    transition: transform 0.4s ease;
+}
+
+.exitAllFiles:hover, .exitAllFiles:focus{
+    width: 3.6rem;
+    height: 3.6rem;
+    margin:0.7rem;
 }
