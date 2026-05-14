@@ -163,6 +163,10 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Thibaut : Modèle théorique du stockage et de la modélisation d'une carte sur le Git
 
 ### Mercredi 27/05
+
+-Thibaut (14/05) : Mise en place de la grille sur MAPCONSTRUCTOR 2.0 pour modéliser la carte, et mise en place d'un cache pour mémoriser les modifications.
+
+
 ### Mercredi 10/06
 ### Lundi 15/06
 ### Mardi 16/06

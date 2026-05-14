@@ -15,12 +15,13 @@ type Props = {
 
 export default function PageContent({fileList, setFileList, mapList, setMapList}: Props) {
   const [isOpenCreateMap, setIsOpenCreateMap] = useState<boolean>(false);
+  const [mapIndex, setMapIndex] = useState<number>(0);
   return (
     <div className={styles.mainContent}>
       <ToastContainer />
       <p className={styles.title}>Création de cartes en pixel !</p>
       {isOpenCreateMap ? (
-        <BuildMap fileList={fileList} mapList={mapList} setMapList={setMapList}/>
+        <BuildMap fileList={fileList} mapList={mapList} setMapList={setMapList} mapIndex={mapIndex} setMapIndex={setMapIndex}/>
       ) : (
         <DragZone
           fileList={fileList}

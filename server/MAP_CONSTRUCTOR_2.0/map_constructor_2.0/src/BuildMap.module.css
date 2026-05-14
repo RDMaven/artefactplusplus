@@ -20,6 +20,8 @@
     bottom:2rem;
     transform: translateY(var(--translateAllFile));
     transition: transform 0.8s ease;
+    background-color: white;
+    z-index: 1;
 }
 
 .croixContainer{
@@ -87,4 +89,8 @@
     width: 3.6rem;
     height: 3.6rem;
     margin:0.7rem;
+}
+
+.isSelected{
+    background-color: grey;
 }

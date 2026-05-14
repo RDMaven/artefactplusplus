@@ -1,0 +1,52 @@
+.mainMapGrid{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.prepaIMG{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 15%;
+}
+
+.inputRow{
+    display: inline-flex;
+    flex-direction: row;
+    gap: 3rem;
+}
+
+.inputRow p{
+    display: inline-flex;
+}
+
+.ImageZone{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 85%;
+    overflow: scroll;
+    z-index: 0;
+}
+
+.ImageZone img{
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: -2;
+}
+
+.ImageZone canvas{
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: -1;
+}
+
+.scrollZone{
+    width: max-content;
+    height: max-content;
+    position: relative;
+}

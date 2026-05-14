@@ -1,18 +1,39 @@
 import styles from "./BuildMap.module.css";
 import picture from "./assets/picture.svg";
 import fleche from "./assets/fleche.svg";
-import { useRef, useState, useEffect} from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { mmap } from "./utils";
+import MapGrid from "./MapGrid";
 
 type Props = {
   fileList: File[];
   mapList: mmap[];
   setMapList: React.Dispatch<React.SetStateAction<mmap[]>>;
+  mapIndex: number;
+  setMapIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function BuildMap({ fileList, mapList, setMapList }: Props) {
+export default function BuildMap({
+  fileList,
+  mapList,
+  setMapList,
+  mapIndex,
+  setMapIndex,
+}: Props) {
   const sortie = useRef<HTMLImageElement>(null);
   const [isOpenSortie, setIsOpenSortie] = useState<boolean>(false);
+
+  const [urlList, setUrlList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const urls = fileList.map((file) => URL.createObjectURL(file));
+
+    setUrlList(urls);
+
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [fileList]);
 
   function n_letters(word: string, n: number): string {
     if (word.length <= n + 4) {
@@ -44,19 +65,23 @@ export default function BuildMap({ fileList, mapList, setMapList }: Props) {
       img.src = url;
     });
   }
-  useEffect(()=>{
-  setMapList(()=>{
-    const newMapList: mmap[] = [];
-    fileList.map((elt)=>{
-      getImageSize(elt).then((res)=>{
-        const mapi: mmap = new mmap(res.width, res.height, 0, 0, [[]]);
-        newMapList.push(mapi);
-      })
-    })
-    console.log(newMapList)
-    return newMapList
-  })
-},[])
+  useEffect(() => {
+    async function buildMaps() {
+      const newMapList = await Promise.all(
+        fileList.map(async (elt) => {
+          const res = await getImageSize(elt);
+
+          return new mmap(res.width, res.height, 1, 1, [[]]);
+        }),
+      );
+      setMapList(newMapList);
+
+      console.log("HEY J AI DES CARTES");
+      console.log(newMapList);
+      return newMapList;
+    }
+    buildMaps();
+  }, [fileList]);
 
   return (
     <div
@@ -78,8 +103,11 @@ export default function BuildMap({ fileList, mapList, setMapList }: Props) {
           ></img>
           <div className={styles.filesDiv}>
             {fileList.map((file, index) => (
-              <div key={`fichier_${index}`} className={styles.fileChoice}>
-                <img src={picture} id={`${index}-image`}></img>
+              <div
+                key={`fichier_${index}`}
+                className={`${styles.fileChoice} ${mapIndex === index ? styles.isSelected : ""}`}
+              >
+                <img src={picture} onClick={() => setMapIndex(index)}></img>
                 <p>
                   {fileList.length > 7 ? n_letters(file.name, 10) : file.name}
                 </p>
@@ -88,6 +116,19 @@ export default function BuildMap({ fileList, mapList, setMapList }: Props) {
           </div>
         </div>
       </div>
+      {urlList.length > 0 &&
+      urlList[mapIndex] &&
+      mapList.length > 0 &&
+      mapList[mapIndex] ? (
+        <MapGrid
+          mapList={mapList}
+          setMapList={setMapList}
+          index={mapIndex}
+          urlList={urlList}
+        />
+      ) : (
+        <p>Chargement...</p>
+      )}
     </div>
   );
 }
