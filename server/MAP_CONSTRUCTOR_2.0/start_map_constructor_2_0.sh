@@ -23,8 +23,8 @@ cd "$PROJECT_NAME" || exit
 
 echo -e "${BLUE}========### INSTALATION DES DÉPENDANCES DE NPM ###========${NC}"
 npm install
-npm install react-toastify
-npm install express
+npm install react-toastify express cors
+npm install concurrently --save-dev
 echo -e "${BLUE}========### LANCEMENT DU SERVEUR ET DU REACT ###========${NC}"
 
 npm run dev 

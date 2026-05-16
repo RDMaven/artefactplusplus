@@ -69,4 +69,8 @@ export class mmap {
     this.grid[i][j] = value;
   }
 
+  getGridCase(i: number, j: number){
+    return this.grid[i][j]
+  }
+
 }

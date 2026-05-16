@@ -4,16 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
+    "dev:back": "node backend/server.ts",
+    "dev:front": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "express": "^5.2.1",
+    "path": "^0.12.7",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-toastify": "^11.1.0"
+    "react-toastify": "^11.1.0",
+    "url": "^0.11.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -21,6 +26,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
     "eslint": "^10.2.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",

@@ -1,7 +1,7 @@
 import styles from "./BuildMap.module.css";
 import picture from "./assets/picture.svg";
 import fleche from "./assets/fleche.svg";
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import { mmap } from "./utils";
 import MapGrid from "./MapGrid";
 
@@ -20,6 +20,7 @@ export default function BuildMap({
   mapIndex,
   setMapIndex,
 }: Props) {
+  const [isOpenExport, setIsOpenExport] = useState(false);
   const sortie = useRef<HTMLImageElement>(null);
   const [isOpenSortie, setIsOpenSortie] = useState<boolean>(false);
 
@@ -70,8 +71,8 @@ export default function BuildMap({
       const newMapList = await Promise.all(
         fileList.map(async (elt) => {
           const res = await getImageSize(elt);
-
-          return new mmap(res.width, res.height, 1, 1, [[]]);
+          const newMap = new mmap(res.width, res.height, 1, 1, [[]]);
+          return newMap;
         }),
       );
       setMapList(newMapList);
@@ -125,6 +126,9 @@ export default function BuildMap({
           setMapList={setMapList}
           index={mapIndex}
           urlList={urlList}
+          isOpenExport={isOpenExport}
+          setIsOpenExport={setIsOpenExport}
+          fileList={fileList}
         />
       ) : (
         <p>Chargement...</p>
