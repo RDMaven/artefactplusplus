@@ -10,7 +10,7 @@ type Props = {
   urlList: string[];
   isOpenExport: boolean;
   setIsOpenExport: React.Dispatch<React.SetStateAction<boolean>>;
-  fileList: File[]
+  fileList: File[];
 };
 
 export default function MapGrid({
@@ -141,18 +141,18 @@ export default function MapGrid({
     if (!cell) return;
     const [i, j] = cell;
 
-    setPaintingValue(1-mapList[index].getGridCase(i, j));
+    setPaintingValue(1 - mapList[index].getGridCase(i, j));
 
     paintCell(e, paintingValue);
   }
 
-  function onMouseMove(e: React.MouseEvent<HTMLCanvasElement>){
-    if (isDrawing){
-      paintCell(e, paintingValue)
+  function onMouseMove(e: React.MouseEvent<HTMLCanvasElement>) {
+    if (isDrawing) {
+      paintCell(e, paintingValue);
     }
   }
 
-  function onMouseUp(){
+  function onMouseUp() {
     setIsDrawing(false);
   }
 
@@ -181,7 +181,12 @@ export default function MapGrid({
             onChange={(e) => setZoom(Number(e.target.value))}
           />
           <p>Zoom : {zoom}</p>
-          <button className={styles.exportButton} onClick={()=>setIsOpenExport(true)}>Exporter</button>
+          <button
+            className={styles.exportButton}
+            onClick={() => setIsOpenExport(true)}
+          >
+            Exporter
+          </button>
         </div>
       </div>
       <div className={styles.ImageZone}>
@@ -201,14 +206,20 @@ export default function MapGrid({
               transformOrigin: "top left",
               touchAction: "none",
             }}
-            onMouseDown={(e)=>onMouseDown(e)}
-            onMouseMove={(e)=>onMouseMove(e)}
-            onMouseLeave={()=>onMouseUp()}
-            onMouseUp={()=>onMouseUp()}
+            onMouseDown={(e) => onMouseDown(e)}
+            onMouseMove={(e) => onMouseMove(e)}
+            onMouseLeave={() => onMouseUp()}
+            onMouseUp={() => onMouseUp()}
           />
         </div>
       </div>
-      {isOpenExport && <Export setIsOpenExport={setIsOpenExport} fileList={fileList} mapList={mapList}/>}
+      {isOpenExport && (
+        <Export
+          setIsOpenExport={setIsOpenExport}
+          fileList={fileList}
+          mapList={mapList}
+        />
+      )}
     </div>
   );
 }

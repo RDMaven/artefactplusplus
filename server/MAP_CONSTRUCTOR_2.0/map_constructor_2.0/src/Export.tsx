@@ -8,9 +8,12 @@ type Props = {
   setIsOpenExport: React.Dispatch<React.SetStateAction<boolean>>;
   fileList: File[];
   mapList: mmap[];
+  isOpenButton: boolean;
+  setIsOpenButton: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Export({ setIsOpenExport, fileList, mapList }: Props) {
+  const [isOpenButton, setIsOpenButton] = useState<boolean>(true);
   const [data, setData] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<number[]>([]);
   async function getCommit() {
@@ -43,15 +46,19 @@ export default function Export({ setIsOpenExport, fileList, mapList }: Props) {
   }
   async function handleExport() {
     if (selectedFiles.length === 0) {
-        newToast(false, `Aucun fichier déposé !`)
+      newToast(false, `Aucun fichier déposé !`);
     } else {
+      setIsOpenButton(false);
       const data = await getPull();
       setData(data);
       const data2 = await getFile(selectedFiles);
       setData((prev) => prev + " " + data2);
       const data3 = await getCommit();
       setData((prev) => prev + " " + data3);
-      setTimeout(()=>setIsOpenExport(false), 1000);
+      setTimeout(() => {
+        setIsOpenExport(false);
+        setIsOpenButton(true);
+      }, 1000);
     }
   }
   return (
@@ -87,9 +94,11 @@ export default function Export({ setIsOpenExport, fileList, mapList }: Props) {
             <p>.txt</p>
           </div>
         ))}
-        <button className={styles.finalExport} onClick={handleExport}>
-          Export backend
-        </button>
+        {isOpenButton && (
+          <button className={styles.finalExport} onClick={handleExport}>
+            Export backend
+          </button>
+        )}
         <p>{data}</p>
       </div>
     </div>
