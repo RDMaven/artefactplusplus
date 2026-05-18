@@ -164,8 +164,8 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 
 ### Mercredi 27/05
 
--Thibaut (14/05) : Mise en place de la grille sur MAPCONSTRUCTOR 2.0 pour modéliser la carte, et mise en place d'un cache pour mémoriser les modifications.
-
+- Thibaut (14/05) : Mise en place de la grille sur MAPCONSTRUCTOR 2.0 pour modéliser la carte, et mise en place d'un cache pour mémoriser les modifications.
+- Thibaut (15 et 16/05) : Fin de MAPCONSTRUCTOR 2.0 : export de fichiers directement sur le git, mise en place d'une grille sur l'interface web pour fabriquer les cartes à partir de photos importées.
 
 ### Mercredi 10/06
 ### Lundi 15/06
