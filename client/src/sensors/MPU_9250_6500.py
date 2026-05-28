@@ -13,6 +13,8 @@ mpu = MPU9250(
     mfs=AK8963_BIT_16,
     mode=AK8963_MODE_C100HZ)
 
+
+"""
 # Configure the MPU9250
 mpu.configure()
 
@@ -28,4 +30,18 @@ while True:
     print("Magnetometer:", mag_data)
 
     # Wait for 1 second before the next reading
+    time.sleep(1)
+"""
+
+# Configure seulement gyro + accel
+mpu.configureMPU6500(GFS_1000, AFS_8G)
+
+while True:
+
+    accel = mpu.readAccelerometerMaster()
+    gyro = mpu.readGyroscopeMaster()
+
+    print("Accel:", accel)
+    print("Gyro :", gyro)
+
     time.sleep(1)
