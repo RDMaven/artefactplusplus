@@ -79,7 +79,9 @@ class CameraMove:
 
     def reset(self):
         self.reset_camera_up()
+        time.sleep(2)
         self.reset_camera_right()
+        time.sleep(2)
 
     def demo(self, slp=2):
         self.camera_up(1000)
