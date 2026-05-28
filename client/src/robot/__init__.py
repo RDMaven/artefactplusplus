@@ -7,7 +7,7 @@ from src.camera.camera import CameraMove
 robot = RobotDriver()
 camera = CameraMove()
 
-camera.demo(1)
+# camera.demo(1)
 
 # DEBUG ================================================= #
 #robot.runInteractive()
