@@ -14,6 +14,15 @@ mpu = MPU9250(
     mode=AK8963_MODE_C100HZ)
 
 
+from smbus2 import SMBus
+
+bus = SMBus(1)
+
+whoami = bus.read_byte_data(0x68, 0x75)
+
+print(hex(whoami))
+
+
 """
 # Configure the MPU9250
 mpu.configure()
