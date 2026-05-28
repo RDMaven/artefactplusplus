@@ -23,7 +23,7 @@ class FrameStore:
             self.frame = frame.copy()
             if self.compt == 30:
                 self.compt=0
-                filename = f"frame_number{self.frameNumber}"
+                filename = f"frame_number{self.frameNumber}.jpg"
                 self.frameNumber += 1
                 cv2.imwrite(filename, self.frame)
             else :
