@@ -1,33 +1,48 @@
-import threading, cv2, time
+import threading, cv2, time, datetime, os
 import numpy as np
+from config import Config
+
+
+# Configuration pour les images d'entrainement IA ------- #
+CAPTURE_FRAME_FREQUENCY = 30
 
 # Stockeur des frames video des robots ------------------ #
 class FrameStore:
     def __init__(self):
         self._lock = threading.Lock()
         self._frames = {}  # key: robot_id, value: latest frame
+        # self.last_frame = None
         self.stop = False
-        self.frame = None
         self.compt = 0
-        self.frameNumber = 0
+        self.inited = False
 
     def set_frame(self, robot_id: int, frame: np.ndarray):
         """Store the latest frame for a specific robot."""
+        if not self.inited:
+            self.inited = True
         with self._lock:
             self._frames[robot_id] = frame.copy()
 
     def get_frame(self, robot_id: int):
         """Retrieve the latest frame for a specific robot. Returns None if not set."""
+        if not self.inited:
+            return None
         with self._lock:
             frame = self._frames.get(robot_id)
-            self.frame = frame.copy()
-            if self.compt == 30:
+            # if self.last_frame != None and self.last_frame == frame:
+            #     return frame.copy() if frame is not None else None
+            # self.last_frame = frame
+
+            if self.compt == CAPTURE_FRAME_FREQUENCY:
                 self.compt=0
-                filename = f"frame_number{self.frameNumber}.jpg"
-                self.frameNumber += 1
-                cv2.imwrite(filename, self.frame)
+                temp_time = datetime.datetime.now().strftime("%m-%d-%H-%M-%S")
+                filename = f"{Config.Path.DATA_DIRECTORY}{temp_time}_frame.jpg"
+                if os.path.exists(filename): # Eviter d'avoir deux images la meme seconde
+                    return frame.copy() if frame is not None else None
+                cv2.imwrite(filename, frame)
             else :
                 self.compt += 1
+
             return frame.copy() if frame is not None else None
 
 # Instance initialisée ici pour pouvoir y accéder depuis différent fichiers
