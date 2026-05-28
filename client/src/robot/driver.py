@@ -12,6 +12,8 @@ class RobotDriver(WifiBot):
     def __init__(self, serPath = Config.Robot.SERIAL_PORT):
         if Config.is_prod:
             super().__init__(serPath)
+            self.relative_ticks = Reference(self.getOdom(is_setup=True)) # Voir 'controller.py/Reference'
+
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
         self.speed = Config.Robot.SPEED
@@ -22,7 +24,6 @@ class RobotDriver(WifiBot):
         self.sensors = None # Sensors() TODO
         self.current_objective = 0 # POUR LES MODES AUTO
 
-        self.relative_ticks = Reference(self.getOdom(is_setup=True)) # Voir 'controller.py/Reference'
 
     def setLocalParameter(self, parameter_name, new_value):
         # ASSERT
