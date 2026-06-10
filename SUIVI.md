@@ -179,6 +179,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Colin (09/06) : Prise en main de minicom (suite suite)
 - Colin : Connexion au réseau 4G (enfiiiin !!!) et premiers tests de connexion et de position GPS
 - Max : Ajout d'un toggle pour la capture de frames pour l'entrainement de l'IA (traque) sur l'interface, reliée au projet.
+- Thibaut : Recherche bibliographique sur la mise en place d'un filtre de Kalman pour notre capteur MPU6050 et apprentissage du principe de foncionnement d'un tel filte - j'ai trouvé un git avec un code adaptable à notre capteur
 
 ### Lundi 15/06
 ### Mardi 16/06
