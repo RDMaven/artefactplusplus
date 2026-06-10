@@ -174,6 +174,11 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Réunion de groupe (tout le monde présent) avec Jean-Sébastien Gomez pour discuter de l'avancée du projet
 
 ### Mercredi 10/06
+
+- Colin (07/06) : Prise en main de minicom (suite)
+- Colin (09/06) : Prise en main de minicom (suite suite)
+- Colin : Connexion au réseau 4G (enfiiiin !!!) et premiers tests de connexion et de position GPS
+
 ### Lundi 15/06
 ### Mardi 16/06
 ### Lundi 22/06
