@@ -178,6 +178,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Colin (07/06) : Prise en main de minicom (suite)
 - Colin (09/06) : Prise en main de minicom (suite suite)
 - Colin : Connexion au réseau 4G (enfiiiin !!!) et premiers tests de connexion et de position GPS
+- Max : Ajout d'un toggle pour la capture de frames pour l'entrainement de l'IA (traque) sur l'interface, reliée au projet.
 
 ### Lundi 15/06
 ### Mardi 16/06
