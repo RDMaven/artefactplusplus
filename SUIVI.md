@@ -167,6 +167,7 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Thibaut (14/05) : Mise en place de la grille sur MAPCONSTRUCTOR 2.0 pour modéliser la carte, et mise en place d'un cache pour mémoriser les modifications.
 - Thibaut (15 et 16/05) : Fin de MAPCONSTRUCTOR 2.0 : export de fichiers directement sur le git, mise en place d'une grille sur l'interface web pour fabriquer les cartes à partir de photos importées.
 - Colin : Réalisation que les fonctions établies précédemment pour les tests de la qualité de connexion ne fonctionneront pas avec l'architecture que l'on voudrait utiliser pour le robot -> de retour à la prise en main de minicom
+- Max : Fix de bugs avec le mouvement de la caméra au startup, et mise en place de la capture automatique de frame pour l'entrainement de l'IA (traque).
 
 ### Jeudi 04/06
 

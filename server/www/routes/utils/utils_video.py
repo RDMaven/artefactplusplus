@@ -32,16 +32,16 @@ class FrameStore:
             # if self.last_frame != None and self.last_frame == frame:
             #     return frame.copy() if frame is not None else None
             # self.last_frame = frame
-
-            if self.compt == CAPTURE_FRAME_FREQUENCY:
-                self.compt=0
-                temp_time = datetime.datetime.now().strftime("%m-%d-%H-%M-%S")
-                filename = f"{Config.Path.DATA_DIRECTORY}{temp_time}_frame.jpg"
-                if os.path.exists(filename): # Eviter d'avoir deux images la meme seconde
-                    return frame.copy() if frame is not None else None
-                cv2.imwrite(filename, frame)
-            else :
-                self.compt += 1
+            if Config.Camera.CAPTURE:
+                if self.compt == CAPTURE_FRAME_FREQUENCY:
+                    self.compt=0
+                    temp_time = datetime.datetime.now().strftime("%m-%d-%H-%M-%S")
+                    filename = f"{Config.Path.DATA_DIRECTORY}{temp_time}_frame.jpg"
+                    if os.path.exists(filename): # Eviter d'avoir deux images la meme seconde
+                        return frame.copy() if frame is not None else None
+                    cv2.imwrite(filename, frame)
+                else :
+                    self.compt += 1
 
             return frame.copy() if frame is not None else None
 

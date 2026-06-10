@@ -50,18 +50,89 @@
 }
 
 /* Checked state */
-input:checked + .btn-mode-slider {
+.btn-mode-toggle input:checked + .btn-mode-slider {
   background-color: var(--color-success);
 }
 
 /* Move knob */
-input:checked + .btn-mode-slider:before {
+.btn-mode-toggle input:checked + .btn-mode-slider:before {
   transform: translateX(56px);
 }
 
 /* Change text when checked */
-input:checked + .btn-mode-slider::after {
+.btn-mode-toggle input:checked + .btn-mode-slider::after {
   content: "Auto";
   left: 10px;
   right: auto;
 }
+
+
+/* CODE IDENTIQUE POUR BTN CAPTURE */
+/* Source - https://stackoverflow.com/a/79274945 */
+
+.btn-capture-toggle {
+  position: relative;
+  display: inline-block;
+  width: 90px;
+  height: 34px;
+}
+
+.btn-capture-toggle input {
+  display: none;
+}
+
+.btn-capture-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #333333;
+  transition: 0.4s;
+  border-radius: 34px;
+  font-family: Arial, sans-serif;
+}
+
+.btn-capture-slider::after {
+  content: "No Cap";
+  position: absolute;
+  /* color: #fff; */
+  font-size: 12px;
+  font-weight: bold;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  transition: 0.4s;
+}
+
+/* The circle knob */
+.btn-capture-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #FFF;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Checked state */
+.btn-capture-toggle input:checked + .btn-capture-slider {
+  background-color: var(--color-success);
+}
+
+/* Move knob */
+.btn-capture-toggle input:checked + .btn-capture-slider:before {
+  transform: translateX(56px);
+}
+
+/* Change text when checked */
+.btn-capture-toggle input:checked + .btn-capture-slider::after {
+  content: "Cap";
+  left: 10px;
+  right: auto;
+}
+

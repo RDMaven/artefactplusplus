@@ -33,6 +33,7 @@ class Config:
 
     class Camera:
         ID = int(environ["CAMERA_ID"]) # TODO enlever, ceci est pour tester.
+        CAPTURE = False
 
 def compare_env_with_example():
     # Import env files

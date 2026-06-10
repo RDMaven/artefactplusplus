@@ -2,6 +2,7 @@ import json, time, base64
 import cv2
 import numpy as np
 from www.routes.utils.utils_video import frame_store
+from config import Config
 
 # ------------------------------------------------------- #
 # Message parsers (receivers) --------------------------- #
@@ -23,6 +24,9 @@ def interface_message_parser(data: str, client_name: str):
             case "set_parameter":
                 pname, pvalue = rdata.values()
                 print(f"to set {pname} to '{pvalue}'")
+                if pname == "mode_capture":
+                    Config.Camera.CAPTURE = eval(pvalue) if pvalue in ["False", "True"] else False
+                    print(f"NOUVELLE VALEUR DE CAPTURE CAMERA : {Config.Camera.CAPTURE}")
                 # TODO : log it, or ...
             case "stop":
                 print("to stop.")

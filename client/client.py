@@ -86,7 +86,7 @@ class WebSocketClient:
                 if self.debug: self.receive_counter.update() # DEBUG
 
             except Exception as e:
-                self.send("event", -1, 'ERROR', {"data": f"Robot receiver error: {e}."})
+                await self.send("event", -1, 'ERROR', {"data": f"Robot receiver error: {e}."})
                 if self.debug: print("Receive error:", e)
                 break
 

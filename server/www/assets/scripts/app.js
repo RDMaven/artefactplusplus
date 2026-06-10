@@ -35,6 +35,28 @@ $("#btnMode").on("change", function () {
 });
 
 
+var currentCaptureMode = "False";
+
+$("#btnCapture").on("change", function () {
+  currentCaptureMode = "False";
+  if ($(this).is(":checked")) {
+
+    // Message de confirmation
+    if (!confirm("Are you sure you want to switch the frames capture mode ?")) {
+      
+      $(this).prop("checked", "False"); // revert toggle
+      return;
+    }
+    stopMove();
+    currentCaptureMode = "True";
+
+  }
+  sendWSMessage("set_parameter", "mode_capture", currentCaptureMode);
+  onScreenLog(`Switched to ${currentCaptureMode} Capture Mode`, "error");
+
+});
+
+
 /* ===================================================== */
 /* OTHER FUNCTIONNALITIES ============================== */
 /* ===================================================== */

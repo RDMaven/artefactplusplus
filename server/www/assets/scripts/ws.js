@@ -67,6 +67,9 @@ function buildWSMessage(type, ...args) {
 export function sendWSMessage(type, ...args) {
     if (ws.readyState === WebSocket.OPEN) {
         const jsonMessage = buildWSMessage(type, ...args);
+        if (jsonMessage["data"]["parameter_name"] == "mode_capture") {
+            jsonMessage["for"] = -1;
+        }
         ws.send(JSON.stringify(jsonMessage));
         // onScreenLog(jsonMessage);
     } else if (ws.readyState !== WebSocket.CONNECTING) {
