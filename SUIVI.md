@@ -182,6 +182,11 @@ clonage du git + lecture du code wifibot pour **prise en main préliminaire des 
 - Thibaut : Recherche bibliographique sur la mise en place d'un filtre de Kalman pour notre capteur MPU6050 et apprentissage du principe de foncionnement d'un tel filte - j'ai trouvé un git avec un code adaptable à notre capteur
 
 ### Lundi 15/06
+
+Présent : tous 
+Durée : 7h00
+On a fait une affiche de fou ! Des talents de designer ont été révélé partout !
+
 ### Mardi 16/06
 ### Lundi 22/06
 ### Mardi 23/06
