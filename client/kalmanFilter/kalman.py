@@ -30,7 +30,7 @@ class data:
         newdata = gn.getData()
         self.a_x = newdata[0]-accel_x_bias
         self.a_y = newdata[1]-accel_y_bias
-        self.a_z = newdata[2]-1-accel_z_bias
+        self.a_z = newdata[2]-accel_z_bias
         self.omega_z = newdata[3] - gyro_z_bias
     
     def getData(self):
@@ -94,12 +94,12 @@ class Kalman:
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
         self.P = np.eye(12)
         self.Q = np.diag([
-            1e-6, 1e-6, 1e-6,
-            5e-4, 5e-4, 5e-4,
-            1e-6, 1e-6, 1e-6,
-            1e-5,
-            1e-4,
-            1e-6
+                1e-6, 1e-6, 1e-6, # x, y, z (positions)
+                5e-4, 5e-4, 5e-4, # vx, vy, vz (vitesses)
+                1e-7, 1e-7, 1e-7, # ax, ay, az (accélérations) <-- Divisé par 10 (anciennement 1e-6)
+                1e-5,             # theta_z
+                1e-5,             # omega_z       <-- Divisé par 10 (anciennement 1e-4)
+                1e-6              # biais
             ])
         self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2, gyro_z_noise**2])
         self.H = np.array([
