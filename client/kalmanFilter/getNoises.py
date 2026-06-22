@@ -21,15 +21,17 @@ bus = SMBus(1)
 
 whoami = bus.read_byte_data(0x68, 0x75)
 
+print(hex(whoami))
+
 # Configure seulement gyro + accel
 mpu.configureMPU6500(GFS_1000, AFS_8G)
 
-def getInfo():
+def getInfo(number):
     timeCounter = 0
 
     accelList = []
     gyroList = []
-    while timeCounter < 61:
+    while timeCounter < number:
         accel = mpu.readAccelerometerMaster()
         gyro = mpu.readGyroscopeMaster()
 
@@ -37,28 +39,14 @@ def getInfo():
         gyroList.append(gyro)
 
         timeCounter += 1
-        print(f"Plus que : {61-timeCounter} secondes !")
+        print(f"Plus que : {61-timeCounter} secondes pour le calcul du bruit !")
         time.sleep(1)
     accel_x, accel_y, accel_z = [e[0] for e in accelList], [e[1] for e in accelList], [e[2] for e in accelList]
     accel_x_bias,accel_y_bias,accel_z_bias =  np.std(accel_x), np.std(accel_y), np.std(accel_z) 
     accel_x_noise,accel_y_noise,accel_z_noise =  np.mean(accel_x), np.mean(accel_y), np.mean(accel_z)
 
-    gyro_x, gyro_y, gyro_z = [e[0] for e in gyroList], [e[1] for e in gyroList], [e[2] for e in gyroList]
-    gyro_x_bias,gyro_y_bias,gyro_z_bias =  np.std(gyro_x), np.std(gyro_y), np.std(gyro_z) 
-    gyro_x_noise,gyro_y_noise,gyro_z_noise =  np.mean(gyro_x), np.mean(gyro_y), np.mean(gyro_z)
+    gyro_z = [e[0] for e in gyroList], [e[1] for e in gyroList], [e[2] for e in gyroList]
+    gyro_z_bias =  np.std(gyro_z) 
+    gyro_z_noise =  np.mean(gyro_z)
 
-    return accel_x_bias, accel_x_noise, accel_y_bias, accel_y_noise, accel_z_bias, accel_z_noise, gyro_x_bias, gyro_x_noise, gyro_y_bias, gyro_y_noise, gyro_z_bias, gyro_z_noise
-
-def getMean():
-    accel = mpu.readAccelerometerMaster()
-    print("accel", accel)
-
-def getData():
-    accel = mpu.readAccelerometerMaster()
-    gyro = mpu.readGyroscopeMaster()
-
-    return accel + [gyro[2]]
-
-getMean()
-
-
+    return accel_x_noise**2, accel_y_noise**2, accel_z_noise**2, gyro_z_noise**2
