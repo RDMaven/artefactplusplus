@@ -59,6 +59,21 @@ def getData():
 
     return accel + [gyro[2]]
 
-getInfo(60)
+def getDataSet(number):
+    timeCounter = 0
+
+    accelList = []
+    gyroList = []
+    while timeCounter < number:
+        accel = mpu.readAccelerometerMaster()
+        gyro = mpu.readGyroscopeMaster()
+
+        accelList.append(accel)
+        gyroList.append(gyro)
+
+        timeCounter += 1
+        print(f"Plus que : {61-timeCounter} secondes !")
+        time.sleep(1)
+    print(accelList, gyroList)
 
 
