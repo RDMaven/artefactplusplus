@@ -26,6 +26,8 @@ mpu.configureMPU6500(GFS_1000, AFS_8G)
 
 
 ###POUR INITIALISER
+dt = 0.1
+
 def getInfo(number):
     timeCounter = 0
 
@@ -40,7 +42,7 @@ def getInfo(number):
 
         timeCounter += 1
         print(f"Plus que : {number + 1 -timeCounter} secondes !")
-        time.sleep(1)
+        time.sleep(dt)
     accel_x, accel_y, accel_z = [e[0] for e in accelList], [e[1] for e in accelList], [e[2] for e in accelList]
     accel_x_bias,accel_y_bias,accel_z_bias =  np.std(accel_x), np.std(accel_y), np.std(accel_z) 
     accel_x_noise,accel_y_noise,accel_z_noise =  np.mean(accel_x), np.mean(accel_y), np.mean(accel_z)
