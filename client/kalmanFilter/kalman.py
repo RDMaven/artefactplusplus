@@ -1,6 +1,7 @@
 from MPU6050 import *
 import numpy as np
 import getNoises as gn
+import time
 
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
@@ -68,12 +69,12 @@ class x_k:
 class Kalman:
     def __init__(self):
         self.F = np.array([
-            [1,0,0,dt,0,0,0,0,0,0,0,0],
-            [0,1,0,0,dt,0,0,0,0,0,0,0],
-            [0,0,1,0,0,dt,0,0,0,0,0,0],
-            [0,0,0,1,0,0,0,0,0,0,0,0],
-            [0,0,0,0,1,0,0,0,0,0,0,0],
-            [0,0,0,0,0,1,0,0,0,0,0,0],
+            [1,0,0,dt,0,0,1/2*dt**2,0,0,0,0,0],
+            [0,1,0,0,dt,0,0,1/2*dt**2,0,0,0,0],
+            [0,0,1,0,0,dt,0,0,1/2*dt**2,0,0,0],
+            [0,0,0,1,0,0,dt,0,0,0,0,0],
+            [0,0,0,0,1,0,0,dt,0,0,0,0],
+            [0,0,0,0,0,1,0,0,dt,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -83,19 +84,7 @@ class Kalman:
             ])
         
         self.data = data()
-        self.B = np.array([[1/2*dt**2, 0, 0, 0],
-                           [0,1/2*dt**2,0,0],
-                           [0,0,1/2*dt**2,0],
-                           [dt,0,0,0],
-                           [0,dt,0,0],
-                           [0,0,dt,0],
-                           [1,0,0,0],
-                           [0,1,0,0],
-                           [0,0,1,0],
-                           [0,0,0,dt],
-                           [0,0,0,0],
-                           [0,0,0,0]
-                           ])
+        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[dt],[0],[0]])
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
         self.P = np.eye(12)
         self.Q = np.diag([
@@ -113,16 +102,16 @@ class Kalman:
             [0,0,0,0,0,0,0,0,1,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,1,0]
             ])
-        self.U = np.array([0,0,0,0])
+        self.U = np.array([self.data.omega_z])
 
     def updateU(self):
         self.data.update()
-        self.U = self.data.getData()
+        self.U = np.array([[self.data.getData()[3]]])
 
     def x_estimation(self):
         x_prev = self.x.getX().reshape(12,1)
         self.updateU()
-        return self.F @ x_prev + self.B @ self.U.reshape(4,1)
+        return self.F @ x_prev + self.B @ self.U
     
     def innovation(self):
         return self.data.getData().reshape(4,1) - self.H @ self.x_estimation()
@@ -156,7 +145,6 @@ accelList = []
 theta_zList = []
 
 for i in range(number):
-    kal.data.update()
     kal.update_turn()
     x = kal.x.getX()
     accelList.append([x[6],x[7],x[8]])
