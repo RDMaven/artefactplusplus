@@ -41,16 +41,31 @@ def getInfo():
         timeCounter += 1
         time.sleep(1)
     accel_x, accel_y, accel_z = [e[0] for e in accelList], [e[1] for e in accelList], [e[2] for e in accelList]
-    accel_x_bias,accel_y_bias,accel_z_bias =  np.mean(accel_x), np.mean(accel_y), np.mean(accel_z) 
-    accel_x_noise,accel_y_noise,accel_z_noise =  np.std(accel_x), np.std(accel_y), np.std(accel_z)
+    accel_x_bias,accel_y_bias,accel_z_bias =  np.std(accel_x), np.std(accel_y), np.std(accel_z) 
+    accel_x_noise,accel_y_noise,accel_z_noise =  np.mean(accel_x), np.mean(accel_y), np.mean(accel_z)
 
+    gyro_x, gyro_y, gyro_z = [e[0] for e in gyroList], [e[1] for e in gyroList], [e[2] for e in gyroList]
+    gyro_x_bias,gyro_y_bias,gyro_z_bias =  np.std(gyro_x), np.std(gyro_y), np.std(gyro_z) 
+    gyro_x_noise,gyro_y_noise,gyro_z_noise =  np.mean(gyro_x), np.mean(gyro_y), np.mean(gyro_z)
+
+    print("######### ACCELERATION #########")
     print("====== BRUIT ======")
     print(f"Bruit x : {accel_x_noise}")
-    print(f"Bruit x : {accel_y_noise}")
-    print(f"Bruit x : {accel_z_noise}")
+    print(f"Bruit y : {accel_y_noise}")
+    print(f"Bruit z : {accel_z_noise}")
     print("====== BIAIS ======")
-    print(f"Bruit x : {accel_x_bias}")
-    print(f"Bruit x : {accel_y_bias}")
-    print(f"Bruit x : {accel_z_bias}")
+    print(f"Biais x : {accel_x_bias}")
+    print(f"Biais y : {accel_y_bias}")
+    print(f"Biais z : {accel_z_bias}")
+
+    print("######### ROTATION #########")
+    print("====== BRUIT ======")
+    print(f"Bruit x : {gyro_x_noise}")
+    print(f"Bruit y : {gyro_y_noise}")
+    print(f"Bruit z : {gyro_z_noise}")
+    print("====== BIAIS ======")
+    print(f"Biais x : {gyro_x_bias}")
+    print(f"Biais y : {gyro_y_bias}")
+    print(f"Biais z : {gyro_z_bias}")
 
 getInfo()
