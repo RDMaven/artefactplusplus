@@ -137,7 +137,7 @@ class Kalman:
         K = self.K(P,S)
         H= self.H
         R = self.R
-        new_x = x_est + self.K(P) @ innov
+        new_x = x_est + K @ innov
         new_x = new_x.flatten()
         
         new_P = (I - K @ H) @ P @ (I - K @ H).T + K @ R @ K.T
