@@ -5,10 +5,10 @@ import getNoises as gn
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
 isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
-noiseNumber = 60 #nombre d'échantillons qui seront utilisés pour le calcul des noises
+number = 60 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
 if not isGivenNoises:
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = gn.getInfo(noiseNumber)
+    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = gn.getInfo(number)
 else:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = 0.01,0.01,0.01,0.01
 
@@ -142,6 +142,19 @@ class Kalman:
         self.P = new_P
         self.x.update(new_x[0], new_x[1], new_x[2], new_x[3], new_x[4], new_x[5], new_x[6], new_x[7], new_x[8],new_x[9], new_x[10], new_x[11])
 
+
+kal = Kalman()
+
+accelList = []
+theta_zList = []
+
+for i in range(number):
+    Kalman.data.update()
+    Kalman.update_turn()
+    accelList.append([Kalman.x.getData()[6],Kalman.x.getData()[7],Kalman.x.getData()[8]])
+    theta_zList.append(Kalman.x.getData()[10])
+    time.sleep(1)
+print(accelList, theta_zList)
 
 
 

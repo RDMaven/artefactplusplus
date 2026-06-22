@@ -72,8 +72,6 @@ def getDataSet(number):
         gyroList.append(gyro)
 
         timeCounter += 1
-        print(f"Plus que : {61-timeCounter} secondes !")
+        print(f"Plus que : {number+1-timeCounter} secondes !")
         time.sleep(1)
     print(accelList, gyroList)
-
-getDataSet()
