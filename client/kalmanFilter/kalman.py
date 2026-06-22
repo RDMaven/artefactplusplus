@@ -1,4 +1,4 @@
-from MPU6050 import *
+#from MPU6050 import *
 import numpy as np
 import getNoises as gn
 import time
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
-isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
+isGivenNoises = 0 # pour recalculer le bruit du capteur immobile si 0
 isToMakeGraph = 0
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
@@ -27,7 +27,7 @@ class data:
         self.omega_z = 0
 
     def update(self):
-        newdata = getData()
+        newdata = gn.getData()
         self.a_x = newdata[0]-accel_x_bias
         self.a_y = newdata[1]-accel_y_bias
         self.a_z = newdata[2]-1-accel_z_bias

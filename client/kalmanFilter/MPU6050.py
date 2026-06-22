@@ -56,12 +56,6 @@ def getInfo(number):
 def getMean():
     accel = mpu.readAccelerometerMaster()
     print("accel", accel)
-### POUR LE KALMAN
-def getData():
-    accel = mpu.readAccelerometerMaster()
-    gyro = mpu.readGyroscopeMaster()
-
-    return accel + [gyro[2]]
 
 def getDataSet(number):
     timeCounter = 0
@@ -80,5 +74,3 @@ def getDataSet(number):
         time.sleep(1)
     print(accelList)
     print(gyroList)
-
-getInfo(100)
