@@ -2,6 +2,7 @@ from MPU6050 import *
 import numpy as np
 import getNoises as gn
 import time
+import matplotlib.pyplot as plt
 
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
@@ -150,8 +151,12 @@ kal = Kalman()
 accelList = []
 omega_zList = []
 
+accelList_NF, omega_zList_NF = [],[]
+
 for i in range(number):
     da = kal.data.getData()
+    accelList_NF.append([da[0],da[1],da[2]])
+    omega_zList.append(da[3])
     kal.update_turn(da)
     x = kal.x.getX()
     accelList.append([x[6],x[7],x[8]])
@@ -159,9 +164,45 @@ for i in range(number):
     time.sleep(dt)
     print(i)
     
-print(accelList)
-print("=============================")
-print(omega_zList)
+if isToMakeGraph:
+    i = [j for j in range(len(accelList))]
+    plt.subplot(221)
+    plt.plot(i,[elt[0] for elt in accelList], '+', label="Filtré")
+    plt.plot(i,[elt[0] for elt in accelList_NF], '+', label="Non Filtré")
+    plt.title("accel x")
+    plt.legend()
+
+    plt.subplot(222)
+    plt.plot(i,[elt[1] for elt in accelList], '+', label="Filtré")
+    plt.plot(i,[elt[1] for elt in accelList_NF], '+', label="Non Filtré")
+    plt.title("accel y")
+    plt.legend()
+
+    plt.subplot(223)
+    plt.plot(i,[elt[2] for elt in accelList], '+', label="Filtré")
+    plt.plot(i,[elt[2] for elt in accelList_NF], '+', label="Non Filtré")
+    plt.title("accel z")
+    plt.legend()
+
+    plt.subplot(224)
+    plt.title("gyro z")
+    plt.plot(i, omega_zList, '+', label="Filtré")
+    plt.plot(i, omega_zList_NF, '+', label="Non Filtré")
+    plt.legend()
+
+    plt.show()
+else:
+    print(accelList)
+    print("=============================")
+    print(omega_zList)
+    print("=============================")
+    print("#################################")
+    print("=============================")
+    print(accelList_NF)
+    print("=============================")
+    print(omega_zList_NF)
+
+
 
 
 
