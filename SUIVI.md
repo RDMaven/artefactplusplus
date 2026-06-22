@@ -188,6 +188,10 @@ Durée : 7h00
 On a fait une affiche de fou ! Des talents de designer ont été révélé partout !
 
 ### Lundi 22/06
+
+- Eden (07/06): recherche sur l'implémentation d'un model de reconnaissance d'objet (du robot) YOLO pour la mise en place d'une traque. Objectif de séance : avoir une idée de comment créer un dataset efficace et adapté à notre utilisation et une idée de comment implémenter et entrainer notre modèle
+Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement-a-yolo-object-detector-from-scratch-in-pytorch-e310829d92e6); [single_object_detection](https://stackoverflow.com/questions/51782769/object-detection-for-a-single-object-only)
+
 ### Mardi 23/06
 ### Mercredi 24/06
 ### Jeudi 25/06
