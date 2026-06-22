@@ -3,3 +3,4 @@ smbus
 smbus2
 RPi.GPIO
 mpu9250_jmdev
+numpy
