@@ -128,7 +128,7 @@ class Kalman:
         return self.H @ self.P_estimation() @ self.H.T + self.R
     
     def K(self):
-        return self.P_estimation() @ self.H.T @ np.linalg.inv(self.S)
+        return self.P_estimation() @ self.H.T @ np.linalg.inv(self.S())
     
     def update_turn(self):
         new_x = self.x_estimation() + self.K() @ self.innovation()
