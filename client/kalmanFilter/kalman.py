@@ -149,10 +149,10 @@ accelList = []
 theta_zList = []
 
 for i in range(number):
-    Kalman.data.update()
-    Kalman.update_turn()
-    accelList.append([Kalman.x.getData()[6],Kalman.x.getData()[7],Kalman.x.getData()[8]])
-    theta_zList.append(Kalman.x.getData()[10])
+    kal.data.update()
+    kal.update_turn()
+    accelList.append([kal.x.getData()[6],kal.x.getData()[7],kal.x.getData()[8]])
+    theta_zList.append(kal.x.getData()[10])
     time.sleep(1)
 print(accelList, theta_zList)
 
