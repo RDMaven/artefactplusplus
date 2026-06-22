@@ -102,38 +102,42 @@ class Kalman:
             [0,0,0,0,0,0,0,0,1,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,1,0]
             ])
-        self.U = np.array([self.data.omega_z])
+        self.U = np.array([[self.data.omega_z]])
 
-    def updateU(self):
+    def updateU(self,da):
         self.data.update()
-        self.U = np.array([[self.data.getData()[3]]])
+        self.U = np.array([[da[3]]])
 
-    def x_estimation(self):
+    def x_estimation(self,da):
         x_prev = self.x.getX().reshape(12,1)
-        self.updateU()
+        self.updateU(da)
         return self.F @ x_prev + self.B @ self.U
     
-    def innovation(self):
-        return self.data.getData().reshape(4,1) - self.H @ self.x_estimation()
+    def innovation(self, x_est,da):
+        return da.reshape(4,1) - self.H @ x_est
     
     
     def P_estimation(self):
         return self.F @ self.P @ self.F.T + self.Q
 
-    def S(self):
-        return self.H @ self.P_estimation() @ self.H.T + self.R
+    def S(self, P):
+        return self.H @ P @ self.H.T + self.R
     
-    def K(self):
-        return self.P_estimation() @ self.H.T @ np.linalg.inv(self.S())
+    def K(self, P, S):
+        return P @ self.H.T @ np.linalg.inv(S)
     
-    def update_turn(self):
-        new_x = self.x_estimation() + self.K() @ self.innovation()
-        new_x = new_x.flatten()
+    def update_turn(self,da):
         I = np.eye(12)
-        K = self.K()
-        H= self.H
         P = self.P_estimation()
+        x_est = self.x_estimation(da)
+        innov = self.innovation(x_est,da)
+        S = self.S(P)
+        K = self.K(P,S)
+        H= self.H
         R = self.R
+        new_x = x_est + self.K(P) @ innov
+        new_x = new_x.flatten()
+        
         new_P = (I - K @ H) @ P @ (I - K @ H).T + K @ R @ K.T
         self.P = new_P
         self.x.update(new_x[0], new_x[1], new_x[2], new_x[3], new_x[4], new_x[5], new_x[6], new_x[7], new_x[8],new_x[9], new_x[10], new_x[11])
@@ -145,11 +149,12 @@ accelList = []
 theta_zList = []
 
 for i in range(number):
-    kal.update_turn()
+    da = kal.data.getData()
+    kal.update_turn(da)
     x = kal.x.getX()
     accelList.append([x[6],x[7],x[8]])
-    theta_zList.append(x[10])
-    time.sleep(1)
+    theta_zList.append(x[9])
+    time.sleep(dt)
     print(i)
 print(accelList)
 print("=============================")
