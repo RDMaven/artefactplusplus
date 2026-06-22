@@ -59,6 +59,6 @@ def getData():
 
     return accel + [gyro[2]]
 
-getMean()
+getInfo(60)
 
 

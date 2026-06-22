@@ -23,7 +23,7 @@ class data:
         newdata = getData()
         self.a_x = newdata[0]
         self.a_y = newdata[1]
-        self.a_z = newdata[2]
+        self.a_z = newdata[2]-1
         self.omega_z = newdata[3]
     
     def getData(self):
