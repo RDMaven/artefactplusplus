@@ -76,4 +76,4 @@ def getDataSet(number):
         time.sleep(1)
     print(accelList, gyroList)
 
-
+getDataSet()
