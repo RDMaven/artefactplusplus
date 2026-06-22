@@ -2,6 +2,9 @@ from MPU6050 import *
 import numpy as np
 import getNoises as gn
 import time
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 ###### DONNÉZS GLOBALES ######
@@ -156,7 +159,7 @@ accelList_NF, omega_zList_NF = [],[]
 for i in range(number):
     da = kal.data.getData()
     accelList_NF.append([da[0],da[1],da[2]])
-    omega_zList.append(da[3])
+    omega_zList_NF.append(da[3])
     kal.update_turn(da)
     x = kal.x.getX()
     accelList.append([x[6],x[7],x[8]])
@@ -190,7 +193,7 @@ if isToMakeGraph:
     plt.plot(i, omega_zList_NF, '+', label="Non Filtré")
     plt.legend()
 
-    plt.show()
+    plt.savefig("graph.png")
 else:
     print(accelList)
     print("=============================")
