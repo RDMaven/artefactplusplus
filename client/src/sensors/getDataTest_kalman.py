@@ -1,6 +1,7 @@
 import time
 from mpu9250_jmdev.registers import *
 from mpu9250_jmdev.mpu_9250 import MPU9250
+import numpy as np
 
 # Create an MPU9250 instance
 mpu = MPU9250(
@@ -39,7 +40,17 @@ def getInfo():
 
         timeCounter += 1
         time.sleep(1)
-    print(accelList[1,:])
-    #accel_x_noise,accel_y_noise,accel_z_noise = accelList[:1]
+    accel_x, accel_y, accel_z = [e[0] for e in accel], [e[1] for e in accel], [e[2] for e in accel]
+    accel_x_bias,accel_y_bias,accel_z_bias =  np.mean(accel_x), np.mean(accel_y), np.mean(accel_z) 
+    accel_x_noise,accel_y_noise,accel_z_noise =  np.std(accel_x), np.std(accel_y), np.std(accel_z)
+
+    print("====== BRUIT ======")
+    print(f"Bruit x : {accel_x_noise}")
+    print(f"Bruit x : {accel_y_noise}")
+    print(f"Bruit x : {accel_z_noise}")
+    print("====== BIAIS ======")
+    print(f"Bruit x : {accel_x_bias}")
+    print(f"Bruit x : {accel_y_bias}")
+    print(f"Bruit x : {accel_z_bias}")
 
 getInfo()
