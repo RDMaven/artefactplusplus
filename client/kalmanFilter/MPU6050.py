@@ -79,4 +79,4 @@ def getDataSet(number):
     print(accelList)
     print(gyroList)
 
-getInfo(500)
+getInfo(100)

@@ -12,6 +12,7 @@ number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noi
 if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = gn.getInfo(number)
 else:
+    ### A initialiser pour un grand number
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = 0.01,0.01,0.01,0.01
 
 class data:
