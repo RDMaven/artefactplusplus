@@ -39,6 +39,7 @@ def getInfo():
         gyroList.append(gyro)
 
         timeCounter += 1
+        print(f"Plus que : {61-timeCounter} secondes !")
         time.sleep(1)
     accel_x, accel_y, accel_z = [e[0] for e in accelList], [e[1] for e in accelList], [e[2] for e in accelList]
     accel_x_bias,accel_y_bias,accel_z_bias =  np.std(accel_x), np.std(accel_y), np.std(accel_z) 
