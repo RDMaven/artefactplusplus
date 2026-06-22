@@ -187,7 +187,6 @@ Présent : tous
 Durée : 7h00
 On a fait une affiche de fou ! Des talents de designer ont été révélé partout !
 
-### Mardi 16/06
 ### Lundi 22/06
 ### Mardi 23/06
 ### Mercredi 24/06
