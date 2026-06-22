@@ -10,10 +10,10 @@ isToMakeGraph = 1
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
 if not isGivenNoises:
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = gn.getInfo(number)
+    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(number)
 else:
     ### A initialiser pour un grand number
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = 0.01,0.01,0.01,0.01
+    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01,0.01
 
 class data:
     def __init__(self):
@@ -24,10 +24,10 @@ class data:
 
     def update(self):
         newdata = getData()
-        self.a_x = newdata[0]
-        self.a_y = newdata[1]
-        self.a_z = newdata[2]-1
-        self.omega_z = newdata[3]
+        self.a_x = newdata[0]-accel_x_bias
+        self.a_y = newdata[1]-accel_y_bias
+        self.a_z = newdata[2]-1-accel_z_bias
+        self.omega_z = newdata[3] - gyro_z_bias
     
     def getData(self):
         return np.array([self.a_x, self.a_y, self.a_z, self.omega_z])
@@ -97,7 +97,7 @@ class Kalman:
             1e-4,
             1e-6
             ])
-        self.R = np.diag([accel_x_noise,accel_y_noise,accel_z_noise, gyro_z_noise])
+        self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2, gyro_z_noise**2])
         self.H = np.array([
             [0,0,0,0,0,0,1,0,0,0,0,0],
             [0,0,0,0,0,0,0,1,0,0,0,0],
@@ -148,20 +148,20 @@ class Kalman:
 kal = Kalman()
 
 accelList = []
-theta_zList = []
+omega_zList = []
 
 for i in range(number):
     da = kal.data.getData()
     kal.update_turn(da)
     x = kal.x.getX()
     accelList.append([x[6],x[7],x[8]])
-    theta_zList.append(x[9])
+    omega_zList.append(x[10])
     time.sleep(dt)
     print(i)
     
 print(accelList)
 print("=============================")
-print(theta_zList)
+print(omega_zList)
 
 
 
