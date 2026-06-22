@@ -151,8 +151,9 @@ theta_zList = []
 for i in range(number):
     kal.data.update()
     kal.update_turn()
-    accelList.append([kal.x.getData()[6],kal.x.getData()[7],kal.x.getData()[8]])
-    theta_zList.append(kal.x.getData()[10])
+    x = kal.x.getX()
+    accelList.append([x[6],x[7],x[8]])
+    theta_zList.append(x[10])
     time.sleep(1)
 print(accelList, theta_zList)
 
