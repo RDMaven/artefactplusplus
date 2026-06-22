@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
 isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
-isToMakeGraph = 1
+isToMakeGraph = 0
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
 if not isGivenNoises:
@@ -157,6 +157,7 @@ omega_zList = []
 accelList_NF, omega_zList_NF = [],[]
 
 for i in range(number):
+    kal.data.update()
     da = kal.data.getData()
     accelList_NF.append([da[0],da[1],da[2]])
     omega_zList_NF.append(da[3])
@@ -203,7 +204,8 @@ else:
     print("=============================")
     print(accelList_NF)
     print("=============================")
-    print(omega_zList_NF)
+    print(omega_zList_NF) 
+
 
 
 
