@@ -31,7 +31,7 @@ def getInfo():
 
     accelList = []
     gyroList = []
-    while timeCounter < 5:
+    while timeCounter < 61:
         accel = mpu.readAccelerometerMaster()
         gyro = mpu.readGyroscopeMaster()
 
