@@ -13,7 +13,7 @@ if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(number)
 else:
     ### A initialiser pour un grand number
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01,0.01
+    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01
 
 class data:
     def __init__(self):
