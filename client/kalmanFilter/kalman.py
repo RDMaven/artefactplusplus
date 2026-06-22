@@ -98,7 +98,14 @@ class Kalman:
                            ])
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
         self.P = np.eye(12)
-        self.Q = np.diag([0.01,0.01,0.01,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.01, 0.01])
+        self.Q = np.diag([
+            1e-6, 1e-6, 1e-6,
+            5e-4, 5e-4, 5e-4,
+            1e-1, 1e-1, 1e-1,
+            1e-5,
+            1e-4,
+            1e-6
+            ])
         self.R = np.diag([accel_x_noise,accel_y_noise,accel_z_noise, gyro_z_noise])
         self.H = np.array([
             [0,0,0,0,0,0,1,0,0,0,0,0],
@@ -155,7 +162,10 @@ for i in range(number):
     accelList.append([x[6],x[7],x[8]])
     theta_zList.append(x[10])
     time.sleep(1)
-print(accelList, theta_zList)
+    print(i)
+print(accelList)
+print("=============================")
+print(theta_zList)
 
 
 
