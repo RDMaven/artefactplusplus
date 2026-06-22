@@ -41,3 +41,5 @@ def getInfo():
         time.sleep(1)
     print(accelList[:1])
     #accel_x_noise,accel_y_noise,accel_z_noise = accelList[:1]
+
+getInfo()
