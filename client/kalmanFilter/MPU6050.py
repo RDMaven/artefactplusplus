@@ -24,12 +24,12 @@ whoami = bus.read_byte_data(0x68, 0x75)
 # Configure seulement gyro + accel
 mpu.configureMPU6500(GFS_1000, AFS_8G)
 
-def getInfo():
+def getInfo(number):
     timeCounter = 0
 
     accelList = []
     gyroList = []
-    while timeCounter < 61:
+    while timeCounter < number:
         accel = mpu.readAccelerometerMaster()
         gyro = mpu.readGyroscopeMaster()
 
@@ -37,7 +37,7 @@ def getInfo():
         gyroList.append(gyro)
 
         timeCounter += 1
-        print(f"Plus que : {61-timeCounter} secondes !")
+        print(f"Plus que : {number + 1 -timeCounter} secondes !")
         time.sleep(1)
     accel_x, accel_y, accel_z = [e[0] for e in accelList], [e[1] for e in accelList], [e[2] for e in accelList]
     accel_x_bias,accel_y_bias,accel_z_bias =  np.std(accel_x), np.std(accel_y), np.std(accel_z) 
