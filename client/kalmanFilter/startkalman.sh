@@ -30,4 +30,4 @@ echo -e "${GREEN}J'ai fini !${NC}"
 echo "====================="
 
 echo -e "${BLUE}Début du programme !${NC}"
-python MPU6050.py
+python kalman.py

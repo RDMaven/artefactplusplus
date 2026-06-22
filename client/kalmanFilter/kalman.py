@@ -5,7 +5,7 @@ import getNoises as gn
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
 isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
-number = 60 #nombre d'échantillons qui seront utilisés pour le calcul des noises
+number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
 if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise = gn.getInfo(number)
