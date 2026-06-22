@@ -47,7 +47,7 @@ def getInfo(number):
     gyro_x_bias,gyro_y_bias,gyro_z_bias =  np.std(gyro_x), np.std(gyro_y), np.std(gyro_z) 
     gyro_x_noise,gyro_y_noise,gyro_z_noise =  np.mean(gyro_x), np.mean(gyro_y), np.mean(gyro_z)
 
-    return accel_x_bias, accel_x_noise, accel_y_bias, accel_y_noise, accel_z_bias, accel_z_noise, gyro_x_bias, gyro_x_noise, gyro_y_bias, gyro_y_noise, gyro_z_bias, gyro_z_noise
+    print("accel_x_bias", accel_x_bias, accel_x_noise, accel_y_bias, accel_y_noise, accel_z_bias, accel_z_noise, gyro_x_bias, gyro_x_noise, gyro_y_bias, gyro_y_noise, gyro_z_bias, gyro_z_noise
 
 def getMean():
     accel = mpu.readAccelerometerMaster()

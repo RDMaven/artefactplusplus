@@ -6,6 +6,7 @@ import time
 ###### DONNÉZS GLOBALES ######
 dt = 0.1
 isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
+isToMakeGraph = 1
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
 if not isGivenNoises:
@@ -156,6 +157,7 @@ for i in range(number):
     theta_zList.append(x[9])
     time.sleep(dt)
     print(i)
+    
 print(accelList)
 print("=============================")
 print(theta_zList)
