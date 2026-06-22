@@ -74,4 +74,7 @@ def getDataSet(number):
         timeCounter += 1
         print(f"Plus que : {number+1-timeCounter} secondes !")
         time.sleep(1)
-    print(accelList, gyroList)
+    print(accelList)
+    print(gyroList)
+
+getDataSet()
