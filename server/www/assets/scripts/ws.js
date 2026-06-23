@@ -33,8 +33,8 @@ ws.onmessage = (event) => {
 
         case "maps_list": {
             MAPS = packet.data ?? "";
-            
-            console.log(MAPS);
+            onScreenLog("Received maps from server.", "server");
+            break;
         }
         default:
             onScreenLog(`Raw : ${event.data}`, "server");
@@ -60,13 +60,16 @@ function getTimestamp() {
 const buildMoveMsg = (x, y) => { return { x, y } };
 const buildParamMsg = (parameter_name, value) => { return { parameter_name, value } };
 const buildStopMsg = (stop) => { return { stop } };
+const buildCartoInitMsg = (map_name, x0, y0) => {return {map_name, x0, y0}};
+const buildTraqueInitMsg = () => {return {}};
 
 // Classify the builder function for the different types
 const messageBuilders = {
     "move": buildMoveMsg,
-    "stop": buildStopMsg,
     "set_parameter": buildParamMsg,
-    "move_cam": buildMoveMsg
+    "move_cam": buildMoveMsg,
+    "carto_init": buildCartoInitMsg,
+    "traque_init": buildTraqueInitMsg
 }
 
 // Main message builder function
@@ -91,11 +94,11 @@ export function sendWSMessage(type, ...args) {
         const jsonMessage = buildWSMessage(type, ...args);
         console.log(jsonMessage);
 
-        if (jsonMessage["data"]["parameter_name"] == "mode_capture" || jsonMessage["data"]["parameter_name"] == "automode") {
+        // Cas de message a destination du server
+        if ((type == "set_parameter" && (jsonMessage["data"]["parameter_name"] == "mode_capture" ))) {
             jsonMessage["for"] = -1;
         }
         ws.send(JSON.stringify(jsonMessage));
-        // onScreenLog(jsonMessage);
     } else if (ws.readyState !== WebSocket.CONNECTING) {
         onScreenLog(`Issue with WS Connection : wsState=${ws.readyState}`);
     }
