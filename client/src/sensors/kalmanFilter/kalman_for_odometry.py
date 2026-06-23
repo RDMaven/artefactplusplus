@@ -1,5 +1,5 @@
 import numpy as np
-import getNoises as gn
+import src.sensors.kalmanFilter.getNoises as gn
 import time
 
 ###### DONNÉES GLOBALES ######
