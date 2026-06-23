@@ -193,6 +193,9 @@ On a fait une affiche de fou ! Des talents de designer ont été révélé parto
 Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement-a-yolo-object-detector-from-scratch-in-pytorch-e310829d92e6); [single_object_detection](https://stackoverflow.com/questions/51782769/object-detection-for-a-single-object-only)
 
 ### Mardi 23/06
+
+- Colin : changement de programme pour récupérer la qualité de connexion 4G -> passage à pyserial
+
 ### Mercredi 24/06
 ### Jeudi 25/06
 ### Vendredi 26/06
