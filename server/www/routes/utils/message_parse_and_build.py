@@ -27,11 +27,21 @@ def interface_message_parser(data: str, client_name: str):
                 if pname == "mode_capture":
                     Config.Camera.CAPTURE = eval(pvalue) if pvalue in ["False", "True"] else False
                     print(f"NOUVELLE VALEUR DE CAPTURE CAMERA : {Config.Camera.CAPTURE}")
+                elif pname == "automode":
+                    if pvalue == "traque":
+                        pass # TODO lancer mode
+                    elif pvalue == "cartographie":
+                        
+                        pass # TODO lancer mode
+                    else:
+                        print(f"Demande de passage au mode '{pvalue}', inconnu.")
+                        pass
                 # TODO : log it, or ...
             case "stop":
                 print("to stop.")
                 # TODO : log it, or ...
                 # TODO implémenter un bouton stop sur l'interface
+
             case _ :
                 print(f": {rdata}")
         return rt,rfor
@@ -88,14 +98,14 @@ def assert_argument_type(vname, expected, got):
 # SERVER -> ROBOT Message data builder ------------------ #
 def robot_message_data_builder(mtype, *args):
     match mtype:
-        case "set_parameter":
-            assert_number_of_arguments(mtype, 2, len(args))
-            pname, pvalue = args
-            assert_argument_type("parameter_name", str, type(pname))
-            return {
-                "parameter_name": pname,
-                "value": pvalue
-            }
+        # case "set_parameter":
+        #     assert_number_of_arguments(mtype, 2, len(args))
+        #     pname, pvalue = args
+        #     assert_argument_type("parameter_name", str, type(pname))
+        #     return {
+        #         "parameter_name": pname,
+        #         "value": pvalue
+        #     }
         
         case "goto":
             assert_number_of_arguments(mtype, 2, len(args))
@@ -119,7 +129,7 @@ def robot_message_data_builder(mtype, *args):
 
         case "forward":
             assert_number_of_arguments(mtype, 1, len(args))
-            fd = args
+            fd = args[0]
             assert_argument_type("distance", float, type(fd))
             return {
                 "distance": fd
@@ -127,12 +137,15 @@ def robot_message_data_builder(mtype, *args):
 
         case "rotate":
             assert_number_of_arguments(mtype, 1, len(args))
-            ra = args
+            ra = args[0]
             assert_argument_type("angle", float, type(ra))
             return {
                 "angle": ra
             }
-
+        case "message":
+            assert_number_of_arguments(mtype, 1, len(args))
+            msg = args[0]
+            return {"message": msg}
         case _:
             raise ValueError(f"Unknown type {mtype} to send.")
 
@@ -152,17 +165,27 @@ def interface_message_data_builder(mtype, *args):
                 "battery": sbattery,
                 "position": spos
             }
+        case "message":
+            assert_number_of_arguments(mtype, 1, len(args))
+            msg = args[0]
+            return {"message": msg}
+
+        case "maps_list":
+            assert_argument_type(mtype, 1, len(args))
+            map_dict = args[0]
+            return map_dict
+
         case _:
             raise ValueError(f"Unknown type {mtype} to send.")
 
 
 # SERVER -> ANY Message builder ------------------------- #
 def message_builder(mtype, mfor, *args):
-    return {
+    return json.dumps({
         "type": mtype,
         "from": -1,
         "for": mfor,
         "timestamp": time.time(),
         "data": robot_message_data_builder(mtype, *args) if mfor != 0 else interface_message_data_builder(mtype, *args)
-    }
+    })
 

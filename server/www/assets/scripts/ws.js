@@ -5,6 +5,8 @@ const clientID = 0 // TODO (WARNING) : SPECIAL ID FOR THE INTERFACE
 const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 const wsAdress = `${wsProtocol}//${window.location.host}/ws/${clientID}`;
 
+export var MAPS = null;
+
 onScreenLog(
     `WebSocket configuration :
 <pre> - Host        : ${window.location.host}
@@ -15,11 +17,31 @@ export const ws = new WebSocket(wsAdress);
 // ------------------------------
 
 // Basic WS functions
-ws.onopen  = () => onScreenLog("✅ Connected to server", "success");
+ws.onopen = () => onScreenLog("✅ Connected to server", "success");
 ws.onclose = () => onScreenLog(" 👋 Disconected");
-ws.onmessage = (event) => onScreenLog(`Server: ${event.data}`, "server");
-ws.onerror   = (err)   => onScreenLog("❌ WebSocket error:", err, "error");
-ws.readyState
+ws.onerror = (err) => onScreenLog("❌ WebSocket error:", err, "error");
+ws.onmessage = (event) => {
+
+    const packet = JSON.parse(event.data);
+
+    switch (packet.type) {
+        case "message": {
+            const messages = packet.data?.message ?? "";
+            onScreenLog(messages, "server");
+            break;
+        }
+
+        case "maps_list": {
+            MAPS = packet.data ?? "";
+            
+            console.log(MAPS);
+        }
+        default:
+            onScreenLog(`Raw : ${event.data}`, "server");
+            break;
+    }
+};
+// ws.readyState
 
 
 /* THIS COMMUNICATION IS WEB INTERFACE -> PYTHON SERVER. 
@@ -35,9 +57,9 @@ function getTimestamp() {
 }
 
 // Turn arguments into dict type.
-const buildMoveMsg  = (x, y) => {return {x,y}};
-const buildParamMsg = (parameter_name, value) => {return {parameter_name, value}};
-const buildStopMsg  = (stop) => {return {stop}};
+const buildMoveMsg = (x, y) => { return { x, y } };
+const buildParamMsg = (parameter_name, value) => { return { parameter_name, value } };
+const buildStopMsg = (stop) => { return { stop } };
 
 // Classify the builder function for the different types
 const messageBuilders = {
@@ -67,7 +89,9 @@ function buildWSMessage(type, ...args) {
 export function sendWSMessage(type, ...args) {
     if (ws.readyState === WebSocket.OPEN) {
         const jsonMessage = buildWSMessage(type, ...args);
-        if (jsonMessage["data"]["parameter_name"] == "mode_capture") {
+        console.log(jsonMessage);
+
+        if (jsonMessage["data"]["parameter_name"] == "mode_capture" || jsonMessage["data"]["parameter_name"] == "automode") {
             jsonMessage["for"] = -1;
         }
         ws.send(JSON.stringify(jsonMessage));

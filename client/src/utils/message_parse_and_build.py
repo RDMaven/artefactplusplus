@@ -41,6 +41,9 @@ def message_parser(data: str):
                 print(f"Asked to rotate by {a} degrees")
                 robot.rotateByAngle(a)
 
+            case "message":
+                msg = list(mdata.values())[0]
+                print(msg)
         return mtype
     
     except Exception as e:

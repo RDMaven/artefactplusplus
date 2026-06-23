@@ -6,7 +6,7 @@ from config import Config
 from src.robot.controller import WifiBot, Reference
 from src.sensors.ultrasonic_sensors import UltrasonicSensors
 import src.utils.math_utils as mu
-
+from src.sensors.kalmanFilter.kalman import Kalman
 
 
 class RobotDriver(WifiBot):
@@ -18,6 +18,7 @@ class RobotDriver(WifiBot):
 
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
+        self.kalman = Kalman()
         self.speed = Config.Robot.SPEED
 
         self.sensors = UltrasonicSensors() # Sensors() TODO
@@ -26,6 +27,9 @@ class RobotDriver(WifiBot):
 
         self.current_objective = 0 # POUR LES MODES AUTO
 
+    def KALODO(self, x_kalman, y_kalman, theta_kalman):
+        x_odo, y_odo, theta_odo = self.position.x, self.position.y, self.position.theta
+        
 
     def setLocalParameter(self, parameter_name, new_value):
         # ASSERT
