@@ -6,7 +6,7 @@ import os
 import re
 
 # ─── Configuration ────────────────────────────────────────────────
-PORT      = "/dev/ttyUSB2"   # AT commands sur SIM7600X
+PORT      = "/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if04-port0"   # AT commands sur SIM7600X
 BAUD      = 115200
 LOGFILE   = "capture_4G.log"
 TIMEOUT   = 2                # secondes d'attente par commande AT
@@ -89,6 +89,26 @@ def envoyer_at(ser, commande, timeout=TIMEOUT):
         return None  # None = signal que le port est mort
 
     return reponse.strip()
+
+
+def attendre_netopen(ser, timeout=120):
+    """Attend que AT+NETOPEN confirme l'ouverture du réseau."""
+    print("  Attente ouverture réseau", end="", flush=True)
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        reponse = envoyer_at(ser, "AT+NETOPEN", timeout=5)
+        # Déjà ouvert ou succès
+        if "OK" in reponse or "Network opened" in reponse or "+NETOPEN: 0" in reponse:
+            print(" → OK")
+            return True
+        # Réseau déjà actif (code 2 = already opened)
+        if "+NETOPEN: 2" in reponse:
+            print(" → déjà ouvert")
+            return True
+        print(".", end="", flush=True)
+        time.sleep(3)
+    print(" → ÉCHEC")
+    return False
 
 
 def lancer_tests_at():
