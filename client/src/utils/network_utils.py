@@ -18,10 +18,10 @@ AT_TESTS = [
     ("AT+CPIN?",                            "READY","Statut carte SIM"),
     ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN"),
     ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités"),
-    ("AT+CSQ",                              "OK",   "Qualité du signal (RSSI)"),
+    ("AT+CGDCONT?",                         "OK",   "Contexte PDP (APN)"),
     ("AT+CREG?",                            "OK",   "Enregistrement réseau"),
     ("AT+COPS?",                            "OK",   "Opérateur réseau actif"),
-    ("AT+CGDCONT?",                         "OK",   "Contexte PDP (APN)"),
+    ("AT+CSQ",                              "OK",   "Qualité du signal (RSSI)"),
     ("AT+NETOPEN",                          "OK",   "Ouverture stack réseau"),
     ("AT+IPADDR",                           "OK",   "Adresse IP attribuée"),
 ]
