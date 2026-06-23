@@ -1,23 +1,20 @@
-#from MPU6050 import *
 import numpy as np
 import getNoises as gn
 import time
 
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-
 ###### DONNÉES GLOBALES ######
 dt = 0.1
 isGivenNoises = 0 # pour recalculer le bruit du capteur immobile si 0
-isToMakeGraph = 0
-number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
+noiseNumber = 250 #Nombre de données pour l'initialisation
 
 if not isGivenNoises:
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(number)
+    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(noiseNumber)
 else:
     ### A initialiser pour un grand number
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01
+
+
+###### CLASSES ######
 
 class data:
     def __init__(self):
@@ -147,69 +144,3 @@ class Kalman:
         new_P = (I - K @ H) @ P @ (I - K @ H).T + K @ R @ K.T
         self.P = new_P
         self.x.update(new_x[0], new_x[1], new_x[2], new_x[3], new_x[4], new_x[5], new_x[6], new_x[7], new_x[8],new_x[9], new_x[10], new_x[11])
-
-
-kal = Kalman()
-
-accelList = []
-omega_zList = []
-
-accelList_NF, omega_zList_NF = [],[]
-
-for i in range(number):
-    kal.data.update()
-    da = kal.data.getData()
-    accelList_NF.append([da[0],da[1],da[2]])
-    omega_zList_NF.append(da[3])
-    kal.update_turn(da)
-    x = kal.x.getX()
-    accelList.append([x[6],x[7],x[8]])
-    omega_zList.append(x[10])
-    time.sleep(dt)
-    print(i)
-    
-if isToMakeGraph:
-    i = [j for j in range(len(accelList))]
-    plt.subplot(221)
-    plt.plot(i,[elt[0] for elt in accelList], '+', label="Filtré")
-    plt.plot(i,[elt[0] for elt in accelList_NF], '+', label="Non Filtré")
-    plt.title("accel x")
-    plt.legend()
-
-    plt.subplot(222)
-    plt.plot(i,[elt[1] for elt in accelList], '+', label="Filtré")
-    plt.plot(i,[elt[1] for elt in accelList_NF], '+', label="Non Filtré")
-    plt.title("accel y")
-    plt.legend()
-
-    plt.subplot(223)
-    plt.plot(i,[elt[2] for elt in accelList], '+', label="Filtré")
-    plt.plot(i,[elt[2] for elt in accelList_NF], '+', label="Non Filtré")
-    plt.title("accel z")
-    plt.legend()
-
-    plt.subplot(224)
-    plt.title("gyro z")
-    plt.plot(i, omega_zList, '+', label="Filtré")
-    plt.plot(i, omega_zList_NF, '+', label="Non Filtré")
-    plt.legend()
-
-    plt.savefig("graph.png")
-else:
-    print(accelList)
-    print("=============================")
-    print(omega_zList)
-    print("=============================")
-    print("#################################")
-    print("=============================")
-    print(accelList_NF)
-    print("=============================")
-    print(omega_zList_NF) 
-
-
-
-
-
-
-
-
