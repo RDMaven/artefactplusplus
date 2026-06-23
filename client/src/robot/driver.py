@@ -6,7 +6,9 @@ from config import Config
 from src.robot.controller import WifiBot, Reference
 from src.sensors.ultrasonic_sensors import UltrasonicSensors
 import src.utils.math_utils as mu
-from src.sensors.kalmanFilter.kalman_for_odometry import Kalman
+
+if Config.is_prod:
+    from src.sensors.kalmanFilter.kalman_for_odometry import Kalman
 
 
 class RobotDriver(WifiBot):
@@ -18,26 +20,28 @@ class RobotDriver(WifiBot):
 
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
-        self.kalman = Kalman()
+        if Config.is_prod:
+            self.kalman = Kalman()
+
         self.speed = Config.Robot.SPEED
 
-        self.sensors = UltrasonicSensors() # Sensors() TODO
+        self.sensors = UltrasonicSensors()
+
         if Config.Robot.MODE == "auto":
             self.sensors.start()
 
         self.current_objective = 0 # POUR LES MODES AUTO
 
     def KALODO(self, x_kalman, y_kalman, theta_kalman):
-        x_odo, y_odo, theta_odo = self.position.x, self.position.y, self.position.theta
+        x_odo, y_odo, theta_odo = self.position.get()
 
 
     def setLocalParameter(self, parameter_name, new_value):
-        # ASSERT
         match parameter_name:
             case "mode":
                 assert new_value in ['auto', 'manual'], f"Asked to set to an unknown mode : {new_mode}"
                 Config.Robot.MODE = new_value
-                if new_value == "auto": # A déplacer
+                if new_value == "auto":
                     self.sensors.start()
 
             case "speed":
@@ -45,7 +49,7 @@ class RobotDriver(WifiBot):
                 self.speed = new_value
             case _:
                 raise KeyError(f"Unknown parameter name : {parameter_name}")
-        print(f"Updated config : {self.local_config}")
+        print(f"Updated config : ({parameter_name} : {new_value})")
 
 
     def setMovingSpeed(self, l:int = Config.Robot.SPEED, r:int = Config.Robot.SPEED):
@@ -121,7 +125,6 @@ class RobotDriver(WifiBot):
             self.updateOdomReference(self.relative_ticks) # S'assurer qu'on commence à 0
             self.setMovingSpeed()
 
-            # MODIFIER LA 1e CONDITION POUR 'LES CAPTEUR NE DÉTÈCTENT PAS D'OBSTACLE' TODO
             while not self.sensors.obstacle_in_front and self.current_objective != 0:
                 time.sleep(0.05)
                 self.updateOdomReference(self.relative_ticks)
