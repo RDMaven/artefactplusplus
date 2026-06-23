@@ -30,18 +30,32 @@ AT_TESTS = [
 
 def envoyer_at(ser, commande, timeout=TIMEOUT):
     """Envoie une commande AT et retourne la réponse complète."""
-    ser.reset_input_buffer()
-    ser.write((commande + "\r\n").encode())
-    time.sleep(0.2)
+    try:
+        ser.reset_input_buffer()
+        ser.write((commande + "\r\n").encode())
 
-    reponse = ""
-    deadline = time.time() + timeout
-    while time.time() < deadline:
-        if ser.in_waiting:
-            reponse += ser.read(ser.in_waiting).decode("utf-8", errors="ignore")
-            if "OK" in reponse or "ERROR" in reponse or "READY" in reponse:
-                break
-        time.sleep(0.05)
+        reponse = ""
+        deadline = time.time() + timeout
+
+        while time.time() < deadline:
+            try:
+                en_attente = ser.in_waiting  # point de crash habituel
+            except OSError:
+                time.sleep(0.1)
+                continue  # le buffer est momentanément indisponible, on réessaie
+
+            if en_attente:
+                fragment = ser.read(en_attente).decode("utf-8", errors="ignore")
+                reponse += fragment
+                if any(fin in reponse for fin in ("OK\r\n", "ERROR\r\n", "READY\r\n", "+CME ERROR", "+CMS ERROR")):
+                    break
+
+            time.sleep(0.05)
+
+    except OSError as e:
+        print(f"[ERREUR I/O] {commande} : {e}")
+        return ""
+
     return reponse.strip()
 
 
