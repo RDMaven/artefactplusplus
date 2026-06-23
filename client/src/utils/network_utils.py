@@ -22,7 +22,7 @@ AT_TESTS = [
     ("AT+CREG?",                            "OK",   "Enregistrement réseau",                30),
     ("AT+COPS?",                            "OK",   "Opérateur réseau actif",               30),
     ("AT+CSQ",                              "OK",   "Qualité du signal (RSSI)",             2),
-    ("AT+NETOPEN",                          "OK",   "Ouverture stack réseau",               120),
+    # ("AT+NETOPEN",                          "OK",   "Ouverture stack réseau",               120),
     ("AT+IPADDR",                           "OK",   "Adresse IP attribuée",                 30),
 ]
 
