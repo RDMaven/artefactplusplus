@@ -60,6 +60,9 @@ def envoyer_at(ser, commande, timeout=TIMEOUT):
         ser.reset_input_buffer()
         ser.write((commande + "\r\n").encode())
 
+        if commande == "AT+NETOPEN":
+            time.sleep(3)
+
         reponse = ""
         deadline = time.time() + timeout
 
