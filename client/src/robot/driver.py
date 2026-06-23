@@ -4,7 +4,9 @@ import time
 
 from config import Config
 from src.robot.controller import WifiBot, Reference
+from src.sensors.ultrasonic_sensors import UltrasonicSensors
 import src.utils.math_utils as mu
+
 
 
 class RobotDriver(WifiBot):
@@ -17,11 +19,11 @@ class RobotDriver(WifiBot):
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
         self.speed = Config.Robot.SPEED
-        self.local_config = {
-            "mode": "manual",
-            }
 
-        self.sensors = None # Sensors() TODO
+        self.sensors = UltrasonicSensors() # Sensors() TODO
+        if Config.Robot.MODE == "auto":
+            self.sensors.start()
+
         self.current_objective = 0 # POUR LES MODES AUTO
 
 
@@ -30,7 +32,10 @@ class RobotDriver(WifiBot):
         match parameter_name:
             case "mode":
                 assert new_value in ['auto', 'manual'], f"Asked to set to an unknown mode : {new_mode}"
-                self.local_config[parameter_name] = new_value
+                Config.Robot.MODE = new_value
+                if new_value == "auto": # A déplacer
+                    self.sensors.start()
+
             case "speed":
                 assert type(new_value) == int and new_value > 0, f"Bad new speed given ({new_value}). Expected strictly positive int" 
                 self.speed = new_value
@@ -113,7 +118,7 @@ class RobotDriver(WifiBot):
             self.setMovingSpeed()
 
             # MODIFIER LA 1e CONDITION POUR 'LES CAPTEUR NE DÉTÈCTENT PAS D'OBSTACLE' TODO
-            while self.sensors and self.current_objective != 0:
+            while not self.sensors.obstacle_in_front and self.current_objective != 0:
                 time.sleep(0.05)
                 self.updateOdomReference(self.relative_ticks)
                 step = mu.avg(self.relative_ticks.l, self.relative_ticks.r) # ON CHOISI DE PRENDRE LA MOYENNE
@@ -130,7 +135,7 @@ class RobotDriver(WifiBot):
             self.current_objective -= mu.avg(self.relative_ticks.l, self.relative_ticks.r)
 
 
-            if self.sensors:
+            if self.sensors.obstacle_in_front:
                 print(f"forwardByDistance(global): OBSTACLE stopped me at r={self.current_objective / Config.Robot.TICKS_PER_CM} from objective")
             else:
                 print(f'forwardByDistance(global): DONE.')
@@ -173,14 +178,20 @@ class RobotDriver(WifiBot):
 
 
     def avoidObstacle(self):
+        """ Évitement d'obstacles pour l'avant. """
         angles = [45, -45, -90, 90, 180]
-        correction_distance = 10 # Arbitraire, TODO le mettre en variable d'environment, et prendre plus petit que la distance minimale des capteurs !
+        correction_distance = Config.Robot.OBSTACLE_AVOIDANCE_DISTANCE # Arbitraire, TODO le mettre en variable d'environment, et prendre plus petit que la distance minimale des capteurs !
 
-        for a in angles:
-            self.rotateByAngle(a) # TODO : OR ONLY ROTATE SENSORS
-            if not self.sensors: # TODO : CHANGER À, SI LES CAPTEURS NE DÉTECTENT PAS D'OBSTACLE
+        # On test de tourner à des angles successifs pour voir si ça débloque le robot.
+        for i in range(len(angles)):
+            if i == 0:
+                self.rotateByAngle(angles[i])
+            else:
+                self.rotateByAngle(-angles[i-1]+angles[i]) # Calcul du nouvel angle effectif pour le robot : on "annule" l'angle précédent pour repartir de 0
+
+            if not self.sensors.obstacle_in_front:
                 self.forwardByDistance(correction_distance)
-                return correction_distance, a
+                return correction_distance, angles[i]
 
         raise Exception("Robot.avoidObstacle() : Je suis bloqué...")
 
