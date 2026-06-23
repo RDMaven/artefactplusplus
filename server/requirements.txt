@@ -3,3 +3,7 @@ pyserial
 fastapi[standard-no-fastapi-cloud-cli]
 flask
 opencv-python
+torch
+torchvision
+numpy
+matplotlib
