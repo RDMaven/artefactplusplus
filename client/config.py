@@ -29,6 +29,7 @@ class Config:
     class Robot:
         ID = int(environ["ROBOT_ID"])
         SERIAL_PORT = str(environ["ROBOT_SERIAL_PORT"])
+        MODE = "manual"
         WHEELS_DIAMETER = float(environ["ROBOT_WHEELS_DIAMETER"])
         DISTANCE_BTW_WHEELS = float(environ["ROBOT_DISTANCE_BTW_WHEELS"])
         SPEED = int(environ["ROBOT_SPEED"])
@@ -36,9 +37,10 @@ class Config:
         # SPEED_AUTO = int(environ["ROBOT_SPEED_AUTO"])
         TURN_FACTOR=float(environ["ROBOT_TURN_FACTOR"])
         TICKS_PER_CM=float(environ["ROBOT_TICKS_PER_CM"])
+        OBSTACLE_AVOIDANCE_DISTANCE = int(environ["ROBOT_OBSTACLE_AVOIDANCE_DISTANCE"])
 
     class Sensors:
-        MIN_OBSTACLE_DISTANCE = int(environ["SENSORS_MIN_OBSTACLE_DISTANCE"])
+        OBSTACLE_DANGER_DISTANCE = int(environ["SENSORS_OBSTACLE_DANGER_DISTANCE"])
 
 
 def compare_env_with_example():
