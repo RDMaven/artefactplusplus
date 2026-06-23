@@ -24,6 +24,7 @@ AT_TESTS = [
     ("AT+CSQ",                              "OK",   "Qualité du signal (RSSI)",             2),
     ("AT+NETOPEN",                          "OK",   "Ouverture stack réseau",               120),
     ("AT+IPADDR",                           "OK",   "Adresse IP attribuée",                 30),
+    ("AT+CPING=\"www.telecom-paris.fr\",1", "OK",   "Ping telecom-paris.fr",                30),
 ]
 
 # ─── Fonctions ────────────────────────────────────────────────────
