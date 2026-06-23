@@ -6,7 +6,7 @@ import os
 import re
 
 # ─── Configuration ────────────────────────────────────────────────
-PORT      = "/dev/ttyUSB3"   # AT commands sur SIM7600X
+PORT      = "/dev/ttyUSB2"   # AT commands sur SIM7600X
 BAUD      = 115200
 LOGFILE   = "capture_4G.log"
 TIMEOUT   = 2                # secondes d'attente par commande AT
