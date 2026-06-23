@@ -80,6 +80,8 @@ def envoyer_at(ser, commande, timeout=TIMEOUT):
                     break
 
             time.sleep(0.05)
+        if commande == "AT+CFUN=1,1":
+            time.sleep(30)
 
     except OSError as e:
         print(f"[ERREUR I/O #{e.errno}] {commande} : {e}")
