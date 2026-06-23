@@ -80,7 +80,7 @@ do
         ;;
         5)
             echo -e "${ROYALBLUE}Lancement du capteur...${NC}"
-            cd ./client/src/sensors && ./start_sensor.sh
+            cd ./client/src/sensors/TEST_MPU6050 && ./start_sensor.sh
             break
         ;;
         6)
