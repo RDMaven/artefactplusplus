@@ -3,6 +3,8 @@ pyserial
 fastapi[standard-no-fastapi-cloud-cli]
 flask
 opencv-python
+ultralytics>=8.3.0
+
 torch
 torchvision
 numpy
