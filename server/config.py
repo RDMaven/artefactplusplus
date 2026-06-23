@@ -18,7 +18,7 @@ class Config:
         STATIC_DIRECTORY = ROOT+str(environ["STATIC_DIRECTORY"])
         TEMPLATES_DIRECTORY = ROOT+str(environ["TEMPLATES_DIRECTORY"])
         DATA_DIRECTORY = ROOT+str(environ["DATA_DIRECTORY"])
-
+        MAPS_DIRECTORY = ROOT+str(environ["MAPS_DIRECTORY"])
     # Working environment type (dev or prod)
     ENV = environ["APP_ENV"]  # test ou prod
     is_prod = ENV == "prod"
