@@ -57,22 +57,6 @@ def parser_csq(reponse):
         return f"RSSI={rssi} ({dbm} dBm) — {qualite}"
     return "Non parsé"
 
-def attendre_enregistrement(ser, tentatives=10, intervalle=3):
-    """Attend que le module soit enregistré sur le réseau."""
-    print("  Attente enregistrement réseau", end="", flush=True)
-    for _ in range(tentatives):
-        reponse = envoyer_at(ser, "AT+CREG?")
-        while not ser.in_waiting:
-            time.sleep(1)
-        # stat=1 (domestique) ou stat=5 (roaming) = OK
-        if ",1" in reponse or ",5" in reponse:
-            print(" → OK")
-            return True
-        print(".", end="", flush=True)
-        time.sleep(intervalle)
-    print(" → ÉCHEC")
-    return False
-
 
 def lancer_tests_at():
     """Exécute la batterie de tests AT et affiche un rapport."""
@@ -91,11 +75,9 @@ def lancer_tests_at():
 
     for commande, attendu, description in AT_TESTS:
         if commande == "AT+CGDCONT?":
-            if not attendre_enregistrement(ser):
-                print("[ERREUR] Module non enregistré après 30s")
-                ser.close()
-                return False
-        reponse = envoyer_at(ser, commande)
+            reponse = envoyer_at(ser, commande, 30)
+        else :
+            reponse = envoyer_at(ser, commande)
         succes = attendu in reponse
 
         statut = "✓" if succes else "✗"
