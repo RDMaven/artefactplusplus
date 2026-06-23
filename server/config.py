@@ -61,3 +61,21 @@ def compare_env_with_example():
 # compare_env_with_example()
 
 print("+--+ Config SETUP (END) +--+")
+
+
+class Var:
+    class Signal:
+        waiting_for_signal = False
+        received_signal = False
+
+        def reset():
+            Var.Signal.waiting_for_signal = False
+            Var.Signal.received_signal = False
+    
+    class Goto:
+        asking_for_goto = False
+        goto_completed = False
+
+        def reset():
+            Var.Goto.asking_for_goto = False
+            Var.Goto.goto_completed = False
