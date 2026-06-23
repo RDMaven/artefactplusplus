@@ -17,4 +17,5 @@ else
     exit 1
 fi
 
+pip install -r requirements.txt
 "$PYTHON" client.py
