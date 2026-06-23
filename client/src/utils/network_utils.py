@@ -61,6 +61,8 @@ def attendre_enregistrement(ser, tentatives=10, intervalle=3):
     """Attend que le module soit enregistré sur le réseau."""
     print("  Attente enregistrement réseau", end="", flush=True)
     for _ in range(tentatives):
+        while not ser.in_waiting:
+            time.sleep(1)
         reponse = envoyer_at(ser, "AT+CREG?")
         # stat=1 (domestique) ou stat=5 (roaming) = OK
         if ",1" in reponse or ",5" in reponse:
