@@ -28,37 +28,6 @@ AT_TESTS = [
 
 # ─── Fonctions ────────────────────────────────────────────────────
 
-def envoyer_at(ser, commande, timeout=TIMEOUT):
-    """Envoie une commande AT et retourne la réponse complète."""
-    try:
-        ser.reset_input_buffer()
-        ser.write((commande + "\r\n").encode())
-
-        reponse = ""
-        deadline = time.time() + timeout
-
-        while time.time() < deadline:
-            try:
-                en_attente = ser.in_waiting  # point de crash habituel
-            except OSError:
-                time.sleep(0.1)
-                continue  # le buffer est momentanément indisponible, on réessaie
-
-            if en_attente:
-                fragment = ser.read(en_attente).decode("utf-8", errors="ignore")
-                reponse += fragment
-                if any(fin in reponse for fin in ("OK\r\n", "ERROR\r\n", "READY\r\n", "+CME ERROR", "+CMS ERROR")):
-                    break
-
-            time.sleep(0.05)
-
-    except OSError as e:
-        print(f"[ERREUR I/O] {commande} : {e}")
-        return ""
-
-    return reponse.strip()
-
-
 def parser_csq(reponse):
     """Interprète le RSSI retourné par AT+CSQ."""
     match = re.search(r"\+CSQ:\s*(\d+),", reponse)
@@ -72,33 +41,84 @@ def parser_csq(reponse):
     return "Non parsé"
 
 
+def ouvrir_port(port, baud, timeout, tentatives=3):
+    """Ouvre le port série avec retry en cas d'échec."""
+    for i in range(tentatives):
+        try:
+            ser = Serial(port, baud, timeout=timeout)
+            time.sleep(1)
+            return ser
+        except SerialException as e:
+            print(f"[ERREUR] Tentative {i+1}/{tentatives} : {e}")
+            time.sleep(2)
+    return None
+
+
+def envoyer_at(ser, commande, timeout=TIMEOUT):
+    """Envoie une commande AT avec gestion Errno 5 et 71."""
+    try:
+        ser.reset_input_buffer()
+        ser.write((commande + "\r\n").encode())
+
+        reponse = ""
+        deadline = time.time() + timeout
+
+        while time.time() < deadline:
+            try:
+                en_attente = ser.in_waiting
+            except OSError as e:
+                if e.errno in (5, 71):
+                    # Port coupé — on signale pour rouvrir en amont
+                    raise
+                time.sleep(0.1)
+                continue
+
+            if en_attente:
+                fragment = ser.read(en_attente).decode("utf-8", errors="ignore")
+                reponse += fragment
+                if any(fin in reponse for fin in ("OK\r\n", "ERROR\r\n", "READY\r\n", "+CME ERROR", "+CMS ERROR")):
+                    break
+
+            time.sleep(0.05)
+
+    except OSError as e:
+        print(f"[ERREUR I/O #{e.errno}] {commande} : {e}")
+        return None  # None = signal que le port est mort
+
+    return reponse.strip()
+
+
 def lancer_tests_at():
-    """Exécute la batterie de tests AT et affiche un rapport."""
     print("=" * 55)
     print("  TESTS DE CONNEXION — SIM7600X")
     print("=" * 55)
 
-    resultats = []
-
-    try:
-        ser = Serial(PORT, BAUD, timeout=TIMEOUT)
-        time.sleep(0.5)
-    except SerialException as e:
-        print(f"[ERREUR] Impossible d'ouvrir {PORT} : {e}")
+    ser = ouvrir_port(PORT, BAUD, TIMEOUT)
+    if not ser:
+        print("[ERREUR] Port inaccessible")
         return False
 
-    for commande, attendu, description in AT_TESTS:
-        if commande == "AT+CGDCONT?":
-            reponse = envoyer_at(ser, commande, 30)
-        else :
-            reponse = envoyer_at(ser, commande)
-        succes = attendu in reponse
+    resultats = []
 
+    for commande, attendu, description, timeout in AT_TESTS:
+        reponse = envoyer_at(ser, commande, timeout)
+
+        # Port mort → tentative de réouverture
+        if reponse is None:
+            print(f"  [!] Tentative de réouverture du port...")
+            ser.close()
+            time.sleep(2)
+            ser = ouvrir_port(PORT, BAUD, TIMEOUT)
+            if not ser:
+                print("[ERREUR] Port irrécupérable, arrêt des tests")
+                break
+            # Réessai de la commande une fois
+            reponse = envoyer_at(ser, commande, timeout) or ""
+
+        succes = attendu in reponse
         statut = "✓" if succes else "✗"
         print(f"\n[{statut}] {description}")
         print(f"    CMD : {commande}")
-
-        # Affichage enrichi selon la commande
         if commande == "AT+CSQ" and succes:
             print(f"    REP : {parser_csq(reponse)}")
         else:
@@ -110,8 +130,8 @@ def lancer_tests_at():
 
     ser.close()
 
-    total   = len(resultats)
     reussis = sum(resultats)
+    total   = len(AT_TESTS)
     print("\n" + "=" * 55)
     print(f"  Résultat : {reussis}/{total} tests réussis")
     print("=" * 55)
