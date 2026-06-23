@@ -16,13 +16,13 @@ AT_TESTS = [
     ("AT",                                  "OK",   "Vérification communication de base",   2),
     ("ATI",                                 "OK",   "Informations module",                  2),
     ("AT+CPIN?",                            "READY","Statut carte SIM",                     2),
-    ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN",               2),
-    ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités",            2),
+    # ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN",               2),
+    # ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités",            2),
     ("AT+CGDCONT?",                         "OK",   "Contexte PDP (APN)",                   2),
     ("AT+CREG?",                            "OK",   "Enregistrement réseau",                30),
     ("AT+COPS?",                            "OK",   "Opérateur réseau actif",               30),
     ("AT+CSQ",                              "OK",   "Qualité du signal (RSSI)",             2),
-    # ("AT+NETOPEN",                          "OK",   "Ouverture stack réseau",               120),
+    ("AT+NETOPEN",                          "OK",   "Ouverture stack réseau",               120),
     ("AT+IPADDR",                           "OK",   "Adresse IP attribuée",                 30),
 ]
 
