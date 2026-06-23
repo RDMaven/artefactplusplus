@@ -235,7 +235,7 @@ def main(grid, x0=0, y0=0) -> list[tuple[int, int]]:
     #   Jaune = vu ; 
     #   Rouge = reparcouru pour récupérer des cases isolées ; 
     #   Blanc = non visité ;
-    print_grid(display_grid, clear=False)
+    # print_grid(display_grid, clear=False)
 
 
     # GESTION DES DISCONTINUITÉS

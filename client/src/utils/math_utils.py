@@ -20,6 +20,9 @@ class Position:
         
         self.theta_rad = math.radians(self.theta) # TOUJOURS UPDATE CECI QUAND ON UPDATE THETA.
 
+    def get(self):
+        return self.x, self.y, self.theta
+
     def updateForLinearMovement(self, real_tick_distance: int):
         real_meter_distance = real_tick_distance * Ratio.MperT
 
