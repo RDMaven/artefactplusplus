@@ -16,8 +16,8 @@ AT_TESTS = [
     ("AT",                                  "OK",   "Vérification communication de base"),
     ("ATI",                                 "OK",   "Informations module"),
     ("AT+CPIN?",                            "READY","Statut carte SIM"),
-    ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN")
-    ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités")
+    ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN"),
+    ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités"),
     ("AT+CSQ",                              "OK",   "Qualité du signal (RSSI)"),
     ("AT+CREG?",                            "OK",   "Enregistrement réseau"),
     ("AT+COPS?",                            "OK",   "Opérateur réseau actif"),
