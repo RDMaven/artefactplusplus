@@ -20,6 +20,10 @@ class RobotDriver(WifiBot):
 
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
+
+        self._outputing_position = False
+        self._thread_position = None
+
         if Config.is_prod:
             self.kalman = Kalman()
 
@@ -46,12 +50,9 @@ class RobotDriver(WifiBot):
 
 ####################################
 
-        self._ooutputing_position = False
-        self._thread_position = None
-
     def _print_position_loop(self):
         f = open('positions.txt', 'a')
-        while self._ooutputing_position:
+        while self._outputing_position:
             print(self.position)
             f.write(self.position+'\n')
             time.sleep(self.timeout)
@@ -59,7 +60,7 @@ class RobotDriver(WifiBot):
 
     def start_printing_position(self):
         if self._thread_position is None or not self._thread_position.is_alive():
-            self._ooutputing_position = True
+            self._outputing_position = True
             self._thread_position = threading.Thread(
                 target=self._print_position_loop,
                 daemon=True
@@ -67,7 +68,7 @@ class RobotDriver(WifiBot):
             self._thread_position.start()
 
     def stop_printing_position(self):
-        self._ooutputing_position = False
+        self._outputing_position = False
 
 ######################################
 

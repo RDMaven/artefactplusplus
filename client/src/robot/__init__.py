@@ -12,7 +12,7 @@ except Exception as e:
     print(e)
 finally:
     robot.sensors.stop()
-    robot.start_printing_position()
+    robot.stop_printing_position()
 
 # camera.demo(1)
 

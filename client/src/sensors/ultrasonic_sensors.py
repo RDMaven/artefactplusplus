@@ -57,6 +57,7 @@ MODE_SENSOR = (Config.Robot.MODE == "auto")
 
 class UltrasonicSensors:
     def __init__(self):
+        GPIO.cleanup()
         self.time_interval = 0.3
 
         self.SensorFront = SingleUltrasonicSensor(TRIG=11, ECHO=12)
