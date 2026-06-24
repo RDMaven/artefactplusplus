@@ -98,10 +98,13 @@ class RobotDriver(WifiBot):
         print(f"Updated config : ({parameter_name} : {new_value})")
 
 
-    def setMovingSpeed(self, l:int = Config.Robot.SPEED, r:int = Config.Robot.SPEED):
+    def setMovingSpeed(self, l:int = Config.Robot.SPEED, r:int = Config.Robot.SPEED, reverse = False):
         if not Config.is_prod:
             print(f"setMovingSpeed (test): sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
             return
+        if reverse:
+            l = -l
+            r = -r
 
         self.forceStart()
         # print(f"setMovingSpeed (prod) : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
@@ -118,6 +121,8 @@ class RobotDriver(WifiBot):
     # POUR LE MODE MANUEL ------------------------------- #
     def moveManual(self, l:float ,r:float ):
         assert l >= -1 and l <= 1 and r >= -1 and r <= 1, "moveManual : a recu un x ou y hors de [-1,1]"
+        l = -l
+        r = -r
 
         # Scale
         l *= self.speed
@@ -139,11 +144,11 @@ class RobotDriver(WifiBot):
 
         ref = Reference(self.getOdom(is_setup=True))
         if is_local_instr:
-            distance_in_ticks = mu.distanceInTickForForward(distance)
+            distance_in_ticks = abs(mu.distanceInTickForForward(distance))
             
             self.start_printing_position()
 
-            self.setMovingSpeed()
+            self.setMovingSpeed(reverse=(distance < 0))
             print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
             while ref.l < distance_in_ticks and ref.r < distance_in_ticks:
                 time.sleep(self.timeout)
