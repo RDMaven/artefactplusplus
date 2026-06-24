@@ -48,7 +48,7 @@ class RobotDriver(WifiBot):
 
     def updatePositionTankRotation(self, ref):
         self.updateOdomReference(ref)
-        self.position.updateForTankRotation(mu.avg(ref.l, ref.r))
+        self.position.updateForTankRotation(ref.l, ref.r)
         self.kalman.kalman_one_turn()
 
 
@@ -136,7 +136,7 @@ class RobotDriver(WifiBot):
     
     
     # Pour le mode AUTO --------------------------------- #
-    def forwardByDistance(self, distance:float, is_local_instr: bool = True):
+    def forwardByDistance(self, distance:float, is_local_instr: bool = True, speed = Config.Robot.SPEED):
         """ Avance d'une certaine distance, donnée en cm. 
         is_local_instr : si vrai, on ne met pas a jour l'objectif global. """
 
@@ -175,40 +175,43 @@ class RobotDriver(WifiBot):
         
         else: ## Mode appelé seulement par la méthode 'goto'
 
-            time.sleep(self.timeout)
-            self.updatePositionLinear(self.relative_ticks)
+            # On connait deja l'objectif, pas besoin de calculer distance_in_ticks
+            self.start_printing_position()
 
-            # self.updateOdomReference(self.relative_ticks) # S'assurer qu'on commence à 0
-            self.setMovingSpeed()
+            # Récupérer le signe initial de current objective : lorsqu'on change de signe, on a dépassé l'objectif.
+            current_objective_was_positive =  (self.current_objective >= 0)
 
-            while not self.sensors.obstacle_in_front and self.current_objective != 0:
-                # time.sleep(0.05)
-                # self.updateOdomReference(self.relative_ticks)
+            def changed_sign(v_was_positive, v_new):
+                """ Condition d'arret pour la boucle : si obj change de sens ou si obj = 0 """
+                return (v_was_positive ^ (v_new >= 0)) or v_new == 0
+
+            self.setMovingSpeed(reverse=(self.current_objective < 0), l=speed, r=speed) # Pas le choix, on l'a monté à l'envers
+
+            while not self.sensors.obstacle_in_front and not changed_sign(current_objective_was_positive, self.current_objective):
                 time.sleep(self.timeout)
-                self.updatePositionLinear(self.relative_ticks)
-                step = mu.avg(self.relative_ticks.l, self.relative_ticks.r) # ON CHOISI DE PRENDRE LA MOYENNE
-                self.current_objective -= step 
-                # self.position.updateForLinearMovement(step)
-
+                self.updatePositionLinear(ref) # self.updatePositionLinear(self.relative_ticks)
+                step = mu.avg(ref.l, ref.r) # ON CHOISI DE PRENDRE LA MOYENNE
+                self.current_objective -= step
+                # print(ref.l, ref.r, step, self.current_objective)
 
             # Stop the movement, dans tous les cas
             self.stopMoving()
-            # time.sleep(1)
             for _ in range(int(1.5 / self.timeout)):
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
+                self.current_objective -= mu.avg(ref.l, ref.r)
                 
             # Gestion de l'overshoot
-            # self.updateOdomReference(self.relative_ticks)
-            self.current_objective -= mu.avg(self.relative_ticks.l, self.relative_ticks.r)
+            # self.current_objective -= mu.avg(ref.l, ref.r)
 
+
+            self.stop_printing_position()
 
             if self.sensors.obstacle_in_front:
-                print(f"DRIVER - forwardByDistance(global): OBSTACLE stopped me at r={self.current_objective / Config.Robot.TICKS_PER_CM} from objective")
+                print(f"DRIVER - GOTO_Forward OBSTACLE stopped me at r={self.current_objective / Config.Robot.TICKS_PER_CM} from objective.")
             else:
-                print(f'DRIVER - forwardByDistance(global): DONE.')
+                print(f'DRIVER - GOTO_Forward DONE (L\'objectif est à {round(self.current_objective / Config.Robot.TICKS_PER_CM,2)}cm).')
                 self.printStatus()
-
 
 
     def rotateByAngle(self, angle:float):
@@ -216,7 +219,7 @@ class RobotDriver(WifiBot):
         angle = mu.normaliser_degrees(angle)
 
         # Init the odometry : the robot need to be in movement to get the odometry.
-        ref = Reference(self.getOdom(is_setup=True))
+        ref = ReferenceSimple(self.getOdom(is_setup=True))
         distance_in_ticks = mu.distanceInTickForRotation(angle)
 
         self.start_printing_position()
@@ -224,12 +227,10 @@ class RobotDriver(WifiBot):
         dir = -1 if angle < 0 else 1 # A ajuster
         self.setMovingSpeed((-dir) * Config.Robot.SPEED, dir * Config.Robot.SPEED)
         print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
-        while abs(ref.l) < distance_in_ticks and abs(ref.r) < distance_in_ticks:
-            # time.sleep(0.05)
-            # self.updateOdomReference(ref)
+        while ref.is_less_than(distance_in_ticks):
             time.sleep(self.timeout)
             self.updatePositionTankRotation(ref)
-            print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+            # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
         # Stop the movement, and record overshoot
         self.stopMoving()
@@ -240,14 +241,15 @@ class RobotDriver(WifiBot):
 
 
         # self.updateOdomReference(ref)
-        overL, overR =  abs(ref.l - distance_in_ticks), abs(ref.r - distance_in_ticks)
-        over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
+        overL, overR =  (ref.accl) - (distance_in_ticks), (ref.accr) - (distance_in_ticks)
+        over = mu.angleFromTicks(overL, overR) #mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
         # self.position.updateForTankRotation(ref.l, ref.r)
 
         print(
           f'forwardByDistance() : theta={angle}° ({distance_in_ticks}t),\n\
-            over={over}° ({mu.avg(overL, overR)})'
+            effectif : {mu.angleFromTicks(ref.accl, ref.accr)} \n\
+            over={over}° (l={overL}, r={overR})'
         )
 
         self.stop_printing_position()
@@ -278,20 +280,26 @@ class RobotDriver(WifiBot):
         r, theta = r0, theta0
         print("DRIVER - Starting goto")
         self.current_objective = mu.distanceInTickForForward(r)
-        self.rotateByAngle(theta)
-        self.forwardByDistance(r, is_local_instr=False)
-
-        while self.current_objective != 0:
-            d, alpha = self.avoidObstacle()
-            r, theta = mu.calculate_new_polar(r, alpha, d)
-            self.current_objective = mu.distanceInTickForForward(r)
+        if theta:
             self.rotateByAngle(theta)
-            self.forwardByDistance(r, is_local_instr=False)
+        self.forwardByDistance(r, is_local_instr=False)
+        temp_divided_speed = Config.Robot.SPEED
+
+        while abs(self.current_objective/Config.Robot.TICKS_PER_CM) > 10: # Tolérence de 10cm autour de l'objectif
+            if self.sensors.obstacle_in_front:
+                d, alpha = self.avoidObstacle()
+                r, theta = mu.calculate_new_polar(r, alpha, d)
+                self.current_objective = mu.distanceInTickForForward(r)
+                self.rotateByAngle(theta)
+                self.forwardByDistance(0, is_local_instr=False) # r n'est pas requis dans ce cas, on ne regarde que current_objective
+            else:
+                temp_divided_speed //= 2
+                self.forwardByDistance(0, is_local_instr=False, speed=temp_divided_speed)
 
     def goto_cartesian(self, x2, y2):
         """ Aller à une position, donnée en cartésien. """
-        x1,y1, _ = self.position.get()
-        r, theta = mu.convert_cartesian_to_radial(x1,y1,x2,y2)
+        x1,y1, theta1 = self.position.get()
+        r, theta = mu.convert_cartesian_to_radial(x1,y1,theta1,x2,y2)
         print(f"DRIVER - Goto cartésien ({x1,y1} -> {(x2,y2)}) a calculé r={r}, theta={theta}")
         self.goto(r, theta)
 

@@ -59,8 +59,11 @@ def distanceInTickForForward(distance: float):
 
 def distanceInTickForRotation(angle: float):
     """ angle : in degrees """
-    return int(1/2 * abs(math.radians(angle) * Config.Robot.DISTANCE_BTW_WHEELS * Ratio.TperM))
+    # return int(1/2 * abs(math.radians(angle) * Config.Robot.DISTANCE_BTW_WHEELS * Ratio.TperM))
+    return int(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*(angle/360)*Ratio.TperM)
 
+def angleFromTicks(tl, tr):
+    return (tr-tl)*180/(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*Ratio.TperM)
 
 # ======================================================= #
 # Fonctions maths diverses ============================== #
@@ -94,9 +97,19 @@ def calculate_new_polar(r0, alpha, d):
 
     return r, theta
 
-def convert_cartesian_to_radial(x1,y1,x2,y2):
+def convert_cartesian_to_radial(x1,y1,theta1, x2,y2):
+    """ Obtenir (r,theta) pour aller du point (x1,y1,theta1) à (x2,y2). """
+    dx = x2 - x1
+    dy = y2 - y1
 
-    r = math.hypot(x1 - x2, y1 - y2)
-    theta = math.atan2(y1 - y2, x1 - x2)
+    # Distance
+    r = math.hypot(dx, dy)
 
-    return r, theta
+    # Angle
+    theta_target_deg = math.degrees(math.atan2(dy, dx))
+    theta2 = theta_target_deg - theta1
+    theta2 = (theta2 + 180) % 360 - 180
+
+    return r, theta2
+
+
