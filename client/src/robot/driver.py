@@ -100,6 +100,8 @@ class RobotDriver(WifiBot):
 
     def setMovingSpeed(self, l:int = Config.Robot.SPEED, r:int = Config.Robot.SPEED):
         if not Config.is_prod:
+            l = -l
+            r = -r
             print(f"setMovingSpeed (test): sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
             return
 

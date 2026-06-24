@@ -43,7 +43,7 @@ class Camera:
 # ======================================================= #
 # Contrôle de l'orientation de la caméra ================ #
 # ======================================================= #
-timeout = 0.5
+timeout = 1
 
 class CameraMove:
 
@@ -120,6 +120,6 @@ class CameraMove:
         if dd != 0:
             self.camera_down(dd*2000)
         if dl != 0:
-            self.camera_left(dl*2000)
+            self.camera_left(-dl*2000)
 
 

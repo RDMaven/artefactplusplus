@@ -236,8 +236,8 @@ class WifiBot:
         if not self.started:
             print("Robot was not started, starting.")
             self.start()
-            self.setLeftSpeed(1) # TODO try with 0
-            self.setRightSpeed(1)
+            self.setLeftSpeed(0) # TODO try with 0
+            self.setRightSpeed(0)
 
     def getOdom(self, is_setup=False):
         if is_setup:
