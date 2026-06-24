@@ -10,7 +10,6 @@ from www.routes.utils.message_parse_and_build import \
     message_builder
 from www.routes.utils.utils_video import frame_store
 from control_logic.main_auto_cartographie import cartographie
-from flask_cors import CORS
 
 from pathlib import Path
 from config import Config
@@ -81,7 +80,6 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-CORS(router, resources={r"/*": {"origins": "*"}})
 
 @router.get("/connected")
 async def connected():

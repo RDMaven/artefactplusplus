@@ -11,16 +11,19 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Simple setup ------------------------------------------ #
 # Create FastAPI app
-app = FastAPI()
+app=FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Autorise tout le monde
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["*"], # Permet toutes les origines (votre site sur le port 5000, etc.)
+    allow_credentials=True,
+    allow_methods=["*"], # Permet GET, POST, OPTIONS, etc.
+    allow_headers=["*"], # Permet tous les en-têtes
 )
 
 # Static files
 app.mount("/static", StaticFiles(directory=Config.Path.STATIC_DIRECTORY), name="static")
+
 
 # Templates
 templates = Jinja2Templates(directory=Config.Path.TEMPLATES_DIRECTORY)
