@@ -18,6 +18,10 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
             grid = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in rawmap]
 
     parcours = parcours_main(grid, x0, y0)
+    if parcours == []: # La position initial n'était pas valide
+        print("CARTO - Position initiale invalide.")
+        return
+
     parcours.pop(0) # La première case est (x0,y0)
     # print("CARTO - Parcours calculé")
 
