@@ -117,8 +117,8 @@ class CameraMove:
         if dd==0 and dl==0:
             self.reset()
         if dd != 0:
-            self.camera_down(dd*500)
+            self.camera_down(dd*2000)
         if dl != 0:
-            self.camera_left(dl*500)
+            self.camera_left(dl*2000)
 
 

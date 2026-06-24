@@ -28,7 +28,7 @@ export function stopMove() {
 var cameraCurrentMoveInput = STOP;
 
 function sendMoveCam(d, l) { // d = down, l = left
-  if (cameraCurrentMoveInput.d === d && cameraCurrentMoveInput.l === l) return;
+  // if (cameraCurrentMoveInput.d === d && cameraCurrentMoveInput.l === l) return;
   sendWSMessage("move_cam", d, l);
   cameraCurrentMoveInput = { d, l };
 }
