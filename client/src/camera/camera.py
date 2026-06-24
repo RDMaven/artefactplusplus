@@ -51,6 +51,7 @@ class CameraMove:
         self.id = Config.Camera.ID
         self.x = 0
         self.y = 0
+        self.wait()
         self.move(0,0) # Initialisation de la caméra à (0,0)
 
     def wait(self, dt = timeout):

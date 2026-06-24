@@ -102,6 +102,8 @@ class UltrasonicSensors:
     def stop(self):
         if self._thread is not None:
             self._thread.join()
+        self.SensorBack.destroy()
+        self.SensorFront.destroy()
 
 
 if __name__ == "__main__":
