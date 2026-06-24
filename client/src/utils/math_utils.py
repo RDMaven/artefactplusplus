@@ -28,6 +28,10 @@ class Position:
         self.y = float(y)
         self.theta = float(theta)
     
+    def __string__(self):
+        return f"Odometry position : x={self.x}, y={self.y}, theta={self.theta}°"
+
+
     def updateForLinearMovement(self, real_tick_distance: int):
         real_meter_distance = real_tick_distance * Ratio.MperT
 
