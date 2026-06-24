@@ -43,16 +43,17 @@ class Camera:
 # ======================================================= #
 # Contrôle de l'orientation de la caméra ================ #
 # ======================================================= #
+
 class CameraMove:
+    timeout = 0.5
 
     def __init__(self):
         self.id = Config.Camera.ID
         self.x = 0
         self.y = 0
         self.move(0,0) # Initialisation de la caméra à (0,0)
-        self._timeout = 0.5
 
-    def wait(self, dt = self._timeout):
+    def wait(self, dt = CameraMove.timeout):
         time.sleep(dt)
 
     def command_make(self, instruction: str, value: str):
