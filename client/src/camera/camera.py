@@ -52,7 +52,7 @@ class CameraMove:
         self.move(0,0) # Initialisation de la caméra à (0,0)
 
     def command_make(self, instruction: str, value: str):
-        subprocess.call(f"{STATIC_COMMAND} -d video{self.id} -s '{instruction}' -- '{value}'", shell=True)
+        subprocess.call(f"{STATIC_COMMAND} -d video{self.id} -s '{instruction}' -- '{value}' 2>/dev/null", shell=True)
         # return f"{STATIC_COMMAND} -d video{self.id} -s '{instruction}' -- '{value}'"
     
     def camera_up(self, value: int):
