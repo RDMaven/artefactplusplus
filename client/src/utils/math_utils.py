@@ -38,15 +38,15 @@ class Position:
         offset_x = real_meter_distance * math.cos(self.theta_rad)
         offset_y = real_meter_distance * math.sin(self.theta_rad)
         
-        self.y += round(offset_y, 2)
-        self.x += round(offset_x, 2)
+        self.y = round(self.y + offset_y, 2)
+        self.x = round(self.x + offset_x, 2)
 
     def updateForTankRotation(self, real_tick_angle_left: int, real_tick_angle_right: int):
         var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
         # la formules est fause : TODO
 
         self.theta_rad += var_angle_rad
-        self.theta += round(math.degrees(var_angle_rad), 3)
+        self.theta = round(self.theta + math.degrees(var_angle_rad), 3)
 
 
 # ======================================================= #

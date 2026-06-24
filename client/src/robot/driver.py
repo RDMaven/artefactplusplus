@@ -104,8 +104,6 @@ class RobotDriver(WifiBot):
             return
 
         self.forceStart()
-        l = -l
-        r = -r
         # print(f"setMovingSpeed (prod) : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
         self.setLeftForward( (l >= 0)) # Update the wheel directions
         self.setRightForward((r >= 0)) # //
@@ -137,6 +135,8 @@ class RobotDriver(WifiBot):
         is_local_instr : si vrai, on ne met pas a jour l'objectif global. """
 
         # Init the odometry : the robot need to be in movement to get the odometry.
+        distance = -distance
+
         ref = Reference(self.getOdom(is_setup=True))
         if is_local_instr:
             distance_in_ticks = mu.distanceInTickForForward(distance)
