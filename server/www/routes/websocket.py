@@ -83,7 +83,7 @@ manager = ConnectionManager()
 
 
 
-@router.get("/connected", response_class=HTMLResponse)
+@router.get("/connected")
 async def connected():
     return list(manager.active_connections.keys())
 
