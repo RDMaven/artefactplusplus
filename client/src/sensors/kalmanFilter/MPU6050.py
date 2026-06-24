@@ -74,3 +74,5 @@ def getDataSet(number):
         time.sleep(1)
     print(accelList)
     print(gyroList)
+
+getInfo(10000)
