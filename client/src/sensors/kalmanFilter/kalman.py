@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 ###### DONNÉES GLOBALES ######
 dt = 0.1
-isGivenNoises = 0 # pour recalculer le bruit du capteur immobile si 0
+isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
 isToMakeGraph = 0
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 

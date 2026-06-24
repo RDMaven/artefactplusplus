@@ -4,7 +4,7 @@ import time
 
 ###### DONNÉES GLOBALES ######
 dt = 0.1
-isGivenNoises = 0 # pour recalculer le bruit du capteur immobile si 0
+isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
 noiseNumber = 250 #Nombre de données pour l'initialisation
 
 if not isGivenNoises:
