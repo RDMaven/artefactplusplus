@@ -56,7 +56,7 @@ class RobotDriver(WifiBot):
     def _print_position_loop(self):
         f = open('positions.txt', 'a')
         while self._outputing_position:
-            tstr = f'{self.position:50} | {self.kalman:50}'
+            tstr = f'{self.position.__str__():50} | {self.kalman.__str__():50}'
             print(tstr)
             f.write(tstr+'\n')
             time.sleep(self.timeout)
