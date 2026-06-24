@@ -9,6 +9,8 @@ from www.routes.utils.message_parse_and_build import \
     interface_message_parser, robot_message_parser, \
     message_builder
 from www.routes.utils.utils_video import frame_store
+from control_logic.main_auto_cartographie import cartographie
+
 
 from pathlib import Path
 from config import Config
@@ -24,7 +26,7 @@ class WSClient:
         self.ws = websocket
         self.id = client_id
         self.is_robot = (self.id != 0)
-        self.name = f"ROBOT {client_id}" if self.is_robot else "THE INTERFACE"
+        self.name = f"ROBOT {client_id}" if self.is_robot else "INTERFACE"
 
     # MÉTHODES DE COMMUNICATIONS --------------------
     # -> Recevoir depuis robot/interface ------------
@@ -84,39 +86,51 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket, client_id) #  Register the client
     client = manager.get_client(client_id) 
 
-    if client_id == 0: # Pour l'interface on envoie les cartes
+    # POUR L'INTERFACE, envoyer la liste des cartes disponibles
+    if client_id == 0:
         cartes = {i: f.name for i, f in enumerate(Path(Config.Path.MAPS_DIRECTORY).glob("*.txt"))}
-        # result = {k: os.path.basename(v) for k, v in data.items()}
-
         await client.send(message_builder("maps_list", 0, cartes))
 
+    # Boucle principale ws
     try:
         while True:
             data = await websocket.receive_text() # Wait for a message
             data_type, data_for = client.parse(data) # Parse the message
             
-            # Forward message (ex. Robot 1 -> Server -> Interface)
-            if data_for != -1: 
+            # Forward message (ex. Robot 1 -> Server -> Interface, 
+            # alors les messages ne sont pas pour le serveur (-1) d'où la condition)
+            if data_for != -1 and data_type not in ["carto_init", "traque_init"]: 
                 recipient = manager.get_client(data_for)
                 if recipient:
                     await recipient.send(data)
 
-                    await client.send(message_builder("message", data_for, f"Forwarded -{data_type.upper()}- message from you, {client.name}, to {recipient.name}"))
+                    await client.send(message_builder("message", data_for, f"ACK - Forwarded '{data_type.upper()}' message ({client.name} -> {recipient.name})."))
                 else:
-                    await client.send(message_builder("message", data_for, f"ALERT - Le client {data_for} n'est pas connecté."))
+                    await client.send(message_builder("message", data_for, f"ALERT - Client {manager.get_client(data_for)} offline."))
                 continue
             
-            # Cas particulier : envoyer les cartes à l'interface pour affichage
-            # if data_type == "set_parameter" :
-            #     tdata = json.loads(data)
-            #     rt, _, rfor, rtime, rdata = tdata.values()
-            #     pname, pvalue = rdata.values()
-            #     if pname == "automode" and pvalue == "cartographie":
-
 
             # Pong when it's not a video frame (else the terminal would explode)
             if data_type != "video":
-                await client.send(message_builder("message", data_for, f"Received '{data_type.upper()}' message from you, {client.name}."))
+                await client.send(message_builder("message", data_for, f"ACK - Received '{data_type.upper()}' message ({client.name} -> {data_for})."))
+
+
+            # La spéciale redondante pour lancer les modes auto
+            if data_type in ["carto_init", "traque_init"]:
+                data = json.loads(data)
+                _, _, rfor, _, rdata = data.values()
+                recipient = manager.get_client(rfor)
+                if not recipient:
+                    await client.send(message_builder("message", data_for, f"ALERT - Client {manager.get_client(data_for)} offline."))
+                else:
+                    match data_type:
+                        case "carto_init":
+                            cmap, cx, cy = rdata.values()
+                            # TODO Récupérer l'échelle de la carte, ici 1 par défaut
+                            await cartographie(recipient, cmap, 1, cx, cy)
+                        case "traque_init":
+                            pass # TODO
+
 
     except WebSocketDisconnect:
         await manager.disconnect(client_id)

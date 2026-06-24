@@ -2,7 +2,8 @@ import json, time, base64
 import cv2
 import numpy as np
 from www.routes.utils.utils_video import frame_store
-from config import Config
+from config import Config, Var
+
 
 # ------------------------------------------------------- #
 # Message parsers (receivers) --------------------------- #
@@ -16,37 +17,28 @@ def interface_message_parser(data: str, client_name: str):
         print(f"{rt.upper()} - {client_name} asks for {rfor} ", end="")
         match data["type"]:
             case "move":
-                # rx, ry = rdata.values()
-                # print(f"to move following differential [x={rx}, y={ry}]")
                 rl, rr = rdata.values()
                 print(f"to move manually with [l={rl}, r={rr}]")
-                # TODO : log it, or ...
             case "set_parameter":
                 pname, pvalue = rdata.values()
+
                 print(f"to set {pname} to '{pvalue}'")
                 if pname == "mode_capture":
                     Config.Camera.CAPTURE = eval(pvalue) if pvalue in ["False", "True"] else False
                     print(f"NOUVELLE VALEUR DE CAPTURE CAMERA : {Config.Camera.CAPTURE}")
-                elif pname == "automode":
-                    if pvalue == "traque":
-                        pass # TODO lancer mode
-                    elif pvalue == "cartographie":
-                        
-                        pass # TODO lancer mode
-                    else:
-                        print(f"Demande de passage au mode '{pvalue}', inconnu.")
-                        pass
-                # TODO : log it, or ...
-            case "stop":
-                print("to stop.")
-                # TODO : log it, or ...
-                # TODO implémenter un bouton stop sur l'interface
 
+            case "carto_init":
+                cmap, cx, cy = rdata.values()
+                print(f"to initialize the cartographie on map '{cmap}', starting at (x={cx}, y={cy}).")
+                
+            case "traque_init":
+                print("to initialize the traque.")
+                 
             case _ :
                 print(f": {rdata}")
         return rt,rfor
-    except: # Exception as e:
-        print(f"The message was : {data}")
+    except Exception as e:
+        print(f"The message was : {data}, got error : {e}")
         return "exception"
 
 
@@ -75,6 +67,16 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
             frame_store.set_frame(client_id, frame)
 
             # print("sent video frame.") #print(f"{displayable}")
+        
+        case "signal":
+            s = list(rdata.values())[0][0]
+            print(f" measured a signal strength of {s}.", end="")
+            if Var.Signal.waiting_for_signal:
+                Var.Signal.received_signal = True
+                print("Used successfully.")
+            else:
+                print("Was not asked for.")
+
         case _ :
             print(f": {rdata}")
     return rt, rfor
@@ -98,14 +100,14 @@ def assert_argument_type(vname, expected, got):
 # SERVER -> ROBOT Message data builder ------------------ #
 def robot_message_data_builder(mtype, *args):
     match mtype:
-        # case "set_parameter":
-        #     assert_number_of_arguments(mtype, 2, len(args))
-        #     pname, pvalue = args
-        #     assert_argument_type("parameter_name", str, type(pname))
-        #     return {
-        #         "parameter_name": pname,
-        #         "value": pvalue
-        #     }
+        case "set_parameter":
+            assert_number_of_arguments(mtype, 2, len(args))
+            pname, pvalue = args
+            assert_argument_type("parameter_name", str, type(pname))
+            return {
+                "parameter_name": pname,
+                "value": pvalue
+            }
         
         case "goto":
             assert_number_of_arguments(mtype, 2, len(args))
@@ -142,6 +144,10 @@ def robot_message_data_builder(mtype, *args):
             return {
                 "angle": ra
             }
+
+        case "get_signal":
+            return {}
+            
         case "message":
             assert_number_of_arguments(mtype, 1, len(args))
             msg = args[0]

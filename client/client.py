@@ -5,6 +5,7 @@ from config import Config
 from src.utils.message_parse_and_build import message_builder, message_parser
 import cv2
 from src.camera.camera import Camera
+from ws_queue import messages
 
 # ======================================================= #
 # DEBUG COUNTER CLASS =================================== #
@@ -70,10 +71,17 @@ class WebSocketClient:
         finally:
             camera.quit()
 
-    async def event_sender(self): # DEBUG, TODO faire un sender pour tout les messages du robot !
+    async def sender(self): # DEBUG, TODO faire un sender pour tout les messages du robot !
+        # messages.append({"signal": 42})
         while not self.stop_event.is_set():
-            await self.send("event", -1, "test", {"test": 99})
-            await asyncio.sleep(10)
+            while messages:
+                msg = messages.pop(0)
+                for mtype, mval in msg.items(): # Fausse boucle, il n'y a qu'un élément
+                    await self.send(mtype, -1, mval)
+
+            # await self.send("event", -1, "test", {"test": 99})
+            await asyncio.sleep(1) # TODO Changer le sleep selon le besoin
+        
 
     async def receiver(self):
         """ Fonction pour le thread de réception des messages WS.
@@ -97,25 +105,35 @@ class WebSocketClient:
 
         receiver_task = asyncio.create_task(self.receiver())
         video_task = asyncio.create_task(self.video_streamer())
-        event_task = asyncio.create_task(self.event_sender())
+        send_task = asyncio.create_task(self.sender())
 
         try:
             await asyncio.wait(
-                [receiver_task, video_task, event_task],
+                [
+                    receiver_task, 
+                    video_task, 
+                    send_task
+                    ],
                 return_when=asyncio.FIRST_EXCEPTION
             )
 
+        except Exception as e:
+            print(e)
         finally:
             self.stop_event.set()
             if self.debug: print("Robot WSClient, arrivé au 'finally' de 'run()' yeah !")
 
-            for task in [receiver_task, video_task, event_task]:
+            for task in [
+                receiver_task, 
+                video_task, 
+                send_task
+                ]:
                 task.cancel()
 
             await asyncio.gather(
                 receiver_task,
                 video_task,
-                event_task,
+                send_task,
                 return_exceptions=True
             )
 

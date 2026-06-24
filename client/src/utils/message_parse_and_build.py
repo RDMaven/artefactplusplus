@@ -1,5 +1,5 @@
 import json, time, base64
-from src.robot import robot, camera
+from src.robot import robot, camera, get_signal
 
 
 # ======================================================= #
@@ -41,13 +41,17 @@ def message_parser(data: str):
                 print(f"Asked to rotate by {a} degrees")
                 robot.rotateByAngle(a)
 
+            case "get_signal":
+                print(f"Asked for signal strength")
+                get_signal()
+
             case "message":
                 msg = list(mdata.values())[0]
                 print(msg)
         return mtype
     
     except Exception as e:
-        print(f"SERVER - {data}")
+        print(f"ERROR ({e}), SERVER - {data}")
         
 
 # ======================================================= #
@@ -93,6 +97,11 @@ def message_data_builder(mtype, *args):
             return {
                 "bytes": base64.b64encode(vbytes).decode("utf-8") # TODO pour plus de perf, on peut faire une exception pour le feed video, et ne pas l'encapsuler en json, pour pouvoir utiliser les raw bytes, et gagner 33% de taille des paquets. 
             }
+
+        case "signal":
+            args = args[0]
+            assert_number_of_arguments(mtype, 1, len(args))
+            return {"data": args}
         case _:
             raise ValueError(f"Unknown type {mtype} to send.")
 

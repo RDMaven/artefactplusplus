@@ -55,23 +55,21 @@ $("#btnMode").on("change", function () {
 
       // Mode traque
       if (mode === 'traque') {
-        const result = await Swal.fire({
-          title: 'Mode traque',
-          text: 'Confirmer ?',
+        const confirmation = await Swal.fire({
+          title: 'Confirmer la configuration ?',
+          html: `<b>Mode : </b> ${mode}`,
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Confirmer'
         });
 
-        if (result.isConfirmed) {
-          sendWSMessage("set_parameter", "automode", mode);
+        if (confirmation.isConfirmed) {
+          sendWSMessage("traque_init");
         }
         return;
       }
 
-      // sendWSMessage("set_parameter", "automode", mode);
 
-      
       // Mode cartographie
       const { value: fichierCarte } = await Swal.fire({
         title: 'Choisir le fichier carte',
@@ -82,37 +80,45 @@ $("#btnMode").on("change", function () {
 
       if (!fichierCarte) return;
 
-      const { value: positionDepart } = await Swal.fire({
+      const { value: position_depart } = await Swal.fire({
         title: 'Choisir la position de départ',
-        input: 'select',
-        inputOptions: {
-          nord: 'Nord',
-          sud: 'Sud',
-          est: 'Est',
-          ouest: 'Ouest'
-        },
-        showCancelButton: true
+        html: ` <input id="swal-x" class="swal2-input" type="number" placeholder="X">
+                <input id="swal-y" class="swal2-input" type="number" placeholder="Y">`,
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+          const x = document.getElementById('swal-x').value;
+          const y = document.getElementById('swal-y').value;
+
+          if (x === '' || y === '') {
+            Swal.showValidationMessage('Veuillez renseigner X et Y');
+            return false;
+          }
+
+          return {
+            x: Number(x),
+            y: Number(y)
+          };
+        }
       });
 
-      if (!positionDepart) return;
+      if (position_depart) {
+        console.log(position_depart.x, position_depart.y);
+      }
+
 
       const confirmation = await Swal.fire({
         title: 'Confirmer la configuration ?',
-        html: `
-      <b>Carte :</b> ${fichierCarte}<br>
-      <b>Position :</b> ${positionDepart}
-    `,
+        html: ` <b>Mode : </b> ${mode}<br>
+                <b>Carte :</b> ${MAPS[fichierCarte]} (id=${fichierCarte})<br>
+                <b>Position :</b> x=${position_depart.x}, y=${position_depart.y}`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Confirmer'
       });
 
       if (confirmation.isConfirmed) {
-        console.log({
-          mode: 'cartographie',
-          fichierCarte,
-          positionDepart
-        });
+          sendWSMessage("carto_init", MAPS[fichierCarte], position_depart.x, position_depart.y);
       }
     }
 
