@@ -92,7 +92,7 @@ function buildWSMessage(type, ...args) {
 export function sendWSMessage(type, ...args) {
     if (ws.readyState === WebSocket.OPEN) {
         const jsonMessage = buildWSMessage(type, ...args);
-        console.log(jsonMessage);
+        // console.log(jsonMessage);
 
         // Cas de message a destination du server
         if ((type == "set_parameter" && (jsonMessage["data"]["parameter_name"] == "mode_capture" ))) {

@@ -13,9 +13,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
     with open(Config.Path.MAPS_DIRECTORY+carte, 'r') as f:
         rawmap = f.readlines()[0]
         if '[' in rawmap:
-            print(rawmap, type(rawmap))
             grid = eval(rawmap)
-            print(grid)
         else:
             grid = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in rawmap]
 
