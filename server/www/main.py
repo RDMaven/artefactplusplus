@@ -16,7 +16,7 @@ app=FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], # Permet toutes les origines (votre site sur le port 5000, etc.)
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"], # Permet GET, POST, OPTIONS, etc.
     allow_headers=["*"], # Permet tous les en-têtes
 )
