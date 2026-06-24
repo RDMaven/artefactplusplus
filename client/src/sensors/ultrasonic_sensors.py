@@ -10,6 +10,7 @@ if Config.is_prod:
     class SingleUltrasonicSensor:
 
         def __init__(self, TRIG=11, ECHO=12):
+            GPIO.cleanup()
             self.TRIG = TRIG
             self.ECHO = ECHO
             GPIO.setmode(GPIO.BOARD)
@@ -57,7 +58,6 @@ MODE_SENSOR = (Config.Robot.MODE == "auto")
 
 class UltrasonicSensors:
     def __init__(self):
-        GPIO.cleanup()
         self.time_interval = 0.3
 
         self.SensorFront = SingleUltrasonicSensor(TRIG=11, ECHO=12)

@@ -144,7 +144,7 @@ class RobotDriver(WifiBot):
 
         ref = Reference(self.getOdom(is_setup=True))
         if is_local_instr:
-            distance_in_ticks = abs(mu.distanceInTickForForward(distance))
+            distance_in_ticks = mu.distanceInTickForForward(distance)
             
             self.start_printing_position()
 
@@ -153,12 +153,16 @@ class RobotDriver(WifiBot):
             while ref.l < distance_in_ticks and ref.r < distance_in_ticks:
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
+                
 
                 # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
             # Stop the movement, and record overshoot
             self.stopMoving()
-            for _ in range(0,1+self.timeout, self.timeout): # pour faire 1s en tout
+            
+            i=0.0
+            while i < 1.0: #pour faire 1s en tout
+                i+=self.timeout
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
 
@@ -199,7 +203,9 @@ class RobotDriver(WifiBot):
             # Stop the movement, dans tous les cas
             self.stopMoving()
             # time.sleep(1)
-            for _ in range(0,1+self.timeout, self.timeout): # pour faire 1s en tout
+            i=0.0
+            while i < 1.0: #pour faire 1s en tout
+                i+=self.timeout
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
                 
@@ -239,7 +245,9 @@ class RobotDriver(WifiBot):
         # Stop the movement, and record overshoot
         self.stopMoving()
         # time.sleep(1)
-        for _ in range(0,1+self.timeout, self.timeout): # pour faire 1s en tout
+        i=0.0
+        while i < 1.0: #pour faire 1s en tout
+            i+=self.timeout
             time.sleep(self.timeout)
             self.updatePositionTankRotation(ref)
 
