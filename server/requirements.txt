@@ -9,3 +9,5 @@ torch
 torchvision
 numpy
 matplotlib
+
+flask_cors

@@ -9,7 +9,73 @@ html,body{
     margin: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    position: relative;
 
+}
+
+/*INTRO*/
+
+#intro {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9990;
+    transform: translateY(-100%);
+    animation: intro_move 2.6s ease;
+    position: absolute;
+}
+
+#wrapper_v {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+}
+
+#intro_bg {
+    width:  100%;
+    z-index: 9991;
+    position: absolute;
+    top:0;
+    left:0
+}
+
+
+
+#v1 {
+    z-index: 9992;
+    position: absolute;
+    top:45%;
+    left:45%;
+    transform: rotate(0deg) scale(0.2);
+    animation: v1 2.5s ease;
+
+}
+#v2 {
+    z-index: 9993;
+    position: absolute;
+    align-self: center;
+    left: 50%;
+    top:50%;
+    transform: rotate(45deg) scale(0.2);
+    animation: v2 2.5s ease;
+}
+
+@keyframes intro_move {
+    0% {transform: translateY(0%);}
+    70% {transform: translateY(0%);}
+    100% {transform: translateY(-100%);}    
+}
+
+@keyframes v1 {
+    0% {top: 20%; left: 25%; transform: rotate(0deg) scale(0.2);}
+    100% {top: 40%; left: 38%; transform: rotate(25deg) scale(9.5);}
+}
+
+@keyframes v2 {
+    0% {top: 65%; left: 62%; transform: rotate(45deg) scale(0.5);}
+    100% {top: 55%; left: 55%; transform: rotate(25deg) scale(10.3);}
 }
 
 header{
