@@ -29,9 +29,9 @@ app.mount("/static", StaticFiles(directory=Config.Path.STATIC_DIRECTORY), name="
 templates = Jinja2Templates(directory=Config.Path.TEMPLATES_DIRECTORY)
 
 # Include routers
-app.include_router(http_router)
-app.include_router(websockets.router)
 
+app.include_router(websockets.router)
+app.include_router(http_router)
 
 # Déroulé setup ----------------------------------------- #
 # @app.on_event("shutdown")
