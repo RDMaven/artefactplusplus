@@ -8,23 +8,30 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
     """
     carte : nom du fichier .txt
     """
-    print("CARTO - Lancement...")
+    # print("CARTO - Lancement...")
 
     with open(Config.Path.MAPS_DIRECTORY+carte, 'r') as f:
-        grid = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in f.readlines()]
+        rawmap = f.readlines()[0]
+        if '[' in rawmap:
+            print(rawmap, type(rawmap))
+            grid = eval(rawmap)
+            print(grid)
+        else:
+            grid = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in rawmap]
 
     parcours = parcours_main(grid, x0, y0)
-    print("CARTO - Parcours calculé")
+    parcours.pop(0) # La première case est (x0,y0)
+    # print("CARTO - Parcours calculé")
 
-    print("CARTO - Demande de position à mettre à (0,0)... : ", client_ws.id)
-    await client_ws.send(message_builder("set_parameter", client_ws.id, "position", (0.0,0.0)))
-    print("CARTO - Demande de position à mettre à (0,0) faite")
+    # print("CARTO - Demande de position à mettre à (0,0)... : ", client_ws.id)
+    await client_ws.send(message_builder("set_parameter", client_ws.id, "position", (0, 0, 0)))
+    # print("CARTO - Demande de position à mettre à (0,0) faite")
 
 
     # TODO adapter la direction du robot au début de la carto, ca risque de pas etre la bonne.
 
     while parcours:
-        print("CARTO - Itération du parcours")
+        # print("CARTO - Itération du parcours")
         next_x, next_y = parcours.pop(0)
 
         await client_ws.send(message_builder("get_signal", client_ws.id)) # TODO implémenter coté robot
@@ -42,7 +49,5 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
             await asyncio.sleep(0.1)
 
         Var.Goto.reset() # remet les deux variables précédentes a False
-
-
 
 

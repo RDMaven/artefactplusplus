@@ -145,9 +145,10 @@ def robot_message_data_builder(mtype, *args):
                 "angle": ra
             }
 
+
         case "get_signal":
             return {}
-            
+
         case "message":
             assert_number_of_arguments(mtype, 1, len(args))
             msg = args[0]
