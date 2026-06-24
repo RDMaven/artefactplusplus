@@ -191,10 +191,15 @@ On a fait une affiche de fou ! Des talents de designer ont été révélé parto
 
 - Eden (07/06): recherche sur l'implémentation d'un model de reconnaissance d'objet (du robot) YOLO pour la mise en place d'une traque. Objectif de séance : avoir une idée de comment créer un dataset efficace et adapté à notre utilisation et une idée de comment implémenter et entrainer notre modèle
 Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement-a-yolo-object-detector-from-scratch-in-pytorch-e310829d92e6); [single_object_detection](https://stackoverflow.com/questions/51782769/object-detection-for-a-single-object-only)
+- Thibaut : Création d'un filtre de kalman pour filtrer les données provenant du capteur MPU6050. Voici le résultat lorsque le capteur est immobile pour la rotation et les accélérations. On voit que le filtrage fonctionne bien après une période transitoire.
+<div style="display: flex; width:100%;"><img style="witdh : 60%;" src="./doc/Capture d’écran du 2026-06-23 00-06-51.png"></div>
 
 ### Mardi 23/06
 
 - Colin : changement de programme pour récupérer la qualité de connexion 4G -> passage à pyserial
+- Thibaut : 
+    - Mise en forme globale du robot, avec la mise en commun des capteurs, du débeugage, et enfin la refonte du système d'alimentation du raspberry.
+    - Configuration de la seconde raspberry pour le robot de la traque 
 
 ### Mercredi 24/06
 ### Jeudi 25/06

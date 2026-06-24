@@ -11,8 +11,14 @@ if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(noiseNumber)
 else:
     ### A initialiser pour un grand number
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01
-
+    accel_x_noise= 0.001944567418940276
+    accel_y_noise=0.0019362013371498731
+    accel_z_noise=0.0032176589968624272
+    gyro_z_noise=0.12445350857045176
+    accel_x_bias = 0.018384033203125
+    accel_y_bias = 0.0015986328125
+    accel_z_bias=1.16818017578125
+    gyro_z_bias =1.499359130859375
 
 ###### CLASSES ######
 
