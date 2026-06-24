@@ -2,7 +2,7 @@
 # GESTION DE COMMUNICATION WEBSOCKET -------------------- #
 # ------------------------------------------------------- #
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Body
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Body, Response 
 import json, asyncio, os
 
 from www.routes.utils.message_parse_and_build import \
@@ -81,7 +81,14 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 @router.get("/connected")
-def connected():
+
+@router.get("/connected")
+async def connected(response: Response):
+    # On ajoute manuellement l'en-tête manquant juste pour cette route
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    
     return manager.active_connections
 
 
