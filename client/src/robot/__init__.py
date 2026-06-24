@@ -8,6 +8,8 @@ import random
 try:
     robot = RobotDriver()
     camera = CameraMove()
+
+    robot.forwardByDistance(20)
 except Exception as e:
     print(e)
 finally:

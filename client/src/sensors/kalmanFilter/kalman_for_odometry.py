@@ -155,9 +155,7 @@ class Kalman:
         x = self.x.getX()
         return f"Kalman position : x={x[0]}, y={x[1]}, theta={x[9]}°"
 
-kal = Kalman()
-def kalman_one_turn():
-    kal.data.update()
-    da = kal.data.getData()
-    kal.update_turn(da)
-    x = kal.x.getX()  #données filtrées
+    def kalman_one_turn(self):
+        self.data.update()
+        da = self.data.getData()
+        self.update_turn(da)

@@ -43,18 +43,22 @@ class RobotDriver(WifiBot):
     def updatePositionLinear(self, ref):
         self.updateOdomReference(ref)
         self.position.updateForLinearMovement(mu.avg(ref.l, ref.r))
+        self.kalman.kalman_one_turn()
 
     def updatePositionTankRotation(self, ref):
         self.updateOdomReference(ref)
         self.position.updateForTankRotation(mu.avg(ref.l, ref.r))
+        self.kalman.kalman_one_turn()
+
 
 ####################################
 
     def _print_position_loop(self):
         f = open('positions.txt', 'a')
         while self._outputing_position:
-            print(self.position)
-            f.write(self.position+'\n')
+            tstr = f'{self.position:50} | {self.kalman:50}'
+            print(tstr)
+            f.write(tstr+'\n')
             time.sleep(self.timeout)
         f.close()
 
