@@ -24,7 +24,7 @@ model = YOLO(BASE_MODEL)
 
 results = model.train(
     data=DATA,
-    epochs=10,
+    epochs=100,
     imgsz=320,
     verbose=False
 )

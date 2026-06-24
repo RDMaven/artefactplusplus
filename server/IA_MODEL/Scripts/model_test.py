@@ -3,7 +3,10 @@ import cv2
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
 
-Version = 1
+Version = 3
+#1 train à 10 epochs (pb de détection sur les images "loufoques")
+#2 train à 20 epochs
+#3 train à 100 epochs
 
 WEIGHTS = "../Results/best_v" + str(Version) + ".pt"
 IMAGES_DIR = "../Dataset/test/images"
@@ -73,13 +76,13 @@ def main():
     for image_path, result in zip(image_paths, results):
         image = cv2.imread(str(image_path))
 
-        img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        img = draw_predicted_box(img_rgb, result)
+        img = draw_predicted_box(image, result)
         img = draw_ground_truth_box(img, labels_dir / f"{image_path.stem}.txt")
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         plt.figure(figsize=(10, 6))
         plt.imshow(img_rgb)
-        plt.title("Box prédite en rouge et attendue en bleu")
+        plt.title("Box prédite en bleue et attendue en rouge")
         plt.axis("off")
         plt.tight_layout()
         plt.show()
