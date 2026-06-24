@@ -47,6 +47,12 @@ class RobotDriver(WifiBot):
             case "speed":
                 assert type(new_value) == int and new_value > 0, f"Bad new speed given ({new_value}). Expected strictly positive int" 
                 self.speed = new_value
+
+            case "position":
+                assert type(new_value) == list and len(new_value) == 3, f"Bad values for position : {new_value}"
+                x,y,t = new_value
+                self.position.set(x,y,t)
+                
             case _:
                 raise KeyError(f"Unknown parameter name : {parameter_name}")
         print(f"Updated config : ({parameter_name} : {new_value})")
@@ -206,7 +212,7 @@ class RobotDriver(WifiBot):
     def goto(self, r0, theta0):
         """ Aller à un objectif donné en radial, tout en évitant les potentiels obstacles. """
         r, theta = r0, theta0
-
+        print("DRIVER - Starting goto")
         self.current_objective = mu.distanceInTickForForward(r)
         self.rotateByAngle(theta)
         self.forwardByDistance(r, is_local_instr=False)
@@ -218,8 +224,11 @@ class RobotDriver(WifiBot):
             self.rotateByAngle(theta)
             self.forwardByDistance(r, is_local_instr=False)
 
-    def goto_cartesian(x1,y1,x2,y2):
+    def goto_cartesian(self, x2, y2):
+        """ Aller à une position, donnée en cartésien. """
+        x1,y1, _ = self.position.get()
         r, theta = mu.convert_cartesian_to_radial(x1,y1,x2,y2)
+        print(f"DRIVER - Goto cartésien ({x1,y1} -> {(x2,y2)}) a calculé r={r}, theta={theta}")
         self.goto(r, theta)
 
 

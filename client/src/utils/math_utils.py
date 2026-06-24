@@ -13,7 +13,7 @@ class Ratio:
 
 class Position:
 
-    def __init__(self, x0=0, y0=0, theta0=0):
+    def __init__(self, x0=0.0, y0=0.0, theta0=0.0):
         self.x = x0
         self.y = y0
         self.theta = theta0
@@ -23,6 +23,11 @@ class Position:
     def get(self):
         return self.x, self.y, self.theta
 
+    def set(self, x, y, theta):
+        self.x = float(x)
+        self.y = float(y)
+        self.theta = float(theta)
+    
     def updateForLinearMovement(self, real_tick_distance: int):
         real_meter_distance = real_tick_distance * Ratio.MperT
 
