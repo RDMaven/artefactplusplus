@@ -50,69 +50,74 @@ class CameraMove:
         self.x = 0
         self.y = 0
         self.move(0,0) # Initialisation de la caméra à (0,0)
+        self._timeout = 0.5
+
+    def wait(self, dt = self._timeout):
+        time.sleep(dt)
 
     def command_make(self, instruction: str, value: str):
         subprocess.call(f"{STATIC_COMMAND} -d video{self.id} -s '{instruction}' -- '{value}' 2>/dev/null", shell=True)
         # return f"{STATIC_COMMAND} -d video{self.id} -s '{instruction}' -- '{value}'"
     
-    def camera_up(self, value: int):
+    def camera_down(self, value: int):
         if -32000 < value < 32000 : 
             self.command_make("Tilt, Relative",str(value))
             self.y += value
             return True
         return False
     
-    def camera_right(self, value: int):
+    def camera_left(self, value: int):
         if -32000 < value < 32000 : 
             self.command_make("Pan, Relative",str(value))
             self.x += value
             return True
         return False
     
-    def reset_camera_up(self):
+    def reset_camera_down(self):
         self.command_make("Tilt, Reset","0")
         self.y = 0
     
-    def reset_camera_right(self):
+    def reset_camera_left(self):
         self.command_make("Pan, Reset", "0")
         self.x = 0
 
     def reset(self):
-        self.reset_camera_up()
-        time.sleep(2)
-        self.reset_camera_right()
-        time.sleep(2)
+        self.reset_camera_down()
+        self.wait()
+        self.reset_camera_left()
+        self.wait()
 
-    def demo(self, slp=2):
-        self.camera_up(1000)
-        time.sleep(slp)
-        self.reset_camera_up()
-        time.sleep(slp)
+    def demo(self):
+        self.camera_down(1000)
+        self.wait()
+        self.reset_camera_down()
+        self.wait()
 
-        self.camera_up(-1000)
-        time.sleep(slp)
-        self.reset_camera_up()
-        time.sleep(slp)
+        self.camera_down(-1000)
+        self.wait()
+        self.reset_camera_down()
+        self.wait()
 
-        self.camera_right(1000)
-        time.sleep(slp)
-        self.reset_camera_right()
-        time.sleep(slp)
+        self.camera_left(1000)
+        self.wait()
+        self.reset_camera_left()
+        self.wait()
 
-        self.camera_right(1000)
-        time.sleep(slp)
-        self.reset_camera_right()
-        time.sleep(slp)
+        self.camera_left(1000)
+        self.wait()
+        self.reset_camera_left()
+        self.wait()
 
 
-    def move(self, dx, dy):
+    def move(self, dd, dl):
         """ Bouger la caméra de manière relative.
-        (dx, dy) = (0,0) est spécial : reset à l'origine. """
-        if dx==0 and dy==0:
+        dd : down mvt, dl : left mvt.
+        (0,0) est spécial : reset à l'origine. """
+        if dd==0 and dl==0:
             self.reset()
-        if dx != 0:
-            self.camera_right(dx*1000)
-        if dy != 0:
-            self.camera_up(dy*1000)
+        if dd != 0:
+            self.camera_down(dd*500)
+        if dl != 0:
+            self.camera_left(dl*500)
 
 

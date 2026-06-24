@@ -27,9 +27,9 @@ def message_parser(data: str):
                 robot.moveManual(mx, my)
                 
             case "move_cam":
-                mx, my = mdata.values()
-                print(f"Asked to move the cam following differential x={mx}, y={my}")
-                camera.move(mx, my)
+                md, ml = mdata.values()
+                print(f"Asked to move the cam following down={md}, left={ml}")
+                camera.move(md, ml)
 
             case "forward":
                 d = mdata.values()
