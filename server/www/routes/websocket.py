@@ -13,6 +13,8 @@ from control_logic.main_auto_cartographie import cartographie
 
 from pathlib import Path
 from config import Config
+from fastapi.responses import HTMLResponse
+
 
 
 # Init router, et évenement d'arrêt général ------------- #
@@ -81,7 +83,7 @@ manager = ConnectionManager()
 
 
 
-@router.get("/connected")
+@router.get("/connected", response_class=HTMLResponse)
 async def connected():
     return list(manager.active_connections.keys())
 

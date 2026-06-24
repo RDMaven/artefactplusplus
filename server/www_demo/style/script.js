@@ -1,4 +1,4 @@
-/*const socket = new WebSocket("/ws"); */
+/*const socket = new WebSocket("/ws");*/
 
 /*======###### MENU ######======*/
 
@@ -21,7 +21,7 @@ if (button_menu && block_menu) {
 
 async function ask_client() {
     try {
-        client = await fetch("http://137.194.194.180:8081/connected", {
+        client = await fetch("http://137.194.194.180:8081/connected/", {
             method:"GET",
             mode:"cors"
         });
