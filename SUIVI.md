@@ -203,5 +203,11 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 - Eden : Création d'un dataset d'images du robot, incluant des photos floues, et sous différentes conditions. Séparation de ce dataset en Train, Valid, Test. Implémentation YOLOv8 et training sur 10, 20 puis 100 epochs. --> 100 epochs fonctionne pour les photos telles que robot flou, robot à longue distance, robot coupé par le cadre
 
 ### Mercredi 24/06
+
+- Thibaut :
+    - Mise en place du robot avec tous les capteurs au Fablab. Impression de support en bois pour les fixations.
+    - Implémentations et mesure précise du bruit sur le MPU6050
+    - Début d'une interface web pour suivre les robots pour la présentation finale
+
 ### Jeudi 25/06
 ### Vendredi 26/06
