@@ -28,7 +28,7 @@ class Position:
         self.y = float(y)
         self.theta = float(theta)
     
-    def __string__(self):
+    def __str__(self):
         return f"Odometry position : x={self.x}, y={self.y}, theta={self.theta}°"
 
 

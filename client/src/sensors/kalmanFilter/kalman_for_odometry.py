@@ -150,3 +150,14 @@ class Kalman:
         new_P = (I - K @ H) @ P @ (I - K @ H).T + K @ R @ K.T
         self.P = new_P
         self.x.update(new_x[0], new_x[1], new_x[2], new_x[3], new_x[4], new_x[5], new_x[6], new_x[7], new_x[8],new_x[9], new_x[10], new_x[11])
+    
+    def __str__(self):
+        x = self.x.getX()
+        return f"Kalman position : x={x[0]}, y={x[1]}, theta={x[9]}°"
+
+kal = Kalman()
+def kalman_one_turn():
+    kal.data.update()
+    da = kal.data.getData()
+    kal.update_turn(da)
+    x = kal.x.getX()  #données filtrées
