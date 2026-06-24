@@ -57,6 +57,7 @@ MODE_SENSOR = (Config.Robot.MODE == "auto")
 
 class UltrasonicSensors:
     def __init__(self):
+        GPIO.cleanup()
         self.time_interval = 0.3
 
         self.SensorFront = SingleUltrasonicSensor(TRIG=11, ECHO=12)
@@ -102,6 +103,8 @@ class UltrasonicSensors:
     def stop(self):
         if self._thread is not None:
             self._thread.join()
+        self.SensorBack.destroy()
+        self.SensorFront.destroy()
 
 
 if __name__ == "__main__":

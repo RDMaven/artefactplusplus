@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
-from threading import Thread
 import time
+import threading
 
 from config import Config
 from src.robot.controller import WifiBot, Reference
@@ -20,10 +20,15 @@ class RobotDriver(WifiBot):
 
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
+
+        self._outputing_position = False
+        self._thread_position = None
+
         if Config.is_prod:
             self.kalman = Kalman()
 
         self.speed = Config.Robot.SPEED
+        self.timeout = Config.Robot.CLOCK # TODO modifier au besoin
 
         self.sensors = UltrasonicSensors()
 
@@ -35,6 +40,41 @@ class RobotDriver(WifiBot):
     def KALODO(self, x_kalman, y_kalman, theta_kalman):
         x_odo, y_odo, theta_odo = self.position.get()
 
+    def updatePositionLinear(self, ref):
+        self.updateOdomReference(ref)
+        self.position.updateForLinearMovement(mu.avg(ref.l, ref.r))
+        self.kalman.kalman_one_turn()
+
+    def updatePositionTankRotation(self, ref):
+        self.updateOdomReference(ref)
+        self.position.updateForTankRotation(mu.avg(ref.l, ref.r))
+        self.kalman.kalman_one_turn()
+
+
+####################################
+
+    def _print_position_loop(self):
+        f = open('positions.txt', 'a')
+        while self._outputing_position:
+            tstr = f'{self.position.__str__():50} | {self.kalman.__str__():50}'
+            print(tstr)
+            f.write(tstr+'\n')
+            time.sleep(self.timeout)
+        f.close()
+
+    def start_printing_position(self):
+        if self._thread_position is None or not self._thread_position.is_alive():
+            self._outputing_position = True
+            self._thread_position = threading.Thread(
+                target=self._print_position_loop,
+                daemon=True
+            )
+            self._thread_position.start()
+
+    def stop_printing_position(self):
+        self._outputing_position = False
+
+######################################
 
     def setLocalParameter(self, parameter_name, new_value):
         match parameter_name:
@@ -47,6 +87,12 @@ class RobotDriver(WifiBot):
             case "speed":
                 assert type(new_value) == int and new_value > 0, f"Bad new speed given ({new_value}). Expected strictly positive int" 
                 self.speed = new_value
+
+            case "position":
+                assert type(new_value) == list and len(new_value) == 3, f"Bad values for position : {new_value}"
+                x,y,t = new_value
+                self.position.set(x,y,t)
+                
             case _:
                 raise KeyError(f"Unknown parameter name : {parameter_name}")
         print(f"Updated config : ({parameter_name} : {new_value})")
@@ -58,7 +104,6 @@ class RobotDriver(WifiBot):
             return
 
         self.forceStart()
-
         # print(f"setMovingSpeed (prod) : sLF={l>=0}, sRF={r>=0}, sLS={abs(l)}, sRS={abs(r)}")
         self.setLeftForward( (l >= 0)) # Update the wheel directions
         self.setRightForward((r >= 0)) # //
@@ -90,62 +135,78 @@ class RobotDriver(WifiBot):
         is_local_instr : si vrai, on ne met pas a jour l'objectif global. """
 
         # Init the odometry : the robot need to be in movement to get the odometry.
+        distance = -distance
+
         ref = Reference(self.getOdom(is_setup=True))
         if is_local_instr:
             distance_in_ticks = mu.distanceInTickForForward(distance)
+            
+            self.start_printing_position()
 
             self.setMovingSpeed()
             print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
             while ref.l < distance_in_ticks and ref.r < distance_in_ticks:
-                time.sleep(0.05)
-                self.updateOdomReference(ref)
+                time.sleep(self.timeout)
+                self.updatePositionLinear(ref)
+
                 # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
             # Stop the movement, and record overshoot
             self.stopMoving()
-            time.sleep(1)
+            for _ in range(0,1+self.timeout, self.timeout): # pour faire 1s en tout
+                time.sleep(self.timeout)
+                self.updatePositionLinear(ref)
 
-            self.updateOdomReference(ref)
-            print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+            # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
             overL, overR =  ref.l - distance_in_ticks, ref.r - distance_in_ticks
             over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
-            self.position.updateForLinearMovement(mu.avg(ref.l, ref.r))
+            # time.sleep(self.timeout)
+            # self.updatePositionLinear(ref)
 
             print(
             f'forwardByDistance() : d={distance}cm ({distance_in_ticks}t),\n\
                 over={over}cm ({mu.avg(overL, overR)})'
             )
 
+            self.stop_printing_position()
             self.printStatus()
         
         else: ## Mode appelé seulement par la méthode 'goto'
 
-            self.updateOdomReference(self.relative_ticks) # S'assurer qu'on commence à 0
+            time.sleep(self.timeout)
+            self.updatePositionLinear(self.relative_ticks)
+
+            # self.updateOdomReference(self.relative_ticks) # S'assurer qu'on commence à 0
             self.setMovingSpeed()
 
             while not self.sensors.obstacle_in_front and self.current_objective != 0:
-                time.sleep(0.05)
-                self.updateOdomReference(self.relative_ticks)
+                # time.sleep(0.05)
+                # self.updateOdomReference(self.relative_ticks)
+                time.sleep(self.timeout)
+                self.updatePositionLinear(self.relative_ticks)
                 step = mu.avg(self.relative_ticks.l, self.relative_ticks.r) # ON CHOISI DE PRENDRE LA MOYENNE
                 self.current_objective -= step 
-                self.position.updateForLinearMovement(step)
+                # self.position.updateForLinearMovement(step)
 
 
             # Stop the movement, dans tous les cas
             self.stopMoving()
-            time.sleep(1)
-
+            # time.sleep(1)
+            for _ in range(0,1+self.timeout, self.timeout): # pour faire 1s en tout
+                time.sleep(self.timeout)
+                self.updatePositionLinear(ref)
+                
             # Gestion de l'overshoot
-            self.updateOdomReference(self.relative_ticks)
+            # self.updateOdomReference(self.relative_ticks)
             self.current_objective -= mu.avg(self.relative_ticks.l, self.relative_ticks.r)
 
 
             if self.sensors.obstacle_in_front:
-                print(f"forwardByDistance(global): OBSTACLE stopped me at r={self.current_objective / Config.Robot.TICKS_PER_CM} from objective")
+                print(f"DRIVER - forwardByDistance(global): OBSTACLE stopped me at r={self.current_objective / Config.Robot.TICKS_PER_CM} from objective")
             else:
-                print(f'forwardByDistance(global): DONE.')
+                print(f'DRIVER - forwardByDistance(global): DONE.')
                 self.printStatus()
 
 
@@ -158,29 +219,38 @@ class RobotDriver(WifiBot):
         ref = Reference(self.getOdom(is_setup=True))
         distance_in_ticks = mu.distanceInTickForRotation(angle)
 
+        self.start_printing_position()
+
         dir = -1 if angle < 0 else 1 # A ajuster
         self.setMovingSpeed((-dir) * Config.Robot.SPEED, dir * Config.Robot.SPEED)
         print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
         while abs(ref.l) < distance_in_ticks and abs(ref.r) < distance_in_ticks:
-            time.sleep(0.05)
-            self.updateOdomReference(ref)
+            # time.sleep(0.05)
+            # self.updateOdomReference(ref)
+            time.sleep(self.timeout)
+            self.updatePositionTankRotation(ref)
             print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
         # Stop the movement, and record overshoot
         self.stopMoving()
-        time.sleep(1)
+        # time.sleep(1)
+        for _ in range(0,1+self.timeout, self.timeout): # pour faire 1s en tout
+            time.sleep(self.timeout)
+            self.updatePositionTankRotation(ref)
 
-        self.updateOdomReference(ref)
+
+        # self.updateOdomReference(ref)
         overL, overR =  abs(ref.l - distance_in_ticks), abs(ref.r - distance_in_ticks)
         over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
-        self.position.updateForTankRotation(ref.l, ref.r)
+        # self.position.updateForTankRotation(ref.l, ref.r)
 
         print(
           f'forwardByDistance() : theta={angle}° ({distance_in_ticks}t),\n\
             over={over}° ({mu.avg(overL, overR)})'
         )
 
+        self.stop_printing_position()
         self.printStatus()
 
 
@@ -206,7 +276,7 @@ class RobotDriver(WifiBot):
     def goto(self, r0, theta0):
         """ Aller à un objectif donné en radial, tout en évitant les potentiels obstacles. """
         r, theta = r0, theta0
-
+        print("DRIVER - Starting goto")
         self.current_objective = mu.distanceInTickForForward(r)
         self.rotateByAngle(theta)
         self.forwardByDistance(r, is_local_instr=False)
@@ -218,8 +288,11 @@ class RobotDriver(WifiBot):
             self.rotateByAngle(theta)
             self.forwardByDistance(r, is_local_instr=False)
 
-    def goto_cartesian(x1,y1,x2,y2):
+    def goto_cartesian(self, x2, y2):
+        """ Aller à une position, donnée en cartésien. """
+        x1,y1, _ = self.position.get()
         r, theta = mu.convert_cartesian_to_radial(x1,y1,x2,y2)
+        print(f"DRIVER - Goto cartésien ({x1,y1} -> {(x2,y2)}) a calculé r={r}, theta={theta}")
         self.goto(r, theta)
 
 

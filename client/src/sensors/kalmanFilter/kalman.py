@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 ###### DONNÉES GLOBALES ######
 dt = 0.1
-isGivenNoises = 0 # pour recalculer le bruit du capteur immobile si 0
+isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
 isToMakeGraph = 0
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
 
@@ -17,7 +17,14 @@ if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(number)
 else:
     ### A initialiser pour un grand number
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01
+    accel_x_noise= 0.001944567418940276
+    accel_y_noise=0.0019362013371498731
+    accel_z_noise=0.0032176589968624272
+    gyro_z_noise=0.12445350857045176
+    accel_x_bias = 0.018384033203125
+    accel_y_bias = 0.0015986328125
+    accel_z_bias=1.16818017578125
+    gyro_z_bias =1.499359130859375
 
 class data:
     def __init__(self):

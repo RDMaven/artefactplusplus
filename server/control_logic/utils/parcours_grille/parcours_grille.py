@@ -146,6 +146,9 @@ def find_discontinuites(parcours: list[tuple[int, int]], display_grid: list[list
 def main(grid, x0=0, y0=0) -> list[tuple[int, int]]:
     """ Effectue un DFS modifié pour corriger les cases potentiellement oubliées.
     """
+    if grid[y0][x0] == 0:
+        return []
+        
     # CONSTANTES
     N = len(grid)
     M = len(grid[0])

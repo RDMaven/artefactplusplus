@@ -4,15 +4,21 @@ import time
 
 ###### DONNÉES GLOBALES ######
 dt = 0.1
-isGivenNoises = 0 # pour recalculer le bruit du capteur immobile si 0
+isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
 noiseNumber = 250 #Nombre de données pour l'initialisation
 
 if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(noiseNumber)
 else:
     ### A initialiser pour un grand number
-    accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = 0.01,0.01,0.01,0.01, 0.01,0.01,0.01,0.01
-
+    accel_x_noise= 0.001944567418940276
+    accel_y_noise=0.0019362013371498731
+    accel_z_noise=0.0032176589968624272
+    gyro_z_noise=0.12445350857045176
+    accel_x_bias = 0.018384033203125
+    accel_y_bias = 0.0015986328125
+    accel_z_bias=1.16818017578125
+    gyro_z_bias =1.499359130859375
 
 ###### CLASSES ######
 
@@ -50,18 +56,18 @@ class x_k:
         self.biais = biais 
 
     def update(self,x,y,z,v_x,v_y,v_z,a_x, a_y, a_z, theta_z, omega_z, biais):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.v_x = v_x
-        self.v_y = v_y
-        self.v_z = v_z
-        self.a_x = a_x
-        self.a_y = a_y
-        self.a_z = a_z
-        self.theta_z = theta_z
-        self.omega_z = omega_z
-        self.biais = biais 
+        self.x = np.round(x,2)
+        self.y = np.round(y,2)
+        self.z = np.round(z,2)
+        self.v_x = np.round(v_x,2)
+        self.v_y = np.round(v_y,2)
+        self.v_z = np.round(v_z,2)
+        self.a_x = np.round(a_x,2)
+        self.a_y = np.round(a_y,2)
+        self.a_z = np.round(a_z,2)
+        self.theta_z = np.round(theta_z,2)
+        self.omega_z = np.round(omega_z,2)
+        self.biais = np.round(biais,2)
     
     def getX(self):
         return np.array([self.x, self.y, self.z, self.v_x, self.v_y, self.v_z, self.a_x, self.a_y, self.a_z, self.theta_z, self.omega_z, self.biais])
@@ -144,3 +150,12 @@ class Kalman:
         new_P = (I - K @ H) @ P @ (I - K @ H).T + K @ R @ K.T
         self.P = new_P
         self.x.update(new_x[0], new_x[1], new_x[2], new_x[3], new_x[4], new_x[5], new_x[6], new_x[7], new_x[8],new_x[9], new_x[10], new_x[11])
+    
+    def __str__(self):
+        x = self.x.getX()
+        return f"Kalman position : x={x[0]}, y={x[1]}, theta={x[9]}°"
+
+    def kalman_one_turn(self):
+        self.data.update()
+        da = self.data.getData()
+        self.update_turn(da)

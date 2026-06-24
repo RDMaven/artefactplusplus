@@ -1,0 +1,99 @@
+@font-face {
+    font-family: "SF_Galax_Outline";
+    src: url("./fonts/sf_distant_galaxy/webfontkit-20260624-082805/sf_distant_galaxy_outline-webfont.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+header{
+    width: 100%;
+    height: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+#background_header{
+    height: 100%;
+    z-index: -1;
+    position: absolute;
+    justify-self: center;
+    animation: stars_in_sky 5s ease infinite;
+}
+
+@keyframes stars_in_sky {
+    0%  {transform: translateX(0rem);}
+    40%  {transform: translateX(1rem);}
+    80%  {transform: translateX(0rem);}
+    100%  {transform: translateX(0rem);}
+}
+
+
+
+#main_title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    justify-self: center;
+    align-self: center;
+}
+
+.big_title{
+    margin:0;
+    font-family: "SF_Galax_Outline";
+    font-size: 3rem;
+    margin: 0;
+    border-radius:1rem;
+    color: yellow;
+    background-color: #110a34;
+
+}
+
+#litle_title{
+    margin: 0;
+    font-family: "SF_Galax_Outline";
+    font-size:1.5rem ;
+    color: yellow;
+    background-color: #110a34;
+}
+
+#menu{
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    left:2rem;
+    align-self: center;
+}
+
+#menu:hover, #menu:focus {
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+#main_content{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    flex:1;
+}
+
+#block_menu{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 20rem;
+    background-color: #110a34;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: all 1s ease;
+}

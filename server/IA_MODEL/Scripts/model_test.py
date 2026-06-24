@@ -32,8 +32,7 @@ def draw_ground_truth_box(image, label_path):
     h, w = img.shape[:2]
 
     if not label_path.exists():
-        cv2.putText(img, "Pas de label trouvé", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        cv2.putText(img, "Pas de label trouvé", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
         return img
 
     with open(label_path, "r") as f:
@@ -77,12 +76,12 @@ def main():
         image = cv2.imread(str(image_path))
 
         img = draw_predicted_box(image, result)
-        img = draw_ground_truth_box(img, labels_dir / f"{image_path.stem}.txt")
+        #img = draw_ground_truth_box(img, labels_dir / f"{image_path.stem}.txt")
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         plt.figure(figsize=(10, 6))
         plt.imshow(img_rgb)
-        plt.title("Box prédite en bleue et attendue en rouge")
+        plt.title("Box prédite en bleue")
         plt.axis("off")
         plt.tight_layout()
         plt.show()

@@ -5,8 +5,16 @@ import random
 # ======================================================= #
 # STARTUP =============================================== #
 # ======================================================= #
-robot = RobotDriver()
-camera = CameraMove()
+try:
+    robot = RobotDriver()
+    camera = CameraMove()
+
+    robot.forwardByDistance(20)
+except Exception as e:
+    print(e)
+finally:
+    robot.sensors.stop()
+    robot.stop_printing_position()
 
 # camera.demo(1)
 

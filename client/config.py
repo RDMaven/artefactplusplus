@@ -28,6 +28,7 @@ class Config:
 
     class Robot:
         ID = int(environ["ROBOT_ID"])
+        CLOCK=0.05
         SERIAL_PORT = str(environ["ROBOT_SERIAL_PORT"])
         MODE = "manual"
         WHEELS_DIAMETER = float(environ["ROBOT_WHEELS_DIAMETER"])

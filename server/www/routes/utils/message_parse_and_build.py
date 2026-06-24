@@ -70,7 +70,7 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
         
         case "signal":
             s = list(rdata.values())[0][0]
-            print(f" measured a signal strength of {s}.", end="")
+            print(f" measured a signal strength of {s}.", end=" ")
             if Var.Signal.waiting_for_signal:
                 Var.Signal.received_signal = True
                 print("Used successfully.")
@@ -145,9 +145,10 @@ def robot_message_data_builder(mtype, *args):
                 "angle": ra
             }
 
+
         case "get_signal":
             return {}
-            
+
         case "message":
             assert_number_of_arguments(mtype, 1, len(args))
             msg = args[0]
