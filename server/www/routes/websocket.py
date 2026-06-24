@@ -2,7 +2,7 @@
 # GESTION DE COMMUNICATION WEBSOCKET -------------------- #
 # ------------------------------------------------------- #
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Body, Response 
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Body 
 import json, asyncio, os
 
 from www.routes.utils.message_parse_and_build import \
@@ -10,7 +10,7 @@ from www.routes.utils.message_parse_and_build import \
     message_builder
 from www.routes.utils.utils_video import frame_store
 from control_logic.main_auto_cartographie import cartographie
-
+from flask_cors import CORS
 
 from pathlib import Path
 from config import Config
@@ -80,15 +80,11 @@ class ConnectionManager:
 # Let me talk to your MANAGER (manager instance init)
 manager = ConnectionManager()
 
-@router.get("/connected")
+
+CORS(router, resources={r"/*": {"origins": "*"}})
 
 @router.get("/connected")
-async def connected(response: Response):
-    # On ajoute manuellement l'en-tête manquant juste pour cette route
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "*"
-    
+async def connected():
     return list(manager.active_connections.keys())
 
 
