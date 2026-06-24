@@ -20,7 +20,7 @@ def message_parser(data: str):
             case "goto":
                 gx, gy = mdata.values()
                 print(f"Asked to move to x={gx}, y={gy}")
-                # TODO : actually goto.
+                robot.goto_cartesian(gx, gy)
             case "move":
                 mx, my = mdata.values()
                 print(f"Asked to move following differential x={mx}, y={my}")
