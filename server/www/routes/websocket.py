@@ -89,7 +89,7 @@ async def connected(response: Response):
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "*"
     
-    return manager.active_connections
+    return manager.active_connections.keys()
 
 
 # Main WebSocket loop
