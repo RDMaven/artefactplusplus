@@ -9,6 +9,8 @@ from fastapi.templating import Jinja2Templates
 from config import Config
 from www.routes.utils.utils_video import mjpeg_generator
 
+from www.routes.websocket import ask_client
+
 # import sys
 # sys.path.append('../src')
 # import src.camera.image as im
@@ -17,6 +19,9 @@ from www.routes.utils.utils_video import mjpeg_generator
 router = APIRouter()
 templates = Jinja2Templates(directory=Config.Path.TEMPLATES_DIRECTORY)
 
+@router.get("/connected")
+async def connected():
+    return ask_client()
 
 # ICON du projet ---------------------------------------- #
 @router.get('/favicon.ico', include_in_schema=False)

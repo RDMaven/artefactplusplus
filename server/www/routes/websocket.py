@@ -81,10 +81,7 @@ class ConnectionManager:
 # Let me talk to your MANAGER (manager instance init)
 manager = ConnectionManager()
 
-
-
-@router.get("/connected")
-async def connected():
+def ask_client():
     return list(manager.active_connections.keys())
 
 
