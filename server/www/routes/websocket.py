@@ -79,6 +79,10 @@ class ConnectionManager:
 # Let me talk to your MANAGER (manager instance init)
 manager = ConnectionManager()
 
+@router.get("/connected")
+def connected():
+    return manager.active_connections
+
 
 # Main WebSocket loop
 @router.websocket("/ws/{client_id}")

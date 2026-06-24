@@ -54,6 +54,7 @@ async def video(robot_id):
         media_type="multipart/x-mixed-replace; boundary=frame"
     )
 
+
 # @router.get("/video")
 # async def video():
 #     return StreamingResponse(
