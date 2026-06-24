@@ -27,6 +27,26 @@ class Reference:
         self.l = tl - self.l
         self.r = tr - self.r
         
+class ReferenceSimple:
+    def __init__(self, odom: list):
+        self.l0, self.r0 = odom
+        self.l, self.r = 0,0
+        self.accl, self.accr = 0,0
+
+    def update(self, odom):
+        tl, tr = odom
+        self.l = tl-self.l0
+        self.r = tr-self.r0
+        self.accl += self.l
+        self.accr += self.r
+        self.l0, self.r0 = odom
+
+    def get_total(self):
+        return self.accl, self.accr
+    
+    def is_less_than(self, obj):
+        return abs(self.accl) < abs(obj) and abs(self.accr) < abs(obj)
+
 
 class WifiBot:
     def __init__(self, serPath):
@@ -110,13 +130,13 @@ class WifiBot:
         self.__setSpeed(v,2)
 
     def setLeftForward(self, forward:bool):
-        self.__set_Ctrl(forward,6)
+        self.__set_Ctrl(not forward,6)
 
     def setRightSpeed(self, v:int):
         self.__setSpeed(v,4)
 
     def setRightForward(self, forward:bool):
-        self.__set_Ctrl(forward,4)
+        self.__set_Ctrl(not forward,4)
 
     def sendCmd(self):
             self.serialPort.write(self.cmd)
@@ -243,9 +263,9 @@ class WifiBot:
         if is_setup:
             self.forceStart()
             sleep(0.5)
-        return [self.OdomL, self.OdomR]
+        return [-self.OdomL, -self.OdomR]
 
-    def updateOdomReference(self, ref: Reference):
+    def updateOdomReference(self, ref):
         ref.update(self.getOdom())
         
 

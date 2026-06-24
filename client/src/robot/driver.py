@@ -3,7 +3,7 @@ import time
 import threading
 
 from config import Config
-from src.robot.controller import WifiBot, Reference
+from src.robot.controller import WifiBot, Reference, ReferenceSimple
 from src.sensors.ultrasonic_sensors import UltrasonicSensors
 import src.utils.math_utils as mu
 
@@ -44,6 +44,7 @@ class RobotDriver(WifiBot):
         self.updateOdomReference(ref)
         self.position.updateForLinearMovement(mu.avg(ref.l, ref.r))
         self.kalman.kalman_one_turn()
+
 
     def updatePositionTankRotation(self, ref):
         self.updateOdomReference(ref)
@@ -140,44 +141,34 @@ class RobotDriver(WifiBot):
         is_local_instr : si vrai, on ne met pas a jour l'objectif global. """
 
         # Init the odometry : the robot need to be in movement to get the odometry.
-        distance = -distance
-
-        ref = Reference(self.getOdom(is_setup=True))
+        ref = ReferenceSimple(self.getOdom(is_setup=True))
+        
         if is_local_instr:
-            distance_in_ticks = mu.distanceInTickForForward(distance)
-            
+            distance_in_ticks = (mu.distanceInTickForForward(distance))
             self.start_printing_position()
 
-            self.setMovingSpeed(reverse=(distance < 0))
-            print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
-            while ref.l < distance_in_ticks and ref.r < distance_in_ticks:
+            self.setMovingSpeed(reverse=(distance < 0)) # Pas le choix, on l'a monté à l'envers
+
+            while ref.is_less_than(abs(distance_in_ticks)):
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
-                
-
-                # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
+                # print(f"l={ref.accl}, r={ref.accr} : {distance_in_ticks}")
 
             # Stop the movement, and record overshoot
             self.stopMoving()
-            
-            i=0.0
-            while i < 1.0: #pour faire 1s en tout
-                i+=self.timeout
+            for _ in range(int(1.5 / self.timeout)):
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
 
             # print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
 
-            overL, overR =  ref.l - distance_in_ticks, ref.r - distance_in_ticks
-            over = mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
+            overL, overR =  ref.accl - distance_in_ticks, ref.accr - distance_in_ticks
+            over = round(mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM,2)
 
             # time.sleep(self.timeout)
             # self.updatePositionLinear(ref)
 
-            print(
-            f'forwardByDistance() : d={distance}cm ({distance_in_ticks}t),\n\
-                over={over}cm ({mu.avg(overL, overR)})'
-            )
+            print(f'DRIVER - Forward(d={distance}cm ({distance_in_ticks}t)). Went {over+distance}cm. Over by {over}cm ({mu.avg(overL, overR)}t).')
 
             self.stop_printing_position()
             self.printStatus()
@@ -203,9 +194,7 @@ class RobotDriver(WifiBot):
             # Stop the movement, dans tous les cas
             self.stopMoving()
             # time.sleep(1)
-            i=0.0
-            while i < 1.0: #pour faire 1s en tout
-                i+=self.timeout
+            for _ in range(int(1.5 / self.timeout)):
                 time.sleep(self.timeout)
                 self.updatePositionLinear(ref)
                 
@@ -245,9 +234,7 @@ class RobotDriver(WifiBot):
         # Stop the movement, and record overshoot
         self.stopMoving()
         # time.sleep(1)
-        i=0.0
-        while i < 1.0: #pour faire 1s en tout
-            i+=self.timeout
+        for _ in range(int(1.5 / self.timeout)):
             time.sleep(self.timeout)
             self.updatePositionTankRotation(ref)
 
