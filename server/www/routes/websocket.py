@@ -15,6 +15,7 @@ from control_logic.main_auto_cartographie import cartographie
 from pathlib import Path
 from config import Config
 
+
 # Init router, et évenement d'arrêt général ------------- #
 router = APIRouter()
 shutdown_event = asyncio.Event()

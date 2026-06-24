@@ -6,21 +6,18 @@ import sys
 from config import Config
 from www.routes.routes import router as http_router
 import www.routes.websocket as websockets
-
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
 
+# Simple setup ------------------------------------------ #
+# Create FastAPI app
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], # Autorise tout le monde
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Simple setup ------------------------------------------ #
-# Create FastAPI app
-app = FastAPI()
 
 # Static files
 app.mount("/static", StaticFiles(directory=Config.Path.STATIC_DIRECTORY), name="static")
