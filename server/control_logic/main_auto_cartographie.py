@@ -11,8 +11,8 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
     # print("CARTO - Lancement...")
 
     with open(Config.Path.MAPS_DIRECTORY+carte, 'r') as f:
-        rawmap = f.readlines()[0]
-        if '[' in rawmap:
+        rawmap = f.readlines()
+        if '[' in rawmap or (len(rawmap) > 1 and '[' in rawmap[0]):
             grid = eval(rawmap)
         else:
             grid = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in rawmap]
@@ -22,7 +22,9 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
         print("CARTO - Position initiale invalide.")
         return
 
-    parcours.pop(0) # La première case est (x0,y0)
+    if parcours[0] == (x0,y0):
+        print("CARTO - La première case du parcours est la case de départ : enlevée ")
+        parcours.pop(0) # La première case est (x0,y0)
     # print("CARTO - Parcours calculé")
 
     # print("CARTO - Demande de position à mettre à (0,0)... : ", client_ws.id)
@@ -44,7 +46,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 
-        await client_ws.send(message_builder("goto", client_ws.id, float(next_x), float(next_y)))
+        await client_ws.send(message_builder("goto", client_ws.id, carte_scale*float(next_x), carte_scale*float(next_y)))
         Var.Goto.asking_for_goto = True
 
         while not Var.Goto.goto_completed:
