@@ -193,6 +193,7 @@ On a fait une affiche de fou ! Des talents de designer ont été révélé parto
 Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement-a-yolo-object-detector-from-scratch-in-pytorch-e310829d92e6); [single_object_detection](https://stackoverflow.com/questions/51782769/object-detection-for-a-single-object-only)
 - Thibaut : Création d'un filtre de kalman pour filtrer les données provenant du capteur MPU6050. Voici le résultat lorsque le capteur est immobile pour la rotation et les accélérations. On voit que le filtrage fonctionne bien après une période transitoire.
 <div style="display: flex; width:100%;"><img style="witdh : 60%;" src="./doc/Capture d’écran du 2026-06-23 00-06-51.png"></div>
+- Max : Premiers tests des capteurs ultrasons, insertion dans le projet, et complétion du code de détéction d'obstacles.
 
 ### Mardi 23/06
 
@@ -201,6 +202,10 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
     - Mise en forme globale du robot, avec la mise en commun des capteurs, du débeugage, et enfin la refonte du système d'alimentation du raspberry.
     - Configuration de la seconde raspberry pour le robot de la traque 
 - Eden : Création d'un dataset d'images du robot, incluant des photos floues, et sous différentes conditions. Séparation de ce dataset en Train, Valid, Test. Implémentation YOLOv8 et training sur 10, 20 puis 100 epochs. --> 100 epochs fonctionne pour les photos telles que robot flou, robot à longue distance, robot coupé par le cadre
+- Max : 
+  - Développement d'une feature web : le choix interactif du mode auto voulu, et des paramètres associés (la carte, la position de départ), et reliage effectif en WS pour lancer ces modes avec les paramètres. 
+  - Correction mineur sur le style de Map Constructor (marges). 
+  - Implémentation d'une file de messages pour la gestion des commandes à exécuter côté robot (goto, get_signal), et variables de suivi de leur exécution (afin de savoir quand le serveur peut envoyer la commande suivante). Tests.
 
 ### Mercredi 24/06
 
@@ -208,6 +213,14 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
     - Mise en place du robot avec tous les capteurs au Fablab. Impression de support en bois pour les fixations.
     - Implémentations et mesure précise du bruit sur le MPU6050
     - Début d'une interface web pour suivre les robots pour la présentation finale
+- Max:
+  - Gestion des messages type "position" de l'interface vers les robot en WebSocket.
+  - Gestion des cartes générées par MAP_CONSTRUCTOR (elles n'ont pas exactement le même type que les cartes importées à la main).
+  - Gestion du cas des positions initiales invalides lors d'une exécution de la cartographie.
+  - Ajout de la V1 de la potition par centrale inertielle et filtre de Kalman au robot.
+  - Implémentation d'une fonction de récupération (et d'affichage) continue des position par odométrie et kalman, afin de comparer et tester.
+  - Réparation des mouvement de la caméra (tout était inversé), et adaptation du pas de rotation, et du temps d'attente entre chaque commande.
+  - Correction fondamentale du sens pour tout controle de déplacement du robot : on l'a monté à l'envers de ce qui était prévu...; Optimisations.
 
 ### Jeudi 25/06
 ### Vendredi 26/06
