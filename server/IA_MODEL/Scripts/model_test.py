@@ -20,9 +20,9 @@ def draw_predicted_box(image, result):
     for box in result.boxes:
         x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
         conf = float(box.conf[0])
-        cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 5)
-        cv2.putText(img, f"{conf:.2f}", (x1, max(y1 - 10, 0)),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+        cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 8)
+        #cv2.putText(img, f"{conf:.2f}", (x1, max(y1 - 10, 0)),
+        #            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
     return img
 
 
@@ -52,7 +52,7 @@ def draw_ground_truth_box(image, label_path):
             x2 = int(x_center + box_w / 2)
             y2 = int(y_center + box_h / 2)
 
-            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 5)
+            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 8)
 
     return img
 
