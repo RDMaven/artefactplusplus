@@ -6,7 +6,7 @@ import os
 import re
 
 # ─── Configuration ────────────────────────────────────────────────
-PORT      = "/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if04-port0"   # AT commands sur SIM7600X
+PORT      = "/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if05-port0"   # AT commands sur SIM7600X
 BAUD      = 115200
 LOGFILE   = "capture_4G.log"
 TIMEOUT   = 2                # secondes d'attente par commande AT
@@ -16,8 +16,8 @@ AT_TESTS = [
     ("AT",                                  "OK",   "Vérification communication de base",   2),
     ("ATI",                                 "OK",   "Informations module",                  2),
     ("AT+CPIN?",                            "READY","Statut carte SIM",                     2),
-    # ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN",               2),
-    # ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités",            2),
+    ("AT+CGDCONT=1,\"IP\",\"DEFAULT\"",     "OK",   "Configuration de l'APN",               2),
+    ("AT+CFUN=1,1",                         "OK",   "Choix des fonctionnalités",            2),
     ("AT+CGDCONT?",                         "OK",   "Contexte PDP (APN)",                   2),
     ("AT+CREG?",                            "OK",   "Enregistrement réseau",                30),
     ("AT+COPS?",                            "OK",   "Opérateur réseau actif",               30),
@@ -81,8 +81,8 @@ def envoyer_at(ser, commande, timeout=TIMEOUT):
                     break
 
             time.sleep(0.05)
-        if commande == "AT+NETOPEN":
-            time.sleep(10)
+        if commande == "AT+CFUN=1,1":
+            time.sleep(30)
 
     except OSError as e:
         print(f"[ERREUR I/O #{e.errno}] {commande} : {e}")
