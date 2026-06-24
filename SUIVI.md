@@ -200,6 +200,7 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 - Thibaut : 
     - Mise en forme globale du robot, avec la mise en commun des capteurs, du débeugage, et enfin la refonte du système d'alimentation du raspberry.
     - Configuration de la seconde raspberry pour le robot de la traque 
+- Eden : Création d'un dataset d'images du robot, incluant des photos floues, et sous différentes conditions. Séparation de ce dataset en Train, Valid, Test. Implémentation YOLOv8 et training sur 10, 20 puis 100 epochs. --> 100 epochs fonctionne pour les photos telles que robot flou, robot à longue distance, robot coupé par le cadre
 
 ### Mercredi 24/06
 ### Jeudi 25/06
