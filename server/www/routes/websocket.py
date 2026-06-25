@@ -132,7 +132,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
                         case "carto_init":
                             cmap, cx, cy = rdata.values()
                             # TODO Récupérer l'échelle de la carte, ici 1 par défaut
-                            await cartographie(recipient, cmap, 20, cx, cy)
+                            await cartographie(recipient, cmap, 90, cx, cy)
                         case "traque_init":
                             pass # TODO
 
