@@ -99,7 +99,7 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
 
 # --- Exemple d'utilisation ---
 if __name__ == "__main__":
-    with serial.Serial("/dev/ttyUSB2", baudrate=115200, timeout=2) as ser:
+    with serial.Serial(PORT, baudrate=115200, timeout=2) as ser:
         for _ in range(30):
             signal = get_signal_quality(ser)
             if signal:
