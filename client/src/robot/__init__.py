@@ -32,11 +32,10 @@ finally:
 
 # En attendant de pouvoir renvoyer le signal, celle-ci remplace.
 def get_signal():
-    try:
+    if ser:
         messages.append({"signal": nu.get_rsrp(ser)[0]})
-    except:
-        traceback.print_exc()
-        messages.append({"signal": -42})
+    else:
+        messages.append({"signal": random.randint(0,100)})
 
 # DEBUG ================================================= #
 #robot.runInteractive()
