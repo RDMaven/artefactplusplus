@@ -99,7 +99,7 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
 # --- Exemple d'utilisation ---
 if __name__ == "__main__":
     with serial.Serial("/dev/ttyUSB2", baudrate=115200, timeout=2) as ser:
-        send_at_command(ser, "AT+CFUN=1,1", 60)
+        # send_at_command(ser, "AT+CFUN=1,1", 60)
         signal = get_signal_quality(ser)
         if signal:
             print(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
