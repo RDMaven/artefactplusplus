@@ -2,12 +2,6 @@ import serial
 import re
 import time
 
-# ─── Configuration ────────────────────────────────────────────────
-
-PORT = "/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if02-port0"   # AT commands sur SIM7600X
-
-
-# ─── Fonctions ────────────────────────────────────────────────────
 
 def send_at_command(ser: serial.Serial, command: str, timeout: float = 2.0) -> str:
     """Envoie une commande AT et retourne la réponse brute."""
@@ -96,27 +90,39 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
 
     return result
 
+def get_port():
+    for i in range(5):
+        try:
+            port = f"/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if0{i}-port0"
+            ser = serial.Serial(port, baudrate=115200, timeout=2)
+            return ser
+        except BrokenPipeError:
+            continue
+    raise BrokenPipeError
+
 
 # --- Exemple d'utilisation ---
 if __name__ == "__main__":
-    with serial.Serial(PORT, baudrate=115200, timeout=2) as ser:
-        for _ in range(30):
-            signal = get_signal_quality(ser)
-            if signal:
-                print(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
-                print(f"Opérateur  : {signal.get('operator', '?')}")
-                print(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm")
-                print(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm")
-                print(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
-                print(f"SINR       : {signal.get('sinr_db', '?')} dB")
-                print(f"Qualité    : {signal.get('quality', '?')}")
-                with open("4G.txt", "a") as log_file:
-                    log_file.write(f"TIME       : {time.time()}\n")
-                    log_file.write(f"Réseau     : {signal['type']} ({signal.get('band', '?')})\n")
-                    log_file.write(f"Opérateur  : {signal.get('operator', '?')}\n")
-                    log_file.write(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm\n")
-                    log_file.write(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm\n")
-                    log_file.write(f"RSRQ       : {signal.get('rsrq_db', '?')} dB\n")
-                    log_file.write(f"SINR       : {signal.get('sinr_db', '?')} dB\n")
-                    log_file.write(f"Qualité    : {signal.get('quality', '?')}\n")
-            time.sleep(30)
+
+    ser = get_port()
+    for _ in range(30):
+        signal = get_signal_quality(ser)
+        if signal:
+            print(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
+            print(f"Opérateur  : {signal.get('operator', '?')}")
+            print(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm")
+            print(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm")
+            print(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
+            print(f"SINR       : {signal.get('sinr_db', '?')} dB")
+            print(f"Qualité    : {signal.get('quality', '?')}")
+            with open("4G.txt", "a") as log_file:
+                log_file.write(f"TIME       : {time.time()}\n")
+                log_file.write(f"Réseau     : {signal['type']} ({signal.get('band', '?')})\n")
+                log_file.write(f"Opérateur  : {signal.get('operator', '?')}\n")
+                log_file.write(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm\n")
+                log_file.write(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm\n")
+                log_file.write(f"RSRQ       : {signal.get('rsrq_db', '?')} dB\n")
+                log_file.write(f"SINR       : {signal.get('sinr_db', '?')} dB\n")
+                log_file.write(f"Qualité    : {signal.get('quality', '?')}\n")
+        time.sleep(30)
+    ser.close()
