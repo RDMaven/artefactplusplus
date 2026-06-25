@@ -1,5 +1,6 @@
 import serial
 import re
+import time
 
 # ─── Configuration ────────────────────────────────────────────────
 
@@ -100,12 +101,23 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
 if __name__ == "__main__":
     with serial.Serial("/dev/ttyUSB2", baudrate=115200, timeout=2) as ser:
         # send_at_command(ser, "AT+CFUN=1,1", 60)
-        signal = get_signal_quality(ser)
-        if signal:
-            print(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
-            print(f"Opérateur  : {signal.get('operator', '?')}")
-            print(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm")
-            print(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm")
-            print(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
-            print(f"SINR       : {signal.get('sinr_db', '?')} dB")
-            print(f"Qualité    : {signal.get('quality', '?')}")
+        for _ in range(30):
+            signal = get_signal_quality(ser)
+            if signal:
+                print(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
+                print(f"Opérateur  : {signal.get('operator', '?')}")
+                print(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm")
+                print(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm")
+                print(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
+                print(f"SINR       : {signal.get('sinr_db', '?')} dB")
+                print(f"Qualité    : {signal.get('quality', '?')}")
+            with open("4G.log", "a") as log_file:
+                log_file.write(f"TIME       : {time.time()}")
+                log_file.write(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
+                log_file.write(f"Opérateur  : {signal.get('operator', '?')}")
+                log_file.write(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm")
+                log_file.write(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm")
+                log_file.write(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
+                log_file.write(f"SINR       : {signal.get('sinr_db', '?')} dB")
+                log_file.write(f"Qualité    : {signal.get('quality', '?')}")
+            time.sleep(30)
