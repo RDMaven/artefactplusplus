@@ -11,7 +11,11 @@ import src.utils.network_utils as nu
 try:
     robot = RobotDriver()
     camera = CameraMove()
-    ser = nu.get_port()
+    try:
+        ser = nu.get_port()
+    except:
+        traceback.print_exc()
+        
 
     robot.forwardByDistance(20)
 except Exception as e:
