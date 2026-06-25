@@ -6,7 +6,7 @@ from src.utils.message_parse_and_build import message_builder, message_parser
 import cv2
 from src.camera.camera import Camera
 from ws_queue import messages
-import threading, traceback
+import threading, traceback, time
 
 # ======================================================= #
 # DEBUG COUNTER CLASS =================================== #
