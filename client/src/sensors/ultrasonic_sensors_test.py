@@ -90,6 +90,10 @@ class UltrasonicSensors:
 
 if __name__ == "__main__":
     sensors = UltrasonicSensors()
-    sensors.loop(verbose = True)
-
+    try:
+        sensors.loop(verbose = True)
+    except Exception as e:
+        print(e)
+    finally:
+        GPIO.cleanup()
 
