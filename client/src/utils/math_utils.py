@@ -6,6 +6,16 @@ class Ratio:
     TperM = Config.Robot.TICKS_PER_CM 
     MperT = 1 / TperM
 
+class RegressionRot:
+    A = 18.43
+    B = 145
+
+    def getTicks(angle):
+        assert angle > 40, "Angle trop petit"
+        return RegressionRot.A*angle+RegressionRot.B
+
+    def getAngle(ticks):
+        return round((ticks-RegressionRot.B)/RegressionRot.A,2)
 
 # ======================================================= #
 # Gestion de la position, mises à jour par odométrie ==== #
@@ -60,10 +70,16 @@ def distanceInTickForForward(distance: float):
 def distanceInTickForRotation(angle: float):
     """ angle : in degrees """
     # return int(1/2 * abs(math.radians(angle) * Config.Robot.DISTANCE_BTW_WHEELS * Ratio.TperM))
-    return int(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*(angle/360)*Ratio.TperM)
+    # return int(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*(angle/360)*Ratio.TperM)
+    if abs(angle) >= 40:
+        return RegressionRot.getTicks(abs(angle)) # TODO changer le abs pour gérer
+    else:
+        return int(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*(angle/360)*Ratio.TperM)
+
 
 def angleFromTicks(tl, tr):
-    return (tr-tl)*180/(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*Ratio.TperM)
+    # return (tr-tl)*180/(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*Ratio.TperM)
+    return RegressionRot.getAngle(avg(abs(tl), abs(tr)))
 
 # ======================================================= #
 # Fonctions maths diverses ============================== #
