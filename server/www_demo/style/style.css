@@ -22,7 +22,7 @@ html,body{
     overflow-x: hidden;
     z-index: 9990;
     transform: translateX(-100%);
-    animation: intro_move 2.6s ease;
+    animation: intro_move 2.5s ease;
     position: absolute;
 }
 
@@ -34,7 +34,8 @@ html,body{
 }
 
 #intro_bg {
-    height:  100%;
+    width:  100%;
+    height: auto;
     z-index: 9991;
     position: absolute;
     top:0;
@@ -76,6 +77,16 @@ html,body{
 @keyframes v2 {
     0% {top: 65%; left: 62%; transform: rotate(45deg) scale(0.5);}
     100% {top: 55%; left: 55%; transform: rotate(25deg) scale(10.3);}
+}
+
+@keyframes v1_lite {
+    0% {top: 20%; left: 25%; transform: rotate(0deg) scale(0.1);}
+    100% {top: 40%; left: 38%; transform: rotate(25deg) scale(7.2);}
+}
+
+@keyframes v2_lite {
+    0% {top: 65%; left: 62%; transform: rotate(45deg) scale(0.1);}
+    100% {top: 55%; left: 55%; transform: rotate(25deg) scale(8);}
 }
 
 header{
@@ -204,11 +215,31 @@ header{
     .video_content{
         width: 50%;
         flex-direction: column;
+        align-items: center;
     }
     #camera_place{
         flex-direction: row;
     }
     .video_wrapper{
         width: 95%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #intro_bg{
+        width: auto;
+        height: 100%;
+    }
+    #v1{
+        animation: v1_lite 2.5s ease;
+    }
+    #v2{
+        animation: v2_lite 2.5s ease;
+    }
+    #menu{
+        width:2rem;
+        height: 2rem;
+        position: absolute;
+        left:1rem;
+        top:66%;
     }
 }
