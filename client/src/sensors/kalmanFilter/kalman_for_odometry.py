@@ -88,13 +88,13 @@ class Kalman:
                 [0,0,0,0,0,0,1,0,0,0,0,0],
                 [0,0,0,0,0,0,0,1,0,0,0,0],
                 [0,0,0,0,0,0,0,0,1,0,0,0],
-                [0,0,0,0,0,0,0,0,0,1, dt, 0],  # <-- C'est ce dt qui va forcer l'intégration de l'angle !
+                [0,0,0,0,0,0,0,0,0,1, 0, 0],  # <-- C'est ce dt qui va forcer l'intégration de l'angle !
                 [0,0,0,0,0,0,0,0,0,0, 1, 0],
                 [0,0,0,0,0,0,0,0,0,0, 0, 1]
             ])
         
         self.data = data()
-        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]])
+        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[dt],[0],[0]])
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
         self.P = np.eye(12)*0.1
         self.Q = np.diag([
@@ -105,22 +105,21 @@ class Kalman:
                     1e-3,             # omega_z
                     1e-8              # biais
             ])
-        self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2,gyro_z_noise**2])
+        self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2])
         self.H = np.array([
             [0,0,0,0,0,0,1,0,0,0,0,0],
             [0,0,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,0,0,0,0,1,0,0,0],
-            [0,0,0,0,0,0, 0,0,0, 0,1,0]
             ])
         self.U = np.array([[self.data.omega_z]])
 
     def updateU(self,da):
         self.U = np.array([[da[3]]])
 
-    def x_estimation(self,da):
+    def x_estimation(self, da):
         x_prev = self.x.getX().reshape(12,1)
-        self.updateU(da)
-        return self.F @ x_prev + self.B @ self.U
+        U = np.array([[da[3]]])          # ω_z mesuré et corrigé du biais
+        return self.F @ x_prev + self.B @ U
     
     def innovation(self, x_est, da):
         z = np.array([da[0], da[1], da[2], da[3]]).reshape(4,1)
