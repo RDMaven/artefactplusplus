@@ -7,7 +7,6 @@ import RPi.GPIO as GPIO
 class SingleUltrasonicSensor:
 
     def __init__(self, TRIG=11, ECHO=12):
-        GPIO.cleanup()
         self.TRIG = TRIG
         self.ECHO = ECHO
         GPIO.setmode(GPIO.BOARD)
