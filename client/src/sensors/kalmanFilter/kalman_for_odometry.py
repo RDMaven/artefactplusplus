@@ -88,29 +88,28 @@ class Kalman:
             [0,0,0,0,0,0,1,0,0,0,0,0],
             [0,0,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,0,0,0,0,1,0,0,0],
-            [0,0,0,0,0,0,0,0,0,1,dt,0],
+            [0,0,0,0,0,0,0,0,0,1,0,0],
             [0,0,0,0,0,0,0,0,0,0,1,0],
             [0,0,0,0,0,0,0,0,0,0,0,1]
             ])
         
         self.data = data()
-        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]])
+        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[dt],[1],[0]])
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
-        self.P = np.eye(12)
+        self.P = np.eye(12)*0.1
         self.Q = np.diag([
                 1e-6, 1e-6, 1e-6, # x, y, z (positions)
                 5e-4, 5e-4, 5e-4, # vx, vy, vz (vitesses)
                 1e-7, 1e-7, 1e-7, # ax, ay, az (accélérations) <-- Divisé par 10 (anciennement 1e-6)
-                1e-5,             # theta_z
-                1e-2,             # omega_z       <-- Divisé par 10 (anciennement 1e-4)
-                1e-6              # biais
+                1e-4,             # theta_z
+                1e-3,             # omega_z       <-- Divisé par 10 (anciennement 1e-4)
+                1e-8              # biais
             ])
-        self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2, gyro_z_noise**2])
+        self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2])
         self.H = np.array([
             [0,0,0,0,0,0,1,0,0,0,0,0],
             [0,0,0,0,0,0,0,1,0,0,0,0],
-            [0,0,0,0,0,0,0,0,1,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,1,0]
+            [0,0,0,0,0,0,0,0,1,0,0,0]
             ])
         self.U = np.array([[self.data.omega_z]])
 
@@ -124,7 +123,7 @@ class Kalman:
         return self.F @ x_prev + self.B @ self.U
     
     def innovation(self, x_est,da):
-        return da.reshape(4,1) - self.H @ x_est
+        return da[:3].reshape(3,1) - self.H @ x_est
     
     
     def P_estimation(self):
