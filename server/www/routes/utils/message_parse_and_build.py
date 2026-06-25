@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from www.routes.utils.utils_video import frame_store
 from config import Config, Var
-from server.www.routes.utils.signal import signal
+from www.routes.utils.signal import signal
 
 
 # ------------------------------------------------------- #
