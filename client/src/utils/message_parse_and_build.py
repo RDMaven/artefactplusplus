@@ -102,6 +102,12 @@ def message_data_builder(mtype, *args):
             args = args[0]
             assert_number_of_arguments(mtype, 1, len(args))
             return {"data": args}
+
+        case "ack":
+            args = args[0]
+            assert_number_of_arguments(mtype, 1, len(args))
+            return {"data": args}
+        
         case _:
             raise ValueError(f"Unknown type {mtype} to send.")
 

@@ -6,6 +6,7 @@ from config import Config
 from src.robot.controller import WifiBot, Reference, ReferenceSimple
 from src.sensors.ultrasonic_sensors import UltrasonicSensors
 import src.utils.math_utils as mu
+from ws_queue import messages
 
 if Config.is_prod:
     from src.sensors.kalmanFilter.kalman_for_odometry import Kalman
@@ -311,6 +312,7 @@ class RobotDriver(WifiBot):
         r, theta = mu.convert_cartesian_to_radial(x1,y1,theta1,x2,y2)
         print(f"DRIVER - Goto cartésien ({x1,y1} -> {(x2,y2)}) a calculé r={r}, theta={theta}")
         self.goto(r, theta)
+        messages.append({"ack": "goto"})
 
 
 

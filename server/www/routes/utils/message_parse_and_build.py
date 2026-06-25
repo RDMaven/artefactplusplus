@@ -79,6 +79,15 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
             else:
                 print("Was not asked for.")
 
+        case "ack":
+            a = list(rdata.values())[0][0]
+            print(f"Acked finish of command : {a}.", end=" ")
+            match a:
+                case "goto":
+                    Var.Goto.goto_completed = True
+                    print()
+                case _:
+                    print("Unknown ack.")
         case _ :
             print(f": {rdata}")
     return rt, rfor
