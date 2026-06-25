@@ -17,7 +17,6 @@ class RobotDriver(WifiBot):
     def __init__(self, serPath = Config.Robot.SERIAL_PORT):
         if Config.is_prod:
             super().__init__(serPath)
-            self.relative_ticks = Reference(self.getOdom(is_setup=True)) # Voir 'controller.py/Reference'
 
     
         self.position = mu.Position(x0=0, y0=0, theta0=0)
@@ -266,6 +265,17 @@ class RobotDriver(WifiBot):
 
         self.stop_printing_position()
         self.printStatus()
+        return mu.angleFromTicks(ref.accl, ref.accr)
+
+
+    def rotatByAnglePrecise(self, angle):
+        tolerance = 8
+        vitesse = Config.Robot.SPEED
+        effectif = self.rotateByAngle(angle)
+        i = 0
+        while abs(effectif-angle) > 8 and i < 3:
+            effectif = self.rotateByAngle(angle-effectif)
+            i+=1
 
 
     def avoidObstacle(self):
