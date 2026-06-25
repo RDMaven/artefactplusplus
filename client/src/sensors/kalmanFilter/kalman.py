@@ -12,18 +12,19 @@ dt = 0.1
 isGivenNoises = 1 # pour recalculer le bruit du capteur immobile si 0
 isToMakeGraph = 0
 number = 100 #nombre d'échantillons qui seront utilisés pour le calcul des noises
+g = 9.81
 
 if not isGivenNoises:
     accel_x_noise, accel_y_noise, accel_z_noise, gyro_z_noise,accel_x_bias, accel_y_bias, accel_z_bias, gyro_z_bias = gn.getInfo(number)
 else:
     ### A initialiser pour un grand number
-    accel_x_noise= 0.001944567418940276
-    accel_y_noise=0.0019362013371498731
-    accel_z_noise=0.0032176589968624272
+    accel_x_noise= 0.001944567418940276 * g
+    accel_y_noise=0.0019362013371498731 * g
+    accel_z_noise=0.0032176589968624272 * g
     gyro_z_noise=0.12445350857045176
-    accel_x_bias = 0.018384033203125
-    accel_y_bias = 0.0015986328125
-    accel_z_bias=1.16818017578125
+    accel_x_bias = 0.018384033203125 * g
+    accel_y_bias = 0.0015986328125 * g
+    accel_z_bias=1.16818017578125 * g
     gyro_z_bias =1.499359130859375
 
 class data:
@@ -35,9 +36,9 @@ class data:
 
     def update(self):
         newdata = gn.getData()
-        self.a_x = newdata[0]-accel_x_bias
-        self.a_y = newdata[1]-accel_y_bias
-        self.a_z = newdata[2]-accel_z_bias
+        self.a_x = g * newdata[0]-accel_x_bias
+        self.a_y = g * newdata[1]-accel_y_bias
+        self.a_z = g * newdata[2]-accel_z_bias
         self.omega_z = newdata[3] - gyro_z_bias
     
     def getData(self):
