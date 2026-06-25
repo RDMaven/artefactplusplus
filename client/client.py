@@ -138,7 +138,7 @@ class WebSocketClient:
             )
 
             await self.websocket.close()
-            if self.debug: print("Robot WSClient, gracefully stopped the WS connection")
+            print("Robot WSClient, gracefully stopped the WS connection")
 
 
 # ======================================================= #
