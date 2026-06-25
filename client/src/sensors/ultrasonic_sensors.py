@@ -60,34 +60,32 @@ class UltrasonicSensors:
     def __init__(self):
         self.time_interval = 0.3
 
-        self.SensorFront = SingleUltrasonicSensor(TRIG=11, ECHO=12)
-        self.SensorBack  = SingleUltrasonicSensor(TRIG=15, ECHO=16)
-        self.front_distance = None
-        self.back_distance  = None
+        self.SensorRight = SingleUltrasonicSensor(TRIG=11, ECHO=12)
+        self.SensorLeft  = SingleUltrasonicSensor(TRIG=15, ECHO=16)
+        self.left_distance = None
+        self.rignt_distance = None
 
         self.obstacle_in_front = False
-        self.obstacle_behind = False
 
         self._thread = None
 
     def loop(self, verbose=False):
 
         while Config.Robot.MODE == "auto":
-            self.front_distance = self.SensorFront.distance()
-            self.back_distance = self.SensorBack.distance()
+            self.right_distance = self.SensorRight.distance()
+            self.left_distance = self.SensorLeft.distance()
 
-            self.obstacle_in_front = (self.front_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE)
-            self.obstacle_behind = (self.back_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE)
+            self.obstacle_in_front = (self.left_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE and \
+                                        self.right_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE)
 
             if verbose:
-                print(f"Ultrasonic Front sensor : {round(self.front_distance, 1)}cm")
-                print(f"Ultrasonic Back sensor  : {round(self.back_distance, 1)}cm")
+                print(f"ULTRASONIC - L={round(self.left_distance, 1)}cm, R={round(self.right_distance, 1)}cm")
 
             time.sleep(self.time_interval)
 
         # Cleanup when done
-        self.SensorFront.destroy()
-        self.SensorBack.destroy()
+        self.SensorLeft.destroy()
+        self.SensorRight.destroy()
 
     def start(self, verbose=False):
 
@@ -103,8 +101,8 @@ class UltrasonicSensors:
     def stop(self):
         if self._thread is not None:
             self._thread.join()
-        self.SensorBack.destroy()
-        self.SensorFront.destroy()
+        self.SensorLeft.destroy()
+        self.SensorRight.destroy()
 
 
 if __name__ == "__main__":
