@@ -8,7 +8,7 @@ import cv2
 SERVER_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(SERVER_DIR))
 
-from Detection import detection_by_frame 
+from Detection import DetectionByFrame
 
 def box_attendue(id_test):
     label_path = Path(f"../Dataset/test/labels/{id_test}.txt")
@@ -55,13 +55,14 @@ if __name__ == "__main__":
     test_image_path = f"../Dataset/test/images/{id_test}.jpg"
 
     frame_store = FakeFrameStore(test_image_path)
-    detector = detection_by_frame(robot_id=1)
+    detector = DetectionByFrame(robot_id=1)
 
     annotated = detector.img_box(frame_store)
 
-    detector.distance_robot(frame_store)
-    detector.angle_robot(frame_store)
+    detector.distance_robot()
+    detector.angle_robot()
     print(detector)
+    print(detector.isthereRobot(frame_store))
 
     box = box_attendue(id_test)
     print("box attendue : ", box)

@@ -1,5 +1,7 @@
 import sys
 from pathlib import Path
+import threading
+import time
 
 SERVER_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(SERVER_DIR))
@@ -26,9 +28,11 @@ class DetectionByFrame:
         self.box = None
         self.distance = None
         self.angle = None
+        self._detection_thread = None
+        self._stop_detection = False
         self.camera_fov = 69.0
 
-    def distance_robot(self, frame_store):
+    def distance_robot(self):
         """Calcule la distance estimée à partir de la hauteur de la box."""
         if self.box is None:
             self.distance = None
@@ -44,7 +48,7 @@ class DetectionByFrame:
 
         return self.distance
 
-    def angle_robot(self, frame_store):
+    def angle_robot(self):
         """Calcule l'angle horizontal du robot détecté par rapport au centre de la frame."""
         if self.box is None:
             self.angle = None
@@ -56,7 +60,7 @@ class DetectionByFrame:
         box_center_x = (self.box[0][0] + self.box[1][0]) / 2
         offset = box_center_x - (frame_width / 2)
         theta = math.degrees(math.atan(offset / fx))
-        self.angle = int(theta)
+        self.angle = round(theta,1)
 
         return self.angle
 
@@ -78,6 +82,17 @@ class DetectionByFrame:
 
         image_box = draw_predicted_box(self.current_frame, result)
         return image_box
+
+    def isthereRobot(self, frame_store):
+        '''renvoie True ou False, si True renvoie aussi img_box et angle
+            visible, image_box, angle avec visible : bool; image_box : image cv2 ou None; angle : float ou None'''
+        
+        image_box = self.img_box(frame_store)
+        if self.box is None:
+            return False, None, None
+        angle = self.angle_robot()
+        return True, image_box, angle
+
 
     def __str__(self):
         box_str = f"{self.box}" if self.box is not None else "Aucune détection"
@@ -119,11 +134,13 @@ class DetectionByFrame:
                 time.sleep(0.01)
                 continue
 
-            with self._detection_lock:
-                result = self.result
-                box = self.box
+            result = self.result
+            box = self.box
 
-            annotated = draw_predicted_box(frame, result[0]) if box is not None else frame
+            if result is not None and box is not None:
+                annotated = draw_predicted_box(frame, result[0])
+            else:
+                annotated = frame
 
             ret, buffer = cv2.imencode(".jpg", annotated)
             if not ret:
@@ -134,4 +151,4 @@ class DetectionByFrame:
             time.sleep(0.01)
 
 
-detector = DetectionByFrame()
+detector = DetectionByFrame(robot_id=1)
