@@ -247,7 +247,7 @@ class RobotDriver(WifiBot):
         overL, overR =  (ref.accl) - (distance_in_ticks), (ref.accr) - (distance_in_ticks)
         over = mu.angleFromTicks(overL, overR) #mu.avg(overL, overR) / Config.Robot.TICKS_PER_CM
 
-        # self.position.updateForTankRotation(ref.l, ref.r)
+        self.position.updateForTankRotation(ref.l, ref.r)
 
         # print(
         #   f'forwardByDistance() : theta={angle}° ({distance_in_ticks}t),\n\
@@ -255,7 +255,7 @@ class RobotDriver(WifiBot):
         #     over={over}° (l={overL}, r={overR})'
         # )
 
-        self.position.updateForTankRotationEndOfMvt(pre_theta, ref.accl, ref.accr, self.kalman.get_theta())
+        # self.position.updateForTankRotationEndOfMvt(pre_theta, ref.accl, ref.accr, self.kalman.get_theta())
         time.sleep(self.timeout)
         # TODO : comparer avec kalman
 
