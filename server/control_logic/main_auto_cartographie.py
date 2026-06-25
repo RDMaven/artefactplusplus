@@ -2,7 +2,7 @@
 from control_logic.utils.parcours_grille.parcours_grille import main as parcours_main
 from config import Config, Var
 from www.routes.utils.message_parse_and_build import message_builder
-from www.routes.utils.signal import signal4G
+from www.routes.utils.signal4G import signal4G
 import time, asyncio
 
 async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
