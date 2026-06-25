@@ -2,7 +2,7 @@
 from control_logic.utils.parcours_grille.parcours_grille import main as parcours_main
 from config import Config, Var
 from www.routes.utils.message_parse_and_build import message_builder
-from www.routes.utils.signal import signal
+from www.routes.utils.signal import signal4G
 import time, asyncio
 
 async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
@@ -35,7 +35,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
             while not Var.Signal.received_signal:
                 await asyncio.sleep(0.1)
 
-            signal_grid[x0][y0] = signal.get()
+            signal_grid[x0][y0] = signal4G.get()
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 
@@ -68,7 +68,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
             while not Var.Signal.received_signal:
                 await asyncio.sleep(0.1)
 
-            signal_grid[next_y][next_y] = signal.get()
+            signal_grid[next_y][next_y] = signal4G.get()
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 

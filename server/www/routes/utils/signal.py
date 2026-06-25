@@ -8,4 +8,4 @@ class Signal():
     def get(self):
         return self.signal
 
-signal = Signal()
+signal4G = Signal()
