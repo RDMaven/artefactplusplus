@@ -3,6 +3,7 @@ from src.camera.camera import CameraMove
 from ws_queue import messages
 import random
 import traceback
+import src.utils.network_utils as nu
 
 # ======================================================= #
 # STARTUP =============================================== #
@@ -10,6 +11,7 @@ import traceback
 try:
     robot = RobotDriver()
     camera = CameraMove()
+    ser = nu.get_port()
 
     robot.forwardByDistance(20)
 except Exception as e:
@@ -19,12 +21,16 @@ except Exception as e:
 finally:
     robot.sensors.stop()
     robot.stop_printing_position()
-
+    ser.close()
 # camera.demo(1)
 
 # En attendant de pouvoir renvoyer le signal, celle-ci remplace.
 def get_signal():
-    messages.append({"signal": random.randint(0,42)})
+    try:
+        messages.append({"signal": nu.get_rsrp(ser)[0]})
+    except:
+        traceback.print_exc()
+        messages.append({"signal": -42})
 
 # DEBUG ================================================= #
 #robot.runInteractive()
