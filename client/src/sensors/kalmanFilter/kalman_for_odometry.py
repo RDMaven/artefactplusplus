@@ -15,11 +15,11 @@ else:
     accel_x_noise= 0.001944567418940276 * g
     accel_y_noise=0.0019362013371498731 * g
     accel_z_noise=0.0032176589968624272 * g
-    gyro_z_noise=0.12445350857045176/32.8
+    gyro_z_noise=0.12445350857045176
     accel_x_bias = 0.018384033203125 * g
     accel_y_bias = 0.0015986328125 * g
     accel_z_bias=1.16818017578125 * g
-    gyro_z_bias =1.499359130859375/32.8
+    gyro_z_bias =1.499359130859375
 
 ###### CLASSES ######
 
@@ -35,7 +35,7 @@ class data:
         self.a_x = g * newdata[0]-accel_x_bias
         self.a_y = g * newdata[1]-accel_y_bias
         self.a_z = g * newdata[2]-accel_z_bias
-        self.omega_z = newdata[3]/32.8 - gyro_z_bias
+        self.omega_z = newdata[3] - gyro_z_bias
     
     def getData(self):
         return np.array([self.a_x, self.a_y, self.a_z, self.omega_z])
