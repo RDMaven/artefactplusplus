@@ -100,7 +100,6 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
 # --- Exemple d'utilisation ---
 if __name__ == "__main__":
     with serial.Serial("/dev/ttyUSB2", baudrate=115200, timeout=2) as ser:
-        # send_at_command(ser, "AT+CFUN=1,1", 60)
         for _ in range(30):
             signal = get_signal_quality(ser)
             if signal:
@@ -112,12 +111,12 @@ if __name__ == "__main__":
                 print(f"SINR       : {signal.get('sinr_db', '?')} dB")
                 print(f"Qualité    : {signal.get('quality', '?')}")
                 with open("4G.log", "a") as log_file:
-                    log_file.write(f"TIME       : {time.time()}")
-                    log_file.write(f"Réseau     : {signal['type']} ({signal.get('band', '?')})")
-                    log_file.write(f"Opérateur  : {signal.get('operator', '?')}")
-                    log_file.write(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm")
-                    log_file.write(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm")
-                    log_file.write(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
-                    log_file.write(f"SINR       : {signal.get('sinr_db', '?')} dB")
-                    log_file.write(f"Qualité    : {signal.get('quality', '?')}")
+                    log_file.write(f"TIME       : {time.time()}\n")
+                    log_file.write(f"Réseau     : {signal['type']} ({signal.get('band', '?')})\n")
+                    log_file.write(f"Opérateur  : {signal.get('operator', '?')}\n")
+                    log_file.write(f"RSRP       : {signal.get('rsrp_dbm', '?')} dBm\n")
+                    log_file.write(f"RSSI       : {signal.get('rssi_dbm', '?')} dBm\n")
+                    log_file.write(f"RSRQ       : {signal.get('rsrq_db', '?')} dB\n")
+                    log_file.write(f"SINR       : {signal.get('sinr_db', '?')} dB\n")
+                    log_file.write(f"Qualité    : {signal.get('quality', '?')}\n")
             time.sleep(30)
