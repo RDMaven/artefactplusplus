@@ -241,6 +241,7 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
     - Implémentation d'un booléen de détection
     - Mise en place de test sur des frames issues de la caméra
     - Envoi du flux vidéo de détection (flux avec les boxs affichées)
+    - Bidouillage de la constante de calcul de la distance, constante intermédiaire   en attendant de la calculer rigouresement 
 - Eden et Thibaut : Ecriture du script logique de la traque
 - Thibaut : 
     - Page Web de présentation
