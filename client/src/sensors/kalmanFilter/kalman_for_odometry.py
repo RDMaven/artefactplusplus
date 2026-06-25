@@ -79,18 +79,18 @@ class x_k:
 class Kalman:
     def __init__(self):
         self.F = np.array([
-            [1,0,0,dt,0,0,1/2*dt**2,0,0,0,0,0],
-            [0,1,0,0,dt,0,0,1/2*dt**2,0,0,0,0],
-            [0,0,1,0,0,dt,0,0,1/2*dt**2,0,0,0],
-            [0,0,0,1,0,0,dt,0,0,0,0,0],
-            [0,0,0,0,1,0,0,dt,0,0,0,0],
-            [0,0,0,0,0,1,0,0,dt,0,0,0],
-            [0,0,0,0,0,0,1,0,0,0,0,0],
-            [0,0,0,0,0,0,0,1,0,0,0,0],
-            [0,0,0,0,0,0,0,0,1,0,0,0],
-            [0,0,0,0,0,0,0,0,0,1,dt,0],
-            [0,0,0,0,0,0,0,0,0,0,1,0],
-            [0,0,0,0,0,0,0,0,0,0,0,1]
+                [1,0,0,dt,0,0,1/2*dt**2,0,0,0,0,0],
+                [0,1,0,0,dt,0,0,1/2*dt**2,0,0,0,0],
+                [0,0,1,0,0,dt,0,0,1/2*dt**2,0,0,0],
+                [0,0,0,1,0,0,dt,0,0,0,0,0],
+                [0,0,0,0,1,0,0,dt,0,0,0,0],
+                [0,0,0,0,0,1,0,0,dt,0,0,0],
+                [0,0,0,0,0,0,1,0,0,0,0,0],
+                [0,0,0,0,0,0,0,1,0,0,0,0],
+                [0,0,0,0,0,0,0,0,1,0,0,0],
+                [0,0,0,0,0,0,0,0,0,1, dt, 0],  # <-- C'est ce dt qui va forcer l'intégration de l'angle !
+                [0,0,0,0,0,0,0,0,0,0, 1, 0],
+                [0,0,0,0,0,0,0,0,0,0, 0, 1]
             ])
         
         self.data = data()
@@ -98,12 +98,12 @@ class Kalman:
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
         self.P = np.eye(12)*0.1
         self.Q = np.diag([
-                1e-6, 1e-6, 1e-6, # x, y, z (positions)
-                5e-4, 5e-4, 5e-4, # vx, vy, vz (vitesses)
-                1e-7, 1e-7, 1e-7, # ax, ay, az (accélérations) <-- Divisé par 10 (anciennement 1e-6)
-                1e-4,             # theta_z
-                1e-3,             # omega_z       <-- Divisé par 10 (anciennement 1e-4)
-                1e-8              # biais
+                    1e-6, 1e-6, 1e-6, # x, y, z
+                    5e-4, 5e-4, 5e-4, # vx, vy, vz
+                    1e-7, 1e-7, 1e-7, # ax, ay, az
+                    1e-2,             # theta_z <-- Augmenté à 1e-2 pour donner de la souplesse à l'angle
+                    1e-3,             # omega_z
+                    1e-8              # biais
             ])
         self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2,gyro_z_noise**2])
         self.H = np.array([
