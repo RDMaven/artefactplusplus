@@ -39,7 +39,8 @@ class DetectionByFrame:
             return None
 
         box_height = self.box[1][1] - self.box[0][1]
-        K = 1000
+        K = 350 #K valable pour les frames issues de la cam
+        #K = 900 #valable pour les frames prises par mon téléphone
 
         if box_height > 0:
             self.distance = round(K / box_height, 2)
