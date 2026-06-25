@@ -6,6 +6,7 @@ from src.utils.message_parse_and_build import message_builder, message_parser
 import cv2
 from src.camera.camera import Camera
 from ws_queue import messages
+import threading, traceback
 
 # ======================================================= #
 # DEBUG COUNTER CLASS =================================== #
@@ -31,6 +32,7 @@ class WebSocketClient:
         self.uri = uri
         self.websocket = None
         self.stop_event = asyncio.Event()
+        self.sender_running = False
         self.debug = debug
         if self.debug:
             self.sent_counter = Counter() # DEBUG
@@ -71,18 +73,27 @@ class WebSocketClient:
         finally:
             camera.quit()
 
-    async def sender(self): # DEBUG, TODO faire un sender pour tout les messages du robot !
-        # messages.append({"signal": 42})
-        print(messages)
-        while not self.stop_event.is_set():
+
+    ## SENDER THREAD 
+    def sender(self):
+        """ Thread sender, boucle principale """
+        while self.sender_running:
             while messages:
                 msg = messages.pop(0)
-                for mtype, mval in msg.items(): # Fausse boucle, il n'y a qu'un élément
-                    await self.send(mtype, -1, mval)
+                for mtype, mval in msg.items():
+                    self.send(mtype, -1, mval)
+            time.sleep(0.01)
 
-            # await self.send("event", -1, "test", {"test": 99})
-            await asyncio.sleep(1) # TODO Changer le sleep selon le besoin
-        
+    def start_sender(self):
+        """ Thread sender, starter """
+        if not self.sender_running:
+            self.sender_running = True
+            threading.Thread(target=self.sender, daemon=True).start()
+
+    def stop_sender(self):
+        self.sender_running = False
+    ## END SENDER THREAD
+
 
     async def receiver(self):
         """ Fonction pour le thread de réception des messages WS.
@@ -106,37 +117,39 @@ class WebSocketClient:
 
         receiver_task = asyncio.create_task(self.receiver())
         video_task = asyncio.create_task(self.video_streamer())
-        send_task = asyncio.create_task(self.sender())
+        # send_task = asyncio.create_task(self.sender())
 
         try:
+            self.start_sender()
             await asyncio.wait(
                 [
                     receiver_task, 
                     video_task, 
-                    send_task
+                    # send_task
                     ],
                 return_when=asyncio.FIRST_EXCEPTION
             )
 
-        except Exception as e:
-            print(e)
+        except:
+            traceback.print_exc()
         finally:
             self.stop_event.set()
-            if self.debug: print("Robot WSClient, arrivé au 'finally' de 'run()' yeah !")
 
             for task in [
                 receiver_task, 
                 video_task, 
-                send_task
+                # send_task
                 ]:
                 task.cancel()
 
             await asyncio.gather(
                 receiver_task,
                 video_task,
-                send_task,
+                # send_task,
                 return_exceptions=True
             )
+
+            self.stop_sender()
 
             await self.websocket.close()
             print("Robot WSClient, gracefully stopped the WS connection")
