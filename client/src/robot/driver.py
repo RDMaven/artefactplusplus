@@ -217,7 +217,7 @@ class RobotDriver(WifiBot):
                 self.printStatus()
 
 
-    def rotateByAngle(self, angle:float):
+    def rotateByAngle(self, angle:float, sec=False):
         """ Tourne d'un certain angle, donné en degrés. """
         angle = mu.normaliser_degrees(angle)
 
@@ -229,7 +229,11 @@ class RobotDriver(WifiBot):
         self.start_printing_position()
 
         dir = -1 if angle < 0 else 1 # A ajuster
-        self.setMovingSpeed((-dir) * Config.Robot.SPEED, dir * Config.Robot.SPEED)
+        speed=Config.Robot.SPEED
+        if sec:
+            speed //= 2
+
+        self.setMovingSpeed((-dir) * speed, dir * speed)
         print(f"l={ref.l}, r={ref.r} : {distance_in_ticks}")
         while ref.is_less_than(distance_in_ticks):
             time.sleep(self.timeout)
@@ -275,7 +279,7 @@ class RobotDriver(WifiBot):
         effectif = self.rotateByAngle(angle)
         i = 0
         while abs(effectif-angle) > 8 and i < 3:
-            effectif = self.rotateByAngle(angle-effectif)
+            effectif = self.rotateByAngle(angle-effectif, sec=True)
             i+=1
 
 
@@ -304,7 +308,7 @@ class RobotDriver(WifiBot):
         print("DRIVER - Starting goto")
         self.current_objective = mu.distanceInTickForForward(r)
         if theta:
-            self.rotateByAngle(theta)
+            self.rotatByAnglePrecise(theta)
         self.forwardByDistance(r, is_local_instr=False)
         temp_divided_speed = Config.Robot.SPEED
 
@@ -313,7 +317,7 @@ class RobotDriver(WifiBot):
                 d, alpha = self.avoidObstacle()
                 r, theta = mu.calculate_new_polar(r, alpha, d)
                 self.current_objective = mu.distanceInTickForForward(r)
-                self.rotateByAngle(theta)
+                self.rotatByAnglePrecise(theta)
                 self.forwardByDistance(0, is_local_instr=False) # r n'est pas requis dans ce cas, on ne regarde que current_objective
             else:
                 temp_divided_speed //= 4
