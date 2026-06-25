@@ -37,7 +37,7 @@ async def index(request: Request):
     )
 
 # Page de contrôle pour chaque robot. ------------------- #
-@router.get("/{robot_id: int}/", response_class=HTMLResponse)
+@router.get("/{robot_id}/", response_class=HTMLResponse)
 async def robot_page(request: Request, robot_id: int = 1):
 
     available_robots = [1, 2, 3]  # TODO: dynamic fetch
