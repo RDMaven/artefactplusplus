@@ -11,3 +11,4 @@ numpy
 matplotlib
 
 flask_cors
+flask_sock

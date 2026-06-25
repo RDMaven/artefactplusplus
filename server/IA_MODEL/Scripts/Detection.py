@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-
 SERVER_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(SERVER_DIR))
 
@@ -18,7 +17,7 @@ CONF = 0.5
 IMGSZ = 320
 
 
-class detection_by_frame:
+class DetectionByFrame:
     def __init__(self, robot_id):
         self.robot_id = robot_id
         self.model = YOLO(WEIGHTS)
@@ -112,17 +111,17 @@ class detection_by_frame:
             self._detection_thread.join()
 
     def mjpeg_generator_with_box(self, frame_store):
-        """Génère un flux MJPEG des frames annotées (box dessinée) pour affichage côté serveur."""
+        """Génère un flux MJPEG : frame caméra la plus récente + dernière box connue."""
         while not self._stop_detection:
-            with self._detection_lock:
-                frame = self.current_frame
-                result = self.result
-                box = self.box
-                print(self)
+            frame = frame_store.get_frame(self.robot_id)  # frame fraîche à chaque itération
 
             if frame is None:
                 time.sleep(0.01)
                 continue
+
+            with self._detection_lock:
+                result = self.result
+                box = self.box
 
             annotated = draw_predicted_box(frame, result[0]) if box is not None else frame
 
@@ -133,3 +132,6 @@ class detection_by_frame:
             yield (b"--frame\r\n"
                 b"Content-Type: image/jpeg\r\n\r\n" + buffer.tobytes() + b"\r\n")
             time.sleep(0.01)
+
+
+detector = DetectionByFrame()
