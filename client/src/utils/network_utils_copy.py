@@ -91,7 +91,7 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
     return result
 
 def get_port():
-    for i in range(5):
+    for i in range(2,7):
         try:
             port = f"/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if0{i}-port0"
             ser = serial.Serial(port, baudrate=115200, timeout=2)
