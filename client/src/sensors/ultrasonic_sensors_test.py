@@ -1,8 +1,8 @@
 # Ultrasonic ranging module
 
-import time
-import threading
+import time, threading, traceback
 import RPi.GPIO as GPIO
+
 
 class SingleUltrasonicSensor:
 
@@ -92,8 +92,8 @@ if __name__ == "__main__":
     sensors = UltrasonicSensors()
     try:
         sensors.loop(verbose = True)
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
     finally:
         GPIO.cleanup()
 
