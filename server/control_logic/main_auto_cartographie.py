@@ -72,5 +72,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 
-
+    print("FIN CATOGRAPHIE : ")
+    for l in signal_grid:
+        print(*[f'{e:4}, ' for e in l])
 
