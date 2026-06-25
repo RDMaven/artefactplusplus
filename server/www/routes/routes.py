@@ -51,7 +51,7 @@ async def robot_page(request: Request, robot_id: int = 1):
         context={"robot_id": robot_id}
     )
 
-# Pages de feed video par robot ------------------------- #
+#  Pages de feed video par robot ------------------------- #
 @router.get("/video/{robot_id}")
 async def video(robot_id):
     return StreamingResponse(
