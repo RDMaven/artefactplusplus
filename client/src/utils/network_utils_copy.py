@@ -18,7 +18,9 @@ def send_at_command(ser: serial.Serial, command: str, timeout: float = 2.0) -> s
         if not line:
             break
         response += line + "\n"
-        if line in ("OK", "ERROR"):
+        if command != "AT+CFUN=1,1" and line in ("OK", "ERROR"):
+            break
+        elif command == "AT+CFUN=1,1" and line in ("+CPIN: READY"): 
             break
     return response
 
