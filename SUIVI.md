@@ -197,7 +197,7 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 
 ### Mardi 23/06
 
-- Colin : changement de programme pour récupérer la qualité de connexion 4G -> passage à pyserial
+- Colin : changement de programme pour récupérer la qualité de connexion 4G -> passage à pyserial + réimplantation dans le nouveau système
 - Thibaut : 
     - Mise en forme globale du robot, avec la mise en commun des capteurs, du débeugage, et enfin la refonte du système d'alimentation du raspberry.
     - Configuration de la seconde raspberry pour le robot de la traque 
@@ -221,6 +221,11 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
   - Implémentation d'une fonction de récupération (et d'affichage) continue des position par odométrie et kalman, afin de comparer et tester.
   - Réparation des mouvement de la caméra (tout était inversé), et adaptation du pas de rotation, et du temps d'attente entre chaque commande.
   - Correction fondamentale du sens pour tout controle de déplacement du robot : on l'a monté à l'envers de ce qui était prévu...; Optimisations.
+- Colin : correction de conflits entre WiFi et 4G
+
 
 ### Jeudi 25/06
+
+- Colin : Assemblage des fonctions de test de la qualité de connexion 4G avec le mode automatique
+
 ### Vendredi 26/06
