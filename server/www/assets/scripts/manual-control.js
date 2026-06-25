@@ -92,9 +92,9 @@ const keyAction = {
 
   // CAMERA
   ArrowUp:    { keydown: () => sendMoveCam( -1,  0) },
-  ArrowLeft:  { keydown: () => sendMoveCam(  0,  1) },
+  ArrowLeft:  { keydown: () => sendMoveCam(  0, -1) },
   ArrowDown:  { keydown: () => sendMoveCam(  1,  0) },
-  ArrowRight: { keydown: () => sendMoveCam(  0, -1) },
+  ArrowRight: { keydown: () => sendMoveCam(  0,  1) },
   o: { keydown: stopMoveCam }
   
 };
