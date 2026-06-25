@@ -197,7 +197,7 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 
 ### Mardi 23/06
 
-- Colin : changement de programme pour récupérer la qualité de connexion 4G -> passage à pyserial + réimplantation dans le nouveau système
+- Colin : changement de programme pour récupérer la qualité de connexion 4G ->      passage à pyserial + réimplantation dans le nouveau système
 - Thibaut : 
     - Mise en forme globale du robot, avec la mise en commun des capteurs, du débeugage, et enfin la refonte du système d'alimentation du raspberry.
     - Configuration de la seconde raspberry pour le robot de la traque 
@@ -239,22 +239,23 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 - Eden : 
     - Correction des fonctions de détection
     - Implémentation d'un booléen de détection
-    - Mise en place de test sur des frames issues de la caméra 
+    - Mise en place de test sur des frames issues de la caméra
+    - Envoi du flux vidéo de détection (flux avec les boxs affichées)
 - Eden et Thibaut : Ecriture du script logique de la traque
-- Max : 
-  - Etalonnage pour la rotation, établissement d'une régression pour déterminer les bons coefficients qui lient angle à nombre de ticks.
-  - Calibration et traque de la rotation par odométrie
-  - Choix, lors de la détéction de position, entre la méthode 'kalman' et 'odométrie'.
-  - Rétablissement des commandes caméra, nécessaire comme le retour video était inversé.
-  - Bugfix pour la cartographie, et tests pour l'exécution de bout en bout.
-  - Adaptation du mouvement d'angle : lancé plusieurs fois jusqu'a obtenir un résultat proche de celui voulu, à un nombre donné près (8 degrés)
-  - Envoie de la position en continue au serveur (lors de mvts)
-  - Ajout du module 4g pour envoyer le signal si possible.
-
 - Thibaut : 
     - Page Web de présentation
     - Mesure d'angles de rotation
     - Corrections sur Kalman
     - Programme principal de la traque
     - Aide au débogage
+- Max : 
+    - Etalonnage pour la rotation, établissement d'une régression pour déterminer les bons coefficients qui lient angle à nombre de ticks.
+    - Calibration et traque de la rotation par odométrie
+    - Choix, lors de la détéction de position, entre la méthode 'kalman' et 'odométrie'.
+    - Rétablissement des commandes caméra, nécessaire comme le retour video était inversé.
+    - Bugfix pour la cartographie, et tests pour l'exécution de bout en bout.
+    - Adaptation du mouvement d'angle : lancé plusieurs fois jusqu'a obtenir un résultat proche de celui voulu, à un nombre donné près (8 degrés)
+    - Envoie de la position en continue au serveur (lors de mvts)
+    - Ajout du module 4g pour envoyer le signal si possible.
+
 ### Vendredi 26/06
