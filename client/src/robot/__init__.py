@@ -2,6 +2,8 @@ from src.robot.driver import RobotDriver
 from src.camera.camera import CameraMove
 from ws_queue import messages
 import random
+import traceback
+
 # ======================================================= #
 # STARTUP =============================================== #
 # ======================================================= #
@@ -12,6 +14,8 @@ try:
     robot.forwardByDistance(20)
 except Exception as e:
     print(e)
+    traceback.print_exc()
+    
 finally:
     robot.sensors.stop()
     robot.stop_printing_position()
