@@ -95,6 +95,7 @@ def get_port():
         try:
             port = f"/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if0{i}-port0"
             ser = serial.Serial(port, baudrate=115200, timeout=2)
+            print(f"PORT 4G : {ser.port}")
             return ser
         except BrokenPipeError:
             continue
