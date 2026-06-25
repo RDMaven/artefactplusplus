@@ -201,11 +201,14 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 - Thibaut : 
     - Mise en forme globale du robot, avec la mise en commun des capteurs, du débeugage, et enfin la refonte du système d'alimentation du raspberry.
     - Configuration de la seconde raspberry pour le robot de la traque 
-- Eden : Création d'un dataset d'images du robot, incluant des photos floues, et sous différentes conditions. Séparation de ce dataset en Train, Valid, Test. Implémentation YOLOv8 et training sur 10, 20 puis 100 epochs. --> 100 epochs fonctionne pour les photos telles que robot flou, robot à longue distance, robot coupé par le cadre
+- Eden : 
+    - Création d'un dataset d'images du robot, incluant des photos floues, et sous différentes conditions.
+    - Séparation de ce dataset en Train, Valid, Test. 
+    - Implémentation YOLOv8 et training sur 10, 20 puis 100 epochs. --> 100 epochs fonctionne pour les photos telles que robot flou, robot à longue distance, robot coupé par le cadre
 - Max : 
-  - Développement d'une feature web : le choix interactif du mode auto voulu, et des paramètres associés (la carte, la position de départ), et reliage effectif en WS pour lancer ces modes avec les paramètres. 
-  - Correction mineur sur le style de Map Constructor (marges). 
-  - Implémentation d'une file de messages pour la gestion des commandes à exécuter côté robot (goto, get_signal), et variables de suivi de leur exécution (afin de savoir quand le serveur peut envoyer la commande suivante). Tests.
+    - Développement d'une feature web : le choix interactif du mode auto voulu, et des paramètres associés (la carte, la position de départ), et reliage effectif en WS pour lancer ces modes avec les paramètres. 
+    - Correction mineur sur le style de Map Constructor (marges). 
+    - Implémentation d'une file de messages pour la gestion des commandes à exécuter côté robot (goto, get_signal), et variables de suivi de leur exécution (afin de savoir quand le serveur peut envoyer la commande suivante). Tests.
 
 ### Mercredi 24/06
 
@@ -214,18 +217,27 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
     - Implémentations et mesure précise du bruit sur le MPU6050
     - Début d'une interface web pour suivre les robots pour la présentation finale
 - Max:
-  - Gestion des messages type "position" de l'interface vers les robot en WebSocket.
-  - Gestion des cartes générées par MAP_CONSTRUCTOR (elles n'ont pas exactement le même type que les cartes importées à la main).
-  - Gestion du cas des positions initiales invalides lors d'une exécution de la cartographie.
-  - Ajout de la V1 de la potition par centrale inertielle et filtre de Kalman au robot.
-  - Implémentation d'une fonction de récupération (et d'affichage) continue des position par odométrie et kalman, afin de comparer et tester.
-  - Réparation des mouvement de la caméra (tout était inversé), et adaptation du pas de rotation, et du temps d'attente entre chaque commande.
-  - Correction fondamentale du sens pour tout controle de déplacement du robot : on l'a monté à l'envers de ce qui était prévu...; Optimisations.
+    - Gestion des messages type "position" de l'interface vers les robot en WebSocket.
+    - Gestion des cartes générées par MAP_CONSTRUCTOR (elles n'ont pas exactement le même type que les cartes importées à la main).
+    - Gestion du cas des positions initiales invalides lors d'une exécution de la cartographie.
+    - Ajout de la V1 de la potition par centrale inertielle et filtre de Kalman au robot.
+    - Implémentation d'une fonction de récupération (et d'affichage) continue des position par odométrie et kalman, afin de comparer et tester.
+    - Réparation des mouvement de la caméra (tout était inversé), et adaptation du pas de rotation, et du temps d'attente entre chaque commande.
+    - Correction fondamentale du sens pour tout controle de déplacement du robot : on l'a monté à l'envers de ce qui était prévu...; Optimisations.
 - Colin : correction de conflits entre WiFi et 4G
+- Eden : 
+    - Implémentation d'une fonction qui donne la distance détectée entre les deux robots
+    - Implémentation d'une fonction qui donne l'angle
+    - Implémentation d'un thread pour la détection
 
 
 ### Jeudi 25/06
 
 - Colin : Assemblage des fonctions de test de la qualité de connexion 4G avec le mode automatique
+- Eden : 
+    - Correction des fonctions de détection
+    - Implémentation d'un booléen de détection
+    - Mise en place de test sur des frames issues de la caméra 
+- Eden et Thibaut : Ecriture du script logique de la traque
 
 ### Vendredi 26/06
