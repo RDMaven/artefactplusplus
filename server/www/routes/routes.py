@@ -60,6 +60,15 @@ async def video(robot_id):
     )
 
 
+#  Pages de feed video par robot (AVEC BOXXXXXX) ------------------------- #
+#@router.get("/videobox/{robot_id}")
+#async def videobox(robot_id):
+#    return StreamingResponse(
+#        mjpeg_generator_with_box(int(robot_id)),
+#        media_type="multipart/x-mixed-replace; boundary=frame"
+#    )
+
+
 # @router.get("/video")
 # async def video():
 #     return StreamingResponse(
