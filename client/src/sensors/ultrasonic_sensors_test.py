@@ -57,8 +57,8 @@ class UltrasonicSensors:
             self.right_distance = self.SensorRight.distance()
             self.left_distance = self.SensorLeft.distance()
 
-            self.obstacle_in_front = (self.left_distance < DANGER_DISTANCEE and \
-                                        self.right_distance < DANGER_DISTANCEE)
+            self.obstacle_in_front = (self.left_distance < DANGER_DISTANCE and \
+                                        self.right_distance < DANGER_DISTANCE)
 
             if verbose:
                 print(f"ULTRASONIC - L={round(self.left_distance, 1)}cm, R={round(self.right_distance, 1)}cm")
