@@ -19,7 +19,7 @@ else:
     accel_x_bias = 0.018384033203125 * g
     accel_y_bias = 0.0015986328125 * g
     accel_z_bias=1.16818017578125 * g
-    gyro_z_bias =1.499359130859375
+    gyro_z_bias =1.499359130859375/32.8
 
 ###### CLASSES ######
 
@@ -35,7 +35,7 @@ class data:
         self.a_x = g * newdata[0]-accel_x_bias
         self.a_y = g * newdata[1]-accel_y_bias
         self.a_z = g * newdata[2]-accel_z_bias
-        self.omega_z = newdata[3] - gyro_z_bias
+        self.omega_z = newdata[3]/32.8 - gyro_z_bias
     
     def getData(self):
         return np.array([self.a_x, self.a_y, self.a_z, self.omega_z])
@@ -57,18 +57,18 @@ class x_k:
         self.biais = biais 
 
     def update(self,x,y,z,v_x,v_y,v_z,a_x, a_y, a_z, theta_z, omega_z, biais):
-        self.x = np.round(x,2)
-        self.y = np.round(y,2)
-        self.z = np.round(z,2)
-        self.v_x = np.round(v_x,2)
-        self.v_y = np.round(v_y,2)
-        self.v_z = np.round(v_z,2)
-        self.a_x = np.round(a_x,2)
-        self.a_y = np.round(a_y,2)
-        self.a_z = np.round(a_z,2)
-        self.theta_z = np.round(theta_z,2)
-        self.omega_z = np.round(omega_z,2)
-        self.biais = np.round(biais,2)
+        self.x = x
+        self.y = y
+        self.z = z
+        self.v_x = v_x
+        self.v_y = v_y
+        self.v_z = v_z
+        self.a_x = a_x
+        self.a_y = a_y
+        self.a_z = a_z
+        self.theta_z = theta_z
+        self.omega_z = omega_z
+        self.biais = biais
     
     def getX(self):
         return np.array([self.x, self.y, self.z, self.v_x, self.v_y, self.v_z, self.a_x, self.a_y, self.a_z, self.theta_z, self.omega_z, self.biais])
@@ -94,7 +94,7 @@ class Kalman:
             ])
         
         self.data = data()
-        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[dt],[0],[0]])
+        self.B = np.array([[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]])
         self.x = x_k(0,0,0,0,0,0,0,0,0,0,0,0)
         self.P = np.eye(12)
         self.Q = np.diag([
@@ -154,7 +154,7 @@ class Kalman:
     
     def __str__(self):
         x = self.x.getX()
-        return f"Kalman position : x={x[0]}, y={x[1]}, theta={x[9]}°"
+        return f"Kalman position : x={x[0]:.2f}, y={x[1]:.2f}, theta={x[9]:.2f}°"
 
     def kalman_one_turn(self):
         self.data.update()
