@@ -73,6 +73,7 @@ class WebSocketClient:
 
     async def sender(self): # DEBUG, TODO faire un sender pour tout les messages du robot !
         # messages.append({"signal": 42})
+        print(messages)
         while not self.stop_event.is_set():
             while messages:
                 msg = messages.pop(0)
