@@ -117,12 +117,12 @@ class Kalman:
         self.U = np.array([[da[3]]])
 
     def x_estimation(self, da):
-        x_prev = self.x.getX().reshape(12,1)
-        U = np.array([[da[3]]])          # ω_z mesuré et corrigé du biais
+        x_prev = self.x.getX().reshape(12, 1)
+        U = np.array([[da[3]]])
         return self.F @ x_prev + self.B @ U
-    
+
     def innovation(self, x_est, da):
-        z = np.array([da[0], da[1], da[2], da[3]]).reshape(4,1)
+        z = np.array([da[0], da[1], da[2]]).reshape(3, 1)
         return z - self.H @ x_est
     
     
