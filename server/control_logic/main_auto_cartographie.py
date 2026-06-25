@@ -68,7 +68,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
             while not Var.Signal.received_signal:
                 await asyncio.sleep(0.1)
 
-            signal_grid[next_y][nextxy] = signal.get()
+            signal_grid[next_y][next_y] = signal.get()
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 
