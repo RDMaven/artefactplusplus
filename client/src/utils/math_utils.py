@@ -39,10 +39,10 @@ class Position:
         self.theta = float(theta)
     
     def __str__(self):
-        return f"Odometry position : x={self.x}, y={self.y}, theta={self.theta}°"
+        return f"Position : x={self.x:10}, y={self.y:10}, theta={self.theta}°"
 
 
-    def updateForLinearMovement(self, real_tick_distance: int):
+    def updateForLinearMovement(self, real_tick_distance: int, theta):
         real_meter_distance = real_tick_distance * Ratio.MperT
 
         offset_x = real_meter_distance * math.cos(self.theta_rad)
@@ -50,6 +50,8 @@ class Position:
         
         self.y = round(self.y + offset_y, 2)
         self.x = round(self.x + offset_x, 2)
+        
+        self.updateForTankRotationForceKalman(theta)
 
     def updateForTankRotation(self, real_tick_angle_left: int, real_tick_angle_right: int):
         # var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
