@@ -279,7 +279,7 @@ class RobotDriver(WifiBot):
         effectif = self.rotateByAngle(angle)
         i = 0
         while abs(effectif-angle) > 8 and i < 3:
-            effectif = self.rotateByAngle(angle-effectif, sec=True)
+            effectif = self.rotateByAngle(effectif-angle, sec=True)
             i+=1
 
 
