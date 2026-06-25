@@ -90,6 +90,25 @@ def get_signal_quality(ser: serial.Serial) -> dict | None:
 
     return result
 
+
+def get_rsrp(ser: serial.Serial):
+    """
+    RSRP + 110 > 30 => Excellente
+    RSRP + 110 > 10 => Bonne
+    RSRP + 110 > 0 => Correcte
+    Sinon => Faible
+
+    Si RSRP + 110 < -50 => Signal inexistant
+    """
+    rsrp_dbm = get_signal_quality(ser).get("rsrp_dbm", -200)
+
+    if rsrp_dbm > -80: return (rsrp_dbm, "Excellente")
+    elif rsrp_dbm > -100: return (rsrp_dbm, "Bonne")
+    elif rsrp_dbm > -110: return (rsrp_dbm, "Correcte")
+    elif rsrp_dbm > -144: return (rsrp_dbm, "Faible")
+    return (rsrp_dbm, "Aucun signal")
+
+
 def get_port():
     for i in range(2,7):
         try:
