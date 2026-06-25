@@ -6,10 +6,8 @@ import os
 import re
 
 # ─── Configuration ────────────────────────────────────────────────
-PORT      = "/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if05-port0"   # AT commands sur SIM7600X
+PORT      = "/dev/serial/by-id/usb-SimTech__Incorporated_SimTech__Incorporated_0123456789ABCDEF-if02-port0"   # AT commands sur SIM7600X
 BAUD      = 115200
-LOGFILE   = "capture_4G.log"
-TIMEOUT   = 2                # secondes d'attente par commande AT
 
 # ─── Commandes AT de test ─────────────────────────────────────────
 AT_TESTS = [
