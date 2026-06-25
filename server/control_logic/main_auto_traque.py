@@ -12,27 +12,3 @@ target_position = None
 while last_seen_time < 30:
     frame = FrameStore.get_frame
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

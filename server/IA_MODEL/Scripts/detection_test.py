@@ -12,25 +12,35 @@ from Detection import DetectionByFrame
 
 def box_attendue(id_test):
     label_path = Path(f"../Dataset/test/labels/{id_test}.txt")
+    image_path = Path(f"../Dataset/test/images/{id_test}.jpg")
+
     if not label_path.exists():
         return None
 
-    h, w = cv2.imread(f"../Dataset/test/images/{id_test}.jpg").shape[:2]
+    img = cv2.imread(str(image_path))
+    if img is None:
+        return None
+
+    h, w = img.shape[:2]
 
     with open(label_path, "r") as f:
         for line in f.readlines():
             parts = line.strip().split()
             if len(parts) != 5:
                 continue
+
             _, x_center, y_center, box_w, box_h = map(float, parts)
+
             x_center *= w
             y_center *= h
             box_w *= w
             box_h *= h
+
             x1 = int(x_center - box_w / 2)
             y1 = int(y_center - box_h / 2)
             x2 = int(x_center + box_w / 2)
             y2 = int(y_center + box_h / 2)
+
             return [(x1, y1), (x2, y2)]
 
     return None
@@ -47,7 +57,7 @@ class FakeFrameStore:
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 :
-        id_test = sys.argv[1] if int(sys.argv[1])<12 else 1
+        id_test = sys.argv[1] if int(sys.argv[1])<13 else 1
     else:
         id_test=1
 
@@ -57,12 +67,11 @@ if __name__ == "__main__":
     frame_store = FakeFrameStore(test_image_path)
     detector = DetectionByFrame(robot_id=1)
 
-    annotated = detector.img_box(frame_store)
+    visible, annotated, angle = detector.isthereRobot(frame_store)
 
     detector.distance_robot()
-    detector.angle_robot()
     print(detector)
-    print(detector.isthereRobot(frame_store))
+    print(visible, angle)
 
     box = box_attendue(id_test)
     print("box attendue : ", box)
