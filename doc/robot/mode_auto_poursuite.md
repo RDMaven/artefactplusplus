@@ -28,27 +28,16 @@ BOUCLE PRINCIPALE:
             last_seen_time = time_now
             target_position = (x, y, size)
 
-        ELSE IF time_now - last_seen_time > TIMEOUT:
-            mode = "SEARCH"
-
         --------------------------------------------------
         MODE FOLLOW:
         --------------------------------------------------
         IF mode == "FOLLOW":
 
-            # 1. Centrer la caméra
-            error_x = x - CENTER_X
-
-            // Si le décalage est trop important, ie si on ne verra plus le target, on décale la caméra.
-            IF abs(error_x) > CAMERA_THRESHOLD: 
-                camera_angle = map(error_x)
-                send_command(CAMERA(camera_angle))
-
             // Pareil pour le robot, si on détermine qu'il faut tourner alors on tourne
             # 2. Orientation du robot
             IF abs(error_x) > ROTATION_THRESHOLD:
                 turn_angle = map(error_x)
-                send_command(TURN(turn_angle))
+                send_command(TURN(turn_angle))  Cartographie -> WS
 
             # 3. Distance à la cible
             distance_estimated = estimate_distance(size)
@@ -85,19 +74,6 @@ BOUCLE PRINCIPALE:
             IF mode != "FOLLOW":
                 send_command(TURN(SEARCH_ROTATION_ANGLE))
 
-        --------------------------------------------------
-        FONCTION EVITEMENT:
-        --------------------------------------------------
-        // peut etre à complexifier
-        FUNCTION avoid_obstacle(sensors):
 
-            IF sensors.front_left BLOCKED:
-                send_command(TURN(+30°))
-
-            ELSE IF sensors.front_right BLOCKED:
-                send_command(TURN(-30°))
-
-            ELSE:
-                send_command(TURN(45°))
 
 ```
