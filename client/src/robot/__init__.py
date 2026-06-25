@@ -33,9 +33,9 @@ finally:
 # En attendant de pouvoir renvoyer le signal, celle-ci remplace.
 def get_signal():
     if ser:
-        messages.append({"signal": nu.get_rsrp(ser)[0]})
+        messages.put({"signal": nu.get_rsrp(ser)[0]})
     else:
-        messages.append({"signal": random.randint(0,100)})
+        messages.put({"signal": random.randint(0,100)})
 
 # DEBUG ================================================= #
 #robot.runInteractive()

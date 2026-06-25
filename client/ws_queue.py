@@ -2,4 +2,7 @@
 # - pouvoir les ajouter lorsqu'on recoit une requête 'get_signal' sur serveur
 # - pouvoir les ajouter lors d'un événement du robot
 # - pouvoir les envoyer avec client.py
-messages = []
+
+from queue import Queue
+
+messages = Queue()

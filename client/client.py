@@ -79,9 +79,16 @@ class WebSocketClient:
         """ Thread sender, boucle principale """
         while self.sender_running:
             while messages:
-                msg = messages.pop(0)
+                try:
+                    msg = messages.get(timeout=0.1)
+                except Empty:
+                    continue
+
                 for mtype, mval in msg.items():
-                    self.send(mtype, -1, mval)
+                    future = asyncio.run_coroutine_threadsafe(
+                        self.send(mtype, -1, mval),
+                        self.loop
+                    )
             time.sleep(0.01)
 
     def start_sender(self):
@@ -114,6 +121,7 @@ class WebSocketClient:
     async def run(self):
         """ Fonction principale du client WS : lance les threads, gère les erreurs."""
         await self.connect()
+        self.loop = asyncio.get_running_loop()
 
         receiver_task = asyncio.create_task(self.receiver())
         video_task = asyncio.create_task(self.video_streamer())

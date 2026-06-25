@@ -62,7 +62,7 @@ class RobotDriver(WifiBot):
             tstr = f'{self.position.__str__():50}' #| {self.kalman.__str__():50}'
             print(tstr)
             f.write(tstr+'\n')
-            messages.append({"ack": (self.position.get())})
+            messages.put({"ack": (self.position.get())})
             time.sleep(self.timeout)
         f.close()
 
@@ -329,7 +329,7 @@ class RobotDriver(WifiBot):
         r, theta = mu.convert_cartesian_to_radial(x1,y1,theta1,x2,y2)
         print(f"DRIVER - Goto cartésien ({x1,y1} -> {(x2,y2)}) a calculé r={r}, theta={theta}")
         self.goto(r, theta)
-        messages.append({"ack": "goto"})
+        messages.put({"ack": "goto"})
 
 
 
