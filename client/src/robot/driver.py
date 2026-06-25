@@ -62,6 +62,7 @@ class RobotDriver(WifiBot):
             tstr = f'{self.position.__str__():50} | {self.kalman.__str__():50}'
             print(tstr)
             f.write(tstr+'\n')
+            messages.append({"ack": (self.position.get())})
             time.sleep(self.timeout)
         f.close()
 

@@ -87,7 +87,7 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
                     Var.Goto.goto_completed = True
                     print()
                 case _:
-                    print("Unknown ack.")
+                    print(f"Position : {a}")
         case _ :
             print(f": {rdata}")
     return rt, rfor
