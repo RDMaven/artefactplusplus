@@ -19,26 +19,3 @@ if (button_menu && block_menu) {
     })
 };
 
-async function ask_client() {
-    try {
-        client = await fetch("http://137.194.194.180:8081/connected", {
-            method:"GET",
-            mode:"cors"
-        });
-        if (!client.ok) {
-            throw new Error("erreur de video...")
-            
-        }
-        const data = await client.text()
-        console.log(data)
-    }
-    catch(erreur) {
-        console.error("Echouage : ", erreur)
-    }
-}
-
-async function build_video() {
-    const client = await ask_client();
-}
-
-ask_client()
