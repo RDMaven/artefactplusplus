@@ -233,7 +233,9 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
 
 ### Jeudi 25/06
 
-- Colin : Assemblage des fonctions de test de la qualité de connexion 4G avec le mode automatique
+- Colin : 
+    - Assemblage des fonctions de test de la qualité de connexion 4G avec le mode automatique
+    - Ajout d'un affichage de la position et orientation du robot en temps réel
 - Eden : 
     - Correction des fonctions de détection
     - Implémentation d'un booléen de détection
