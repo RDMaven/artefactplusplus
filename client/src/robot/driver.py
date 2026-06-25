@@ -51,6 +51,7 @@ class RobotDriver(WifiBot):
         self.updateOdomReference(ref)
         # self.position.updateForTankRotation(ref.l, ref.r)
         self.kalman.kalman_one_turn()
+        # print(self.kalman.get_theta())
         self.position.updateForTankRotationForceKalman(self.kalman.get_theta())
 
 

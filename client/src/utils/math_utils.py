@@ -73,7 +73,7 @@ class Position:
         self.theta_rad = math.radians(pre_theta+average)
         self.theta = round(pre_theta + average, 3)
 
-    def updateForTankRotationForceKalman(theta):
+    def updateForTankRotationForceKalman(self, theta):
         self.theta = theta
         self.theta_rad = math.radians(theta)
 
@@ -97,7 +97,8 @@ def distanceInTickForRotation(angle: float):
 
 def angleFromTicks(tl, tr):
     # return (tr-tl)*180/(math.pi*Config.Robot.DISTANCE_BTW_WHEELS*Ratio.TperM)
-    return RegressionRot.getAngle(avg(abs(tl), abs(tr)))
+    fac = -1 if tl < 0 else 1
+    return fac * RegressionRot.getAngle(avg(abs(tl), abs(tr)))
 
 # ======================================================= #
 # Fonctions maths diverses ============================== #
