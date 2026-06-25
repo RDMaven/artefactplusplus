@@ -240,4 +240,10 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
     - Mise en place de test sur des frames issues de la caméra 
 - Eden et Thibaut : Ecriture du script logique de la traque
 
+- Thibaut : 
+    - Page Web de présentation
+    - Mesure d'angles de rotation
+    - Corrections sur Kalman
+    - Programme principal de la traque
+    - Aide au débogage
 ### Vendredi 26/06
