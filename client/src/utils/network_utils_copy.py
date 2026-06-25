@@ -110,7 +110,7 @@ if __name__ == "__main__":
                 print(f"RSRQ       : {signal.get('rsrq_db', '?')} dB")
                 print(f"SINR       : {signal.get('sinr_db', '?')} dB")
                 print(f"Qualité    : {signal.get('quality', '?')}")
-                with open("4G.log", "a") as log_file:
+                with open("4G.txt", "a") as log_file:
                     log_file.write(f"TIME       : {time.time()}\n")
                     log_file.write(f"Réseau     : {signal['type']} ({signal.get('band', '?')})\n")
                     log_file.write(f"Opérateur  : {signal.get('operator', '?')}\n")
