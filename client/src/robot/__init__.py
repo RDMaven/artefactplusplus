@@ -8,6 +8,7 @@ import src.utils.network_utils as nu
 # ======================================================= #
 # STARTUP =============================================== #
 # ======================================================= #
+ser = None
 try:
     robot = RobotDriver()
     camera = CameraMove()
@@ -15,7 +16,7 @@ try:
         ser = nu.get_port()
     except:
         traceback.print_exc()
-        
+
 
     robot.forwardByDistance(20)
 except Exception as e:
@@ -25,7 +26,8 @@ except Exception as e:
 finally:
     robot.sensors.stop()
     robot.stop_printing_position()
-    ser.close()
+    if ser :
+        ser.close()
 # camera.demo(1)
 
 # En attendant de pouvoir renvoyer le signal, celle-ci remplace.
