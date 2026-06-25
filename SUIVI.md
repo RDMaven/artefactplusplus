@@ -239,6 +239,15 @@ Ressources : [yolo_from_scratch](https://medium.com/@whyamit404/how-to-implement
     - Implémentation d'un booléen de détection
     - Mise en place de test sur des frames issues de la caméra 
 - Eden et Thibaut : Ecriture du script logique de la traque
+- Max : 
+  - Etalonnage pour la rotation, établissement d'une régression pour déterminer les bons coefficients qui lient angle à nombre de ticks.
+  - Calibration et traque de la rotation par odométrie
+  - Choix, lors de la détéction de position, entre la méthode 'kalman' et 'odométrie'.
+  - Rétablissement des commandes caméra, nécessaire comme le retour video était inversé.
+  - Bugfix pour la cartographie, et tests pour l'exécution de bout en bout.
+  - Adaptation du mouvement d'angle : lancé plusieurs fois jusqu'a obtenir un résultat proche de celui voulu, à un nombre donné près (8 degrés)
+  - Envoie de la position en continue au serveur (lors de mvts)
+  - Ajout du module 4g pour envoyer le signal si possible.
 
 - Thibaut : 
     - Page Web de présentation
