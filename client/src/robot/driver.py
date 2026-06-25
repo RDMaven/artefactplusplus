@@ -315,7 +315,7 @@ class RobotDriver(WifiBot):
                 self.rotateByAngle(theta)
                 self.forwardByDistance(0, is_local_instr=False) # r n'est pas requis dans ce cas, on ne regarde que current_objective
             else:
-                temp_divided_speed //= 2
+                temp_divided_speed //= 4
                 self.forwardByDistance(0, is_local_instr=False, speed=temp_divided_speed)
 
     def goto_cartesian(self, x2, y2):
