@@ -7,6 +7,7 @@ import cv2
 from src.camera.camera import Camera
 from ws_queue import messages
 import threading, traceback, time
+from queue import Empty
 
 # ======================================================= #
 # DEBUG COUNTER CLASS =================================== #
