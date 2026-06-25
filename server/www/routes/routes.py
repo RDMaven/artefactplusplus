@@ -52,7 +52,7 @@ async def robot_page(request: Request, robot_id: int = 1):
     )
 
 # Pages de feed video par robot ------------------------- #
-@router.get("/video/{robot_id: int}")
+@router.get("/video/{robot_id}")
 async def video(robot_id):
     return StreamingResponse(
         mjpeg_generator(int(robot_id)),
