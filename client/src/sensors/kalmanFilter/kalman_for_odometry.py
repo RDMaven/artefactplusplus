@@ -153,9 +153,12 @@ class Kalman:
     
     def __str__(self):
         x = self.x.getX()
-        return f"Kalman position : x={x[0]:.2f}, y={x[1]:.2f}, theta={x[9]:.2f}°"
+        return f"Kalman position : x={x[0]:.2f}, y={x[1]:.2f}, theta={x[9]/2:.2f}°"
 
     def kalman_one_turn(self):
         self.data.update()
         da = self.data.getData()
         self.update_turn(da)
+
+    def get_theta(self):
+        return self.x.getX()[9]/2

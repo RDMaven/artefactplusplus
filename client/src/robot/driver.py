@@ -49,8 +49,9 @@ class RobotDriver(WifiBot):
 
     def updatePositionTankRotation(self, ref):
         self.updateOdomReference(ref)
-        self.position.updateForTankRotation(ref.l, ref.r)
+        # self.position.updateForTankRotation(ref.l, ref.r)
         self.kalman.kalman_one_turn()
+        self.position.updateForTankRotationForceKalman(self.kalman.get_theta())
 
 
 ####################################
@@ -254,7 +255,7 @@ class RobotDriver(WifiBot):
         #     over={over}° (l={overL}, r={overR})'
         # )
 
-        self.position.updateForTankRotationEndOfMvt(pre_theta, ref.accl, ref.accr)
+        self.position.updateForTankRotationEndOfMvt(pre_theta, ref.accl, ref.accr, self.kalman.get_theta())
         time.sleep(self.timeout)
         # TODO : comparer avec kalman
 
