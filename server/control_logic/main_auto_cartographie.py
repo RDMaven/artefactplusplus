@@ -61,14 +61,14 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
         Var.Goto.reset() # remet les deux variables précédentes a False
 
 
-        if signal_grid[next_x][next_y] == -1:
+        if signal_grid[next_y][next_x] == -1:
             await client_ws.send(message_builder("get_signal", client_ws.id)) # TODO implémenter coté robot
             Var.Signal.waiting_for_signal = True
 
             while not Var.Signal.received_signal:
                 await asyncio.sleep(0.1)
 
-            signal_grid[next_x][next_y] = signal.get()
+            signal_grid[next_y][nextxy] = signal.get()
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 
