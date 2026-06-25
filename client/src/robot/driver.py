@@ -246,11 +246,14 @@ class RobotDriver(WifiBot):
 
         # self.position.updateForTankRotation(ref.l, ref.r)
 
-        print(
-          f'forwardByDistance() : theta={angle}° ({distance_in_ticks}t),\n\
-            effectif : {mu.angleFromTicks(ref.accl, ref.accr)} \n\
-            over={over}° (l={overL}, r={overR})'
-        )
+        # print(
+        #   f'forwardByDistance() : theta={angle}° ({distance_in_ticks}t),\n\
+        #     effectif : {mu.angleFromTicks(ref.accl, ref.accr)} (accl={ref.accl}, accr={ref.accr}) \n\
+        #     over={over}° (l={overL}, r={overR})'
+        # )
+        print(f"DRIVER - Rotate : Demande={angle}° ({distance_in_ticks}t) | total_l={ref.accl} total_r={ref.accr}")
+        with open("valeurs.txt", 'a') as f:
+            f.write(f"DRIVER - Rotate : Demande={angle}° ({distance_in_ticks}t) | total_l={ref.accl} total_r={ref.accr}\n")
 
         self.stop_printing_position()
         self.printStatus()
