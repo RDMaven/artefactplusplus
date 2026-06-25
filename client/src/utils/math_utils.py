@@ -52,11 +52,25 @@ class Position:
         self.x = round(self.x + offset_x, 2)
 
     def updateForTankRotation(self, real_tick_angle_left: int, real_tick_angle_right: int):
-        var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
+        # var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
         # la formules est fause : TODO
+        var_angle_deg = angleFromTicks(real_tick_angle_left, real_tick_angle_right)
+        if real_tick_angle_left < 0:
+            var_angle_deg = -var_angle_deg
 
-        self.theta_rad += var_angle_rad
-        self.theta = round(self.theta + math.degrees(var_angle_rad), 3)
+        self.theta_rad += math.radians(var_angle_deg)
+        self.theta = round(self.theta + var_angle_deg, 3)
+
+    def updateForTankRotationEndOfMvt(self, pre_theta, total_ticks_l, total_ticks_r):
+        # var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
+        # la formules est fause : TODO
+        var_angle_deg = angleFromTicks(total_ticks_l, total_ticks_r)
+        if total_ticks_l < 0:
+            var_angle_deg = -var_angle_deg
+
+        self.theta_rad = math.radians(pre_theta+var_angle_deg)
+        self.theta = round(pre_theta + var_angle_deg, 3)
+
 
 
 # ======================================================= #

@@ -221,6 +221,7 @@ class RobotDriver(WifiBot):
         # Init the odometry : the robot need to be in movement to get the odometry.
         ref = ReferenceSimple(self.getOdom(is_setup=True))
         distance_in_ticks = mu.distanceInTickForRotation(angle)
+        pre_theta = self.position.theta
 
         self.start_printing_position()
 
@@ -251,6 +252,11 @@ class RobotDriver(WifiBot):
         #     effectif : {mu.angleFromTicks(ref.accl, ref.accr)} (accl={ref.accl}, accr={ref.accr}) \n\
         #     over={over}° (l={overL}, r={overR})'
         # )
+
+        self.position.updateForTankRotationEndOfMvt(pre_theta, ref.accl, ref.accr)
+        time.sleep(self.timeout)
+        # TODO : comparer avec kalman
+
         print(f"DRIVER - Rotate : Demande={angle}° ({distance_in_ticks}t) | total_l={ref.accl} total_r={ref.accr}, TOTAL={mu.angleFromTicks(ref.accl, ref.accr)}")
         # with open("valeurs.txt", 'a') as f:
         #     f.write(f"DRIVER - Rotate : Demande={angle}° ({distance_in_ticks}t) | total_l={ref.accl} total_r={ref.accr}\n")
