@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from www.routes.utils.utils_video import frame_store
 from config import Config, Var
+from server.www.routes.utils.signal import signal
 
 
 # ------------------------------------------------------- #
@@ -74,6 +75,7 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
             if Var.Signal.waiting_for_signal:
                 Var.Signal.received_signal = True
                 print("Used successfully.")
+                signal.update(s)
             else:
                 print("Was not asked for.")
 

@@ -2,6 +2,7 @@
 from control_logic.utils.parcours_grille.parcours_grille import main as parcours_main
 from config import Config, Var
 from www.routes.utils.message_parse_and_build import message_builder
+from www.routes.utils.signal import signal
 import time, asyncio
 
 async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
@@ -16,6 +17,8 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
             grid = eval(rawmap)
         else:
             grid = [[1 if e == 'x' else 0 for e in l.replace('\n', '')] for l in rawmap]
+
+    signal_grid = [[-1 for _ in range(len(grid[0]))] for _ in range(len(grid))]
 
     parcours = parcours_main(grid, x0, y0)
     if parcours == []: # La position initial n'était pas valide
@@ -38,11 +41,14 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
         # print("CARTO - Itération du parcours")
         next_x, next_y = parcours.pop(0)
 
-        await client_ws.send(message_builder("get_signal", client_ws.id)) # TODO implémenter coté robot
-        Var.Signal.waiting_for_signal = True
+        if signal_grid[next_x][next_y] == -1:
+            await client_ws.send(message_builder("get_signal", client_ws.id)) # TODO implémenter coté robot
+            Var.Signal.waiting_for_signal = True
 
-        while not Var.Signal.received_signal:
-            await asyncio.sleep(0.1)
+            while not Var.Signal.received_signal:
+                await asyncio.sleep(0.1)
+
+            signal_grid[next_x][next_y] = signal.get()
         
         Var.Signal.reset() # remet les deux variables précédentes a False
 
