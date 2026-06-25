@@ -15,7 +15,7 @@ else:
     accel_x_noise= 0.001944567418940276 * g
     accel_y_noise=0.0019362013371498731 * g
     accel_z_noise=0.0032176589968624272 * g
-    gyro_z_noise=0.12445350857045176
+    gyro_z_noise=0.12445350857045176/32.8
     accel_x_bias = 0.018384033203125 * g
     accel_y_bias = 0.0015986328125 * g
     accel_z_bias=1.16818017578125 * g
@@ -88,7 +88,7 @@ class Kalman:
             [0,0,0,0,0,0,1,0,0,0,0,0],
             [0,0,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,0,0,0,0,1,0,0,0],
-            [0,0,0,0,0,0,0,0,0,1,dt,-dt],
+            [0,0,0,0,0,0,0,0,0,1,dt,0],
             [0,0,0,0,0,0,0,0,0,0,1,0],
             [0,0,0,0,0,0,0,0,0,0,0,1]
             ])
@@ -102,7 +102,7 @@ class Kalman:
                 5e-4, 5e-4, 5e-4, # vx, vy, vz (vitesses)
                 1e-7, 1e-7, 1e-7, # ax, ay, az (accélérations) <-- Divisé par 10 (anciennement 1e-6)
                 1e-5,             # theta_z
-                1e-5,             # omega_z       <-- Divisé par 10 (anciennement 1e-4)
+                1e-2,             # omega_z       <-- Divisé par 10 (anciennement 1e-4)
                 1e-6              # biais
             ])
         self.R = np.diag([accel_x_noise**2,accel_y_noise**2,accel_z_noise**2, gyro_z_noise**2])

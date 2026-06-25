@@ -169,15 +169,37 @@ header{
 .video_wrapper {
     width: 30%;
     margin:1rem;
-    height: 13rem;
+    height: auto;
     border: solid black 0.1rem;
     display: flex;
+    aspect-ratio: 16/9;
+
 }
 
-#video_content {
+.video_content {
     width: 95%;
-    height: 15rem;
+    height: auto;
     border: solid black 0.1rem;
     display: flex;
     flex-direction: row;
+    margin:1rem;
+}
+
+#camera_place{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+@media (max-width : 900px) {
+    .video_content{
+        width: 50%;
+        flex-direction: column;
+    }
+    #camera_place{
+        flex-direction: row;
+    }
+    .video_wrapper{
+        width: 95%;
+    }
 }
