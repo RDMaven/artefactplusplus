@@ -31,7 +31,7 @@ class Position:
         self.theta_rad = math.radians(self.theta) # TOUJOURS UPDATE CECI QUAND ON UPDATE THETA.
 
     def get(self):
-        return self.x, self.y, self.theta
+        return self.x, self.y, round(self.theta,2)
 
     def set(self, x, y, theta):
         self.x = float(x)

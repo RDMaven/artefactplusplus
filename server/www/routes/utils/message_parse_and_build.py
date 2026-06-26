@@ -81,9 +81,9 @@ def robot_message_parser(data: str, client_name: str, client_id: int):
 
         case "ack":
             a = list(rdata.values())[0][0]
-            print(f"Acked finish of command : {a}.", end=" ")
             match a:
                 case "goto":
+                    print(f"Acked - finish of command : goto.")
                     Var.Goto.goto_completed = True
                     print()
                 case _:

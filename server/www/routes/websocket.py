@@ -116,7 +116,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             
 
             # Pong when it's not a video frame (else the terminal would explode)
-            if data_type != "video":
+            if data_type != "video" and data_type != "ack":
                 await client.send(message_builder("message", data_for, f"ACK - Received '{data_type.upper()}' message ({client.name} -> {data_for})."))
 
 
