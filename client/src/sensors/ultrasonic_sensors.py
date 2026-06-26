@@ -84,8 +84,8 @@ class UltrasonicSensors:
             time.sleep(self.time_interval)
 
         # Cleanup when done
-        self.SensorLeft.destroy()
-        self.SensorRight.destroy()
+        # self.SensorLeft.destroy()
+        # self.SensorRight.destroy()
 
     def start(self, verbose=False):
 

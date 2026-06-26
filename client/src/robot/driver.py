@@ -61,6 +61,7 @@ class RobotDriver(WifiBot):
         while self._outputing_position:
             tstr = f'{self.position.__str__():50}' #| {self.kalman.__str__():50}'
             print(tstr)
+            print(f"ULTRASONIC - L={round(self.sensors.left_distance, 1)}cm, R={round(self.sensors.right_distance, 1)}cm, Obstacle={self.sensors.obstacle_in_front}")
             f.write(tstr+'\n')
             messages.put({"ack": (self.position.get())})
             time.sleep(self.timeout)
