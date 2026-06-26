@@ -17,7 +17,7 @@ async def resolve_signal(client_ws):
     Var.Signal.reset() # remet les deux variables précédentes a False
     return signal4G.get()
 
-async def resolve_goto(client_ws, x, y):
+async def resolve_goto(client_ws, x, y, carte_scale):
     await client_ws.send(message_builder("goto", client_ws.id, carte_scale*float(x), carte_scale*float(y)))
     Var.Goto.asking_for_goto = True
 
@@ -61,7 +61,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
     while parcours:
         next_x, next_y = parcours.pop(0)
 
-        await resolve_goto(client_ws,next_x, next_y) # remet les deux variables précédentes a False
+        await resolve_goto(client_ws,next_x, next_y, carte_scale) # remet les deux variables précédentes a False
 
         if signal_grid[next_y][next_x] == -1:
             signal_grid[next_y][next_x] = await resolve_signal(client_ws)
