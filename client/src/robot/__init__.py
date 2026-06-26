@@ -4,6 +4,7 @@ from ws_queue import messages
 import random
 import traceback
 import src.utils.network_utils as nu
+from config import Config
 
 # ======================================================= #
 # STARTUP =============================================== #
@@ -18,13 +19,15 @@ try:
         traceback.print_exc()
 
 
-    robot.forwardByDistance(20)
+    # robot.forwardByDistance(20)
+
 except Exception as e:
     print(e)
     traceback.print_exc()
     
 finally:
-    robot.sensors.stop()
+    if Config.Robot.MODE == "auto":
+        robot.sensors.stop()
     robot.stop_printing_position()
     if ser :
         ser.close()

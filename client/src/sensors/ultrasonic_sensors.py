@@ -10,7 +10,7 @@ if Config.is_prod:
     class SingleUltrasonicSensor:
 
         def __init__(self, TRIG=11, ECHO=12):
-            GPIO.cleanup()
+            # GPIO.cleanup()
             self.TRIG = TRIG
             self.ECHO = ECHO
             GPIO.setmode(GPIO.BOARD)
