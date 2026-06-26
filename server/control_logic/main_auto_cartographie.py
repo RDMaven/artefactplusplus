@@ -5,7 +5,7 @@ from www.routes.utils.message_parse_and_build import message_builder
 from www.routes.utils.signal4G import signal4G
 import time, asyncio
 
-async def resolve_signal():
+async def resolve_signal(client_ws):
     """ Demander la force du signal robot à sa position,
     et bloquer tant qu'on a pas de réponse. """
     await client_ws.send(message_builder("get_signal", client_ws.id))
@@ -17,7 +17,7 @@ async def resolve_signal():
     Var.Signal.reset() # remet les deux variables précédentes a False
     return signal4G.get()
 
-async def resolve_goto(x, y):
+async def resolve_goto(client_ws, x, y):
     await client_ws.send(message_builder("goto", client_ws.id, carte_scale*float(x), carte_scale*float(y)))
     Var.Goto.asking_for_goto = True
 
@@ -53,7 +53,7 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
     if parcours[0] == (x0,y0):
         parcours.pop(0)
         if signal_grid[y0][x0] == -1:
-            signal_grid[y0][x0] = await resolve_signal()
+            signal_grid[y0][x0] = await resolve_signal(client_ws)
 
     # TODO adapter la direction du robot au début de la carto, ca risque de pas etre la bonne.
     await client_ws.send(message_builder("set_parameter", client_ws.id, "position", (x0, y0, 0)))
@@ -61,10 +61,10 @@ async def cartographie(client_ws, carte: str, carte_scale, x0, y0):
     while parcours:
         next_x, next_y = parcours.pop(0)
 
-        await resolve_goto(next_x, next_y) # remet les deux variables précédentes a False
+        await resolve_goto(client_ws,next_x, next_y) # remet les deux variables précédentes a False
 
         if signal_grid[next_y][next_x] == -1:
-            signal_grid[next_y][next_x] = await resolve_signal()
+            signal_grid[next_y][next_x] = await resolve_signal(client_ws)
  
 
     print("FIN CATOGRAPHIE : ")

@@ -75,7 +75,7 @@ class UltrasonicSensors:
             self.right_distance = self.SensorRight.distance()
             self.left_distance = self.SensorLeft.distance()
 
-            self.obstacle_in_front = (self.left_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE and \
+            self.obstacle_in_front = (self.left_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE or \
                                         self.right_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE)
 
             if verbose:
