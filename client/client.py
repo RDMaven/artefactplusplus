@@ -39,8 +39,8 @@ class WebSocketClient:
             self.sent_counter = Counter() # DEBUG
             self.receive_counter = Counter() # DEBUG
     
-    def counter_status(self): # DEBUG
-        print(f"COUNTERS - Received : {self.receive_counter.get()}. Sent : {self.sent_counter.get()}") 
+    # def counter_status(self): # DEBUG
+    #     print(f"COUNTERS - Received : {self.receive_counter.get()}. Sent : {self.sent_counter.get()}") 
 
     async def stop(self):
         """ Arrêter le robot n'importe quand avec de l'async."""

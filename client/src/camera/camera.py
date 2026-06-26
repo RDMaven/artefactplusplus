@@ -33,8 +33,8 @@ class Camera:
             await asyncio.sleep(0.01)
             return
 
-        frame = cv2.resize(frame, self.size) #(320, 240)) # reduce size maybe TODO
-        frame = cv2.flip(frame, 1) # flip image TODO enlever pour les robots (peut-être)
+        frame = cv2.resize(frame, self.size) #(320, 240))
+        frame = cv2.flip(frame, 1)
         _, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 70]) # reduce quality
 
         return buffer.tobytes()

@@ -54,8 +54,6 @@ class Position:
         self.updateForTankRotationForceKalman(theta)
 
     def updateForTankRotation(self, real_tick_angle_left: int, real_tick_angle_right: int):
-        # var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
-        # la formules est fause : TODO
         var_angle_deg = angleFromTicks(real_tick_angle_left, real_tick_angle_right)
         if real_tick_angle_left < 0:
             var_angle_deg = -var_angle_deg
@@ -64,8 +62,6 @@ class Position:
         self.theta = round(self.theta + var_angle_deg, 3)
 
     def updateForTankRotationEndOfMvt(self, pre_theta, total_ticks_l, total_ticks_r, theta_kalman):
-        # var_angle_rad = abs(real_tick_angle_right - real_tick_angle_left) * Ratio.MperT / Config.Robot.DISTANCE_BTW_WHEELS
-        # la formules est fause : TODO
         var_angle_deg = angleFromTicks(total_ticks_l, total_ticks_r)
         if total_ticks_l < 0:
             var_angle_deg = -var_angle_deg

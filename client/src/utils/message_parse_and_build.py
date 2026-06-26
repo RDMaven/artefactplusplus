@@ -68,19 +68,6 @@ def assert_argument_type(vname, expected, got):
 # ROBOT -> SERVER Message data builder ================== #
 def message_data_builder(mtype, *args):
     match mtype:
-        case "status":
-            assert_number_of_arguments(mtype, 3, len(args)) # TODO, ajouter des args peut-être
-            sbattery, spos, smode = args
-            assert_argument_type("battery", int, type(sbattery))
-            assert_argument_type("position", dict, type(spos))
-            assert_argument_type("mode", str, type(smode)) # TODO peut-être changer le type de str a int si on fait 0/1 manuel/auto.
-            assert "x" in spos and "y" in spos and "theta" in spos, f"Some arguments are not in spos : {spos}. Requires x,y and theta"
-            return {
-                "battery": sbattery,
-                "position": spos,
-                "mode": smode
-            }
-
         case "event":
             args = args[0]
             assert_number_of_arguments(mtype, 2, len(args))
@@ -95,7 +82,7 @@ def message_data_builder(mtype, *args):
             vbytes = args[0][0]
             assert_argument_type("video", bytes, type(vbytes))
             return {
-                "bytes": base64.b64encode(vbytes).decode("utf-8") # TODO pour plus de perf, on peut faire une exception pour le feed video, et ne pas l'encapsuler en json, pour pouvoir utiliser les raw bytes, et gagner 33% de taille des paquets. 
+                "bytes": base64.b64encode(vbytes).decode("utf-8") 
             }
 
         case "signal":

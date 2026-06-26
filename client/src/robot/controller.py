@@ -180,7 +180,6 @@ class WifiBot:
                     self.Version  = resp[18]
 
     def printStatus(self):
-        # TODO: 1/2 --> Front/Back
         s = f"""
             Global:
                 Version       : {self.Version:02x}
@@ -256,7 +255,7 @@ class WifiBot:
         if not self.started:
             print("Robot was not started, starting.")
             self.start()
-            self.setLeftSpeed(0) # TODO try with 0
+            self.setLeftSpeed(0)
             self.setRightSpeed(0)
 
     def getOdom(self, is_setup=False):
