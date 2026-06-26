@@ -28,7 +28,7 @@ class RobotDriver(WifiBot):
             self.kalman = Kalman()
 
         self.speed = Config.Robot.SPEED
-        self.timeout = Config.Robot.CLOCK # TODO modifier au besoin
+        self.timeout = Config.Robot.CLOCK
 
         self.sensors = UltrasonicSensors()
 
@@ -263,7 +263,6 @@ class RobotDriver(WifiBot):
 
         # self.position.updateForTankRotationEndOfMvt(pre_theta, ref.accl, ref.accr, self.kalman.get_theta())
         time.sleep(self.timeout)
-        # TODO : comparer avec kalman
 
         print(f"DRIVER - Rotate : Demande={angle}° ({distance_in_ticks}t) | total_l={ref.accl} total_r={ref.accr}, TOTAL={mu.angleFromTicks(ref.accl, ref.accr)}")
         # with open("valeurs.txt", 'a') as f:
@@ -275,19 +274,22 @@ class RobotDriver(WifiBot):
 
 
     def rotatByAnglePrecise(self, angle):
-        tolerance = 8
+        tolerance = 12
         vitesse = Config.Robot.SPEED
         effectif = self.rotateByAngle(angle)
         i = 0
-        while abs(effectif-angle) > 8 and i < 3:
-            effectif = self.rotateByAngle(effectif-angle, sec=True)
+        print(f"DRIVER - RotatePrecise - D={angle} -> E={effectif}, à ajuster DELTA={angle-effectif}")
+        while abs(effectif-angle) > tolerance and i < 3:
+            angle = angle-effectif
+            effectif = self.rotateByAngle(angle, sec=True)
+            print(f"DRIVER - RotatePrecise - D={angle} -> E={effectif}, à ajuster DELTA={angle-effectif}")
             i+=1
 
 
     def avoidObstacle(self):
         """ Évitement d'obstacles pour l'avant. """
         angles = [45, -45, -90, 90, 180]
-        correction_distance = Config.Robot.OBSTACLE_AVOIDANCE_DISTANCE # Arbitraire, TODO le mettre en variable d'environment, et prendre plus petit que la distance minimale des capteurs !
+        correction_distance = Config.Robot.OBSTACLE_AVOIDANCE_DISTANCE
 
         # On test de tourner à des angles successifs pour voir si ça débloque le robot.
         for i in range(len(angles)):
@@ -321,7 +323,7 @@ class RobotDriver(WifiBot):
                 self.rotatByAnglePrecise(theta)
                 self.forwardByDistance(0, is_local_instr=False) # r n'est pas requis dans ce cas, on ne regarde que current_objective
             else:
-                temp_divided_speed //= 4
+                temp_divided_speed //= 2
                 self.forwardByDistance(0, is_local_instr=False, speed=temp_divided_speed)
 
     def goto_cartesian(self, x2, y2):
