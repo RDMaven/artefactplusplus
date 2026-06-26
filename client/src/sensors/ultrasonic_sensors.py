@@ -79,7 +79,7 @@ class UltrasonicSensors:
                                         self.right_distance < Config.Sensors.OBSTACLE_DANGER_DISTANCE)
 
             if verbose:
-                print(f"ULTRASONIC - L={round(self.left_distance, 1)}cm, R={round(self.right_distance, 1)}cm")
+                print(f"ULTRASONIC - L={round(self.left_distance, 1)}cm, R={round(self.right_distance, 1)}cm, Obstacle={self.obstacle_in_front}")
 
             time.sleep(self.time_interval)
 
