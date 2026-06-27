@@ -3,9 +3,16 @@ opencv-python
 dotenv
 pyserial
 mpu6050-raspberrypi
-# smbus à installer en 'global
+# smbus
 smbus2
 RPi.GPIO
 mpu9250_jmdev
 numpy
 matplotlib
+
+# ATTENTION
+# 'smbus' est à installer en global
+#   sudo apt install python3-smbus
+# 'RPi.GPIO' peut avoir une erreur d'installation. Dans ce cas, télécharger ceci avant :
+#   sudo apt install build-essential python3-dev
+
