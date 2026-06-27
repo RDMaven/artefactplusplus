@@ -3,7 +3,7 @@ opencv-python
 dotenv
 pyserial
 mpu6050-raspberrypi
-smbus
+# smbus à installer en 'global
 smbus2
 RPi.GPIO
 mpu9250_jmdev
