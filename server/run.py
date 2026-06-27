@@ -1,5 +1,5 @@
 from config import Config
-from www.main import app
+from sites.www.main import app
 import uvicorn
 
 if __name__ == "__main__":

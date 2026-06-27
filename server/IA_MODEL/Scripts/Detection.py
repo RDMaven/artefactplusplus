@@ -6,7 +6,7 @@ import time
 SERVER_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(SERVER_DIR))
 
-from www.routes.utils.utils_video import *
+from sites.www.routes.utils.utils_video import *
 import math
 from model_test import draw_predicted_box
 from ultralytics import YOLO

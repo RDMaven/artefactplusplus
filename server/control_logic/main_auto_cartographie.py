@@ -1,8 +1,8 @@
 
 from control_logic.utils.parcours_grille.parcours_grille import main as parcours_main
 from config import Config, Var
-from www.routes.utils.message_parse_and_build import message_builder
-from www.routes.utils.signal4G import signal4G
+from sites.www.routes.utils.message_parse_and_build import message_builder
+from sites.www.routes.utils.signal4G import signal4G
 import time, asyncio
 
 async def resolve_signal(client_ws):

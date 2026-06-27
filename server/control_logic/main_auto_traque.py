@@ -1,11 +1,11 @@
 from pathlib import Path
-from www.routes.utils.message_parse_and_build import message_builder 
+from sites.www.routes.utils.message_parse_and_build import message_builder 
 
 SERVER_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(SERVER_DIR))
 
 from IA_MODEL.Scripts.Detection import detector 
-from www.routes.utils.utils_video import *
+from sites.www.routes.utils.utils_video import *
 
 async def traque(client_ws, x0, y0):
     last_seen_time = 0
