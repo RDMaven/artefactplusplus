@@ -17,11 +17,8 @@ class Config:
         ROOT = find_dotenv()[:-4] # The .env is in the root.
         STATIC_DIRECTORY = ROOT+str(environ["STATIC_DIRECTORY"])
         TEMPLATES_DIRECTORY = ROOT+str(environ["TEMPLATES_DIRECTORY"])
-        DATA_DIRECTORY = ROOT+str(environ["DATA_DIRECTORY"])
         MAPS_DIRECTORY = ROOT+str(environ["MAPS_DIRECTORY"])
     # Working environment type (dev or prod)
-    ENV = environ["APP_ENV"]  # test ou prod
-    is_prod = ENV == "prod"
 
     # TODO Ranger ces env.
     OS_IS_LINUX=any([e in platform for e in ['linux']])
@@ -32,7 +29,6 @@ class Config:
         HOST=(environ["WEB_HOST"])
 
     class Camera:
-        ID = int(environ["CAMERA_ID"]) # TODO enlever, ceci est pour tester.
         CAPTURE = False
 
 def compare_env_with_example():

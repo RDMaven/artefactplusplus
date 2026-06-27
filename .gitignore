@@ -2,10 +2,4 @@ __pycache__/
 # .env
 .venv/
 client/.env
-
-server/data/*
-!server/data/.gitkeep
-
-server/IA_MODEL/Dataset/*
-!server/IA_MODEL/Dataset/.gitkeep
-!server/IA_MODEL/Dataset/test
+.DS_STORE

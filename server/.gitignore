@@ -1,0 +1,7 @@
+__pycache__/
+.venv/
+
+
+IA_MODEL/Dataset/*
+!IA_MODEL/Dataset/.gitkeep
+!IA_MODEL/Dataset/test
