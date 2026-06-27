@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <title>Artefact+++ Demo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="assets/style/style.css" />
+    <link rel="icon" type="image/x-icon" href="assets/img/LASER.svg">
+</head>
+
+<body>
+    <!-- <div id="intro">
+        <img src="assets/img/stars_intro.svg" id="intro-background">
+        <div id="intro-wrapper-fighters">
+            <img src="assets/img/Vausseay$2.svg" id="intro-fighter-1">
+            <img src="assets/img/Vausseay$2.svg" id="intro-fighter-2">
+        </div>
+    </div>-->
+
+    <header>
+        <!-- <img src="assets/img/stars.svg" id="header-background"> -->
+        <div id="header-flexbox">
+
+            <div id="header-img-wrapper">
+                <div class="header-img-placeholder">
+                    <img class="header-img" src="assets/img/logo_telecom.png">
+                </div>
+            </div>
+            <div id="header-title">
+                <p class="header-title-main">ARTE</p>
+                <p id="header-title-sub">JSG CONTRE-ATTAQUE</p>
+                <p class="header-title-main">FACT</p>
+                <p class="header-title-main">+++</p>
+            </div>
+            <div id="header-credits">
+                <p>
+                    Un projet Artishow 2026
+                    poursuivi par<br>
+                    <span>Max Joseph-Antoine</span>,<br>
+                    pour <br>
+                    <span>Jean-Sebastien Gomez</span>,<br>
+                    du département <span>INFRES</span>
+                    <br> de Télécom Paris.
+                </p>
+            </div>
+        </div>
+
+    </header>
+    <main id="main-container">
+        <div class="video-container">
+            <div class="video-box">
+                <p>Robot 1</p>
+                <img class="video-feed" id="video-feed-1" src="{{ robot_control_server }}/video/1" onerror="this.src = 'assets/img/erreur_flux_video.jpg';">
+                <button class="reload-button" onclick="reloadFeed('video-feed-1', '{{ robot_control_server }}/video/1')">Réessayer</button>
+                <button class="link-button" onclick="window.location.href = './1'">Contrôle Robot 1</button>
+                
+            </div>
+            <div class="video-box">
+                <p>Robot 2</p>
+                <img class="video-feed" id="video-feed-2" src="{{ robot_control_server }}/video/2" onerror="this.src = 'assets/img/erreur_flux_video.jpg';">
+                <button class="reload-button" onclick="reloadFeed('video-feed-2', '{{ robot_control_server }}/video/2')">Réessayer</button>
+                <button class="link-button" onclick="window.location.href = './2'">Contrôle Robot 2</button>
+            </div>
+            <div class="video-box">
+                <p>Robot 3</p>
+                <img class="video-feed" id="video-feed-3" src="{{ robot_control_server }}/video/3" onerror="this.src = 'assets/img/erreur_flux_video.jpg';">
+                <button class="reload-button"onclick="reloadFeed('video-feed-3', '{{ robot_control_server }}/video/3')">Réessayer</button>
+                <button class="link-button" onclick="window.location.href = './3'">Contrôle Robot 3</button>
+            </div>
+        </div>
+    </main>
+    <footer id="footer">
+        <div class="footer-content">
+
+            <a href="https://www.telecom-paris.fr/fr/ecole/departements-enseignement-recherche/informatique-reseaux"
+                target="_blank" class="footer-link">
+                Télécom Paris
+            </a>
+
+            <a href="https://www.linkedin.com/in/max-joseph-antoine-765450134/" target="_blank" class="footer-icon">
+                <img src="assets/img/linkedin-logo.svg" alt="LinkedIn">
+            </a>
+
+            <a href="https://github.com/RDMaven/artefactplusplus" target="_blank" class="footer-icon">
+                <img src="assets/img/github-logo.svg" alt="GitHub">
+            </a>
+
+        </div>
+    </footer>
+</body>
+<script>
+    function reloadFeed(imgId, url) {
+        const img = document.getElementById(imgId);
+
+        if (!img) return;
+
+        // Ajoute un cache-buster pour forcer le rechargement
+        img.src = url + '?t=' + new Date().getTime();
+    }
+
+    [1, 2, 3].forEach(i => {
+        window["imgTimeout" + i] = setTimeout(() => {
+            const img = document.getElementById("video-feed-" + i);
+            if (img && (!img.complete || img.naturalWidth === 0)) {
+                img.src = "assets/img/erreur_flux_video.jpg";
+            }
+        }, 2000);
+    });
+
+</script>
+
+</html>
