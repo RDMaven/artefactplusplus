@@ -6,6 +6,9 @@ YELLOW="\e[33m"
 END="\e[0m"
 BOLD="\e[1m"
 
+# Commande spécifique pour un mac qui n'est pas à la dernière mise à jour.
+export DYLD_LIBRARY_PATH=/opt/homebrew/opt/expat/lib
+
 line_start() {
   TEXT="$1"
   printf "%b" "${BLUE}${TEXT}${END}"
@@ -78,7 +81,11 @@ building_python () {
     # Install requirements
     if [ -f "requirements.txt" ]; then
         line_start "Installing dependencies"
-        pip install -r requirements.txt >/dev/null
+        pip install -r requirements.txt >/dev/null || { 
+            printf "%b" "${RED}FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${END}\n"
+            printf "%b" "${RED}FAILED : check requirements.txt files for help.${END}\n"
+            exit 1 
+        }
         end_line "Done"
     else
     end_line "Warning: requirements.txt not found"
