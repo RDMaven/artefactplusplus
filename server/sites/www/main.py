@@ -4,8 +4,8 @@ from fastapi.templating import Jinja2Templates
 import sys
 
 from config import Config
-from www.routes.routes import router as http_router
-import www.routes.websocket as websockets
+from sites.www.routes.routes import router as http_router
+import sites.www.routes.websocket as websockets
 from fastapi.middleware.cors import CORSMiddleware
 
 

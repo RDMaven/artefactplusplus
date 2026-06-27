@@ -7,9 +7,9 @@ from fastapi.responses import HTMLResponse, StreamingResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 
 from config import Config
-from www.routes.utils.utils_video import mjpeg_generator
+from sites.www.routes.utils.utils_video import mjpeg_generator
 
-from www.routes.websocket import ask_client
+from sites.www.routes.websocket import ask_client
 
 # import sys
 # sys.path.append('../src')

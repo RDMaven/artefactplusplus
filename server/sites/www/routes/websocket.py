@@ -5,10 +5,10 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Body 
 import json, asyncio, os
 
-from www.routes.utils.message_parse_and_build import \
+from sites.www.routes.utils.message_parse_and_build import \
     interface_message_parser, robot_message_parser, \
     message_builder
-from www.routes.utils.utils_video import frame_store
+from sites.www.routes.utils.utils_video import frame_store
 from control_logic.main_auto_cartographie import cartographie
 
 from pathlib import Path
