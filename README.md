@@ -5,8 +5,6 @@ Artefact+++ consiste à développer un robot à déplacement autonome connecté 
 
 Ce projet Artefact+++ s’inspire du projet Artefact afin que des robots tout terrain utilisent le réseau privé 4G de Télécom Paris. Il s’appuie sur l’infrastructure du laboratoire qui dispose de plusieurs réseaux mobiles 4G et 5G, déployés dans une cage de Faraday, ainsi que d’une infrastructure  sur l’ensemble du bâtiment de Télécom Paris en bande 38. Le but est de pouvoir tester un cas d’usage pratique des télécommunications industrielle	s, mêlant robotique et réseaux mobile.
 
-Co-encadré par Philippe Martins
-
 ## Objectif
 En se servant de l’expérience acquise lors du projet Artefact, les étudiants devront modifier l’architecture de leur robot pour l’adapter aux robots tout terrain qui seront fournis. Plus précisément, ils devront :
 
@@ -24,4 +22,3 @@ root[OBJECTIFS]
 
 ## Encadrants
 * Jean-Sébastien Gomez
-* Dominique Blouin
