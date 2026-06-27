@@ -1,56 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Dashboard caméra</title>
-    <link rel="stylesheet" href="/static/styles/app.css" type="text/css">
-    <link rel="stylesheet" href="/static/styles/dashboard.css" type="text/css">
+    <title>Artefact++ | Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/styles/home.css" />
+    <link rel="icon" type="image/x-icon" href="/static/images/icons/favicon.svg">
 </head>
 
 <body>
-
-    <div class="header-wrapper">
-        <h1 class="page-title">Dashboard</h1>
-        <div class="map-placeholder">
-            <img src="/static/images/logo_telecom.png" alt="Carte de Télécom">
-        </div>
-        <div class="logo-placeholder">
-            <img src="/static/images/pizza_secrete_entiere.png" class="ani-spinning" alt="Logo Artefact+++">
+    <div id="intro">
+        <img src="/static/images/stars_intro.svg" id="intro-background">
+        <div id="intro-wrapper-fighters">
+            <img src="/static/images/Vausseay$2.svg" id="intro-fighter-1">
+            <img src="/static/images/Vausseay$2.svg" id="intro-fighter-2">
         </div>
     </div>
 
-    <!-- Three columns -->
-    <div class="columns">
+    <header>
+        <!-- <img src="/static/images/stars.svg" id="header-background"> -->
+        <div id="header-flexbox">
 
-        <div class="column">
-            <div class="name">Robot 1</div>
-            <div class="camera-placeholder">
-                <img src="/video/1" class="video">
+            <div id="header-img-wrapper">
+                <div class="header-img-placeholder">
+                    <img class="header-img" src="/static/images/logo_telecom.png">
+                </div>
             </div>
-            <div class="status-box">Status: OK</div>
-            <a class="big-button" href="/1">Contrôle Robot 1</a>
+            <div id="header-title">
+                <p class="header-title-main">ARTE</p>
+                <p id="header-title-sub">JSG CONTRE-ATTAQUE</p>
+                <p class="header-title-main">FACT</p>
+                <p class="header-title-main">+++</p>
+            </div>
+            <div id="header-credits">
+                <p>
+                    Un projet Artishow 2026
+                    poursuivi par<br>
+                    <span>Max Joseph-Antoine</span>,<br>
+                    pour <br>
+                    <span>Jean-Sebastien Gomez</span>,<br>
+                    du département <span>INFRES</span>
+                    <br> de Télécom Paris.
+                </p>
+            </div>
         </div>
 
-        <div class="column">
-            <div class="name">Robot 2</div>
-            <div class="camera-placeholder"> 
-                <img src="/video/2" class="video">
+    </header>
+    <main id="main-container">
+        <div class="video-container">
+            <div class="video-box">
+                <p>Robot 1</p>
+                <img class="video-feed" id="video-feed-1" src="/video/1" onerror="this.src = '/static/images/erreur_flux_video.jpg';">
+                <button class="reload-button" onclick="reloadFeed('video-feed-1', '/video/1')">Réessayer</button>
+                <button class="link-button" onclick="window.location.href = './1'">Contrôle Robot 1</button>
+                
             </div>
-            <div class="status-box">Status: Offline</div>
-            <a class="big-button" href="2">Contrôle Robot 2</a>
-        </div>
-
-        <div class="column">
-            <div class="name">Robot 3</div>
-            <div class="camera-placeholder"> 
-                <img src="/video/3" class="video">
+            <div class="video-box">
+                <p>Robot 2</p>
+                <img class="video-feed" id="video-feed-2" src="/video/2" onerror="this.src = '/static/images/erreur_flux_video.jpg';">
+                <button class="reload-button" onclick="reloadFeed('video-feed-2', '/video/2')">Réessayer</button>
+                <button class="link-button" onclick="window.location.href = './2'">Contrôle Robot 2</button>
             </div>
-            <div class="status-box">Status: Error</div>
-            <a class="big-button" href="3">Contrôle Robot 3</a>
+            <div class="video-box">
+                <p>Robot 3</p>
+                <img class="video-feed" id="video-feed-3" src="/video/3" onerror="this.src = '/static/images/erreur_flux_video.jpg';">
+                <button class="reload-button"onclick="reloadFeed('video-feed-3', '/video/3')">Réessayer</button>
+                <button class="link-button" onclick="window.location.href = './3'">Contrôle Robot 3</button>
+            </div>
         </div>
+    </main>
+    <footer id="footer">
+        <div class="footer-content">
 
-    </div>
+            <a href="https://www.telecom-paris.fr/fr/ecole/departements-enseignement-recherche/informatique-reseaux"
+                target="_blank" class="footer-link">
+                Télécom Paris
+            </a>
+
+            <p class="footer-link">©</p>
+            <a href="https://www.linkedin.com/in/max-joseph-antoine-765450134/" target="_blank" class="footer-icon">
+                <img src="/static/images/icons/linkedin-logo.svg" alt="LinkedIn">
+            </a>
+
+            <a href="https://github.com/RDMaven/artefactplusplus" target="_blank" class="footer-icon">
+                <img src="/static/images/icons/github-logo.svg" alt="GitHub">
+            </a>
+
+        </div>
+    </footer>
 </body>
+<script>
+    function reloadFeed(imgId, url) {
+        const img = document.getElementById(imgId);
+
+        if (!img) return;
+
+        // Ajoute un cache-buster pour forcer le rechargement
+        img.src = url + '?t=' + new Date().getTime();
+    }
+
+    [1, 2, 3].forEach(i => {
+        window["imgTimeout" + i] = setTimeout(() => {
+            const img = document.getElementById("video-feed-" + i);
+            if (img && (!img.complete || img.naturalWidth === 0)) {
+                img.src = "/static/images/erreur_flux_video.jpg";
+            }
+        }, 2000);
+    });
+
+</script>
 
 </html>
